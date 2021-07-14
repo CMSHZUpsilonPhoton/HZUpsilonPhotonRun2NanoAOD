@@ -2,6 +2,7 @@
 
 
 ## Setup
+Assuming a CC7 machine.
 
 ```
 conda create -y -c conda-forge -p HZUpsilonPhotonRun2NanoAODEnv --file requirements.txt
