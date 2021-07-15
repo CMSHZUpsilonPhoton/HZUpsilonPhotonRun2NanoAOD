@@ -2,6 +2,7 @@
 
 HZUpsilonPhotonRun2NanoAODEnv/
 .DS_Store
+outputs/buffer/*
 
 
 # Byte-compiled / optimized / DLL files
