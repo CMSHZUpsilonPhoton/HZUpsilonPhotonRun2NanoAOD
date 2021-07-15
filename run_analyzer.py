@@ -17,6 +17,9 @@ from coffea.util import save
 #     for f in samples_files[k]:
 #         file_tester(f)
 
+# clear buffer
+os.system('rm -rf outputs/*')
+os.system('mkdir outputs/buffer ; touch outputs/buffer/__PLACEHOLDER__')
 
 # run analysis code
 output = processor.run_uproot_job(
@@ -28,22 +31,28 @@ output = processor.run_uproot_job(
     executor_args = {"schema": NanoAODSchema, "workers": 30},
     # executor_args = {"schema": NanoAODSchema},
     # chunksize = 
+    # maxchunks = 100,
 )
 
 # print(result[0, "2018", True, True, True, True, True, True, True, True, True, True, ])
 # print(result[1, "2018", True, True, True, True, True, True, True, True, True, True, ])
 # print(result[2, "2018", True, True, True, True, True, True, True, True, True, True, ])
 # print(result[3, "2018", True, True, True, True, True, True, True, True, True, True, ])
-print(output['cutflow'].histogram[:, "2018", True, True, True, True, True, True, True, True, True, True, ])
+# print(output['cutflow'].histogram[:, "2018", True, True, True, True, True, True, True, True, True, True, ])
 
 # save outputs
 print('--> saving output...')
-output_filename = 'outputs/buffer/cutflow.hist'
+output_filename = 'outputs/cutflow.hist'
 os.system(f'rm -rf {output_filename}')
 save(output['cutflow'].histogram, output_filename)
 
 # how to access the saved object
 # from coffea.util import load
 # import hist
-# load('outputs/buffer/cutflow.coffea')
+# load('outputs/buffer/cutflow.hist')
+
+# merge dimuon masses
+print('--> merging dimuon masses...')
+for sample in samples_files.keys():
+    os.system(f'hadd -f outputs/dimuon_mass_{sample}.root outputs/buffer/dimuon_mass_{sample}*.root ')
 

@@ -3,7 +3,9 @@
 HZUpsilonPhotonRun2NanoAODEnv/
 .DS_Store
 outputs/buffer/*
-
+*.root
+*.coffea
+*.hist
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
