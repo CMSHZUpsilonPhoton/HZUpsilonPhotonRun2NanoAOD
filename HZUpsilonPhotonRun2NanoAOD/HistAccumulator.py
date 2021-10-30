@@ -1,6 +1,5 @@
 from coffea.processor import AccumulatorABC
 import hist
-# from hist import Hist
 
 class HistAccumulator(AccumulatorABC):
     """A histogram accumulator based 'hist' module.
