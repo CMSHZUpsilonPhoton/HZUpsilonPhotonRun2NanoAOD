@@ -191,6 +191,7 @@ pthread-stubs=0.4=h36c2ea0_1001
 ptyprocess=0.7.0=pyhd3eb1b0_2
 pyarrow=4.0.1=py39h3ebc44c_4_cpu
 pycparser=2.20=pyh9f0ad1d_2
+pydantic=1.8.2=py39h3811e60_0
 pygments=2.9.0=pyhd3eb1b0_0
 pyparsing=2.4.7=pyh9f0ad1d_0
 pyrsistent=0.17.3=py39h3811e60_2

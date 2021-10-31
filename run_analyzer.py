@@ -35,7 +35,7 @@ output = processor.run_uproot_job(
 
 # save outputs
 print("--> saving output...")
-output_filename = "outputs/cutflow_data.hist"
+output_filename = "outputs/cutflow.hist"
 os.system(f"rm -rf {output_filename}")
 save(output["cutflow"].histogram, output_filename)
 
@@ -48,15 +48,15 @@ save(output["cutflow"].histogram, output_filename)
 print("--> merging dimuon masses...")
 for sample in samples_files.keys():
     os.system(
-        f"hadd -f outputs/dimuon_mass_{sample}.root outputs/buffer/dimuon_mass_{sample}*.root "
+        f"hadd -f outputs/dimuons_mass_{sample}.root outputs/buffer/dimuons_mass_{sample}*.root "
     )
 
 os.system(
-    f"hadd -f outputs/dimuon_mass_Run2016.root outputs/dimuon_mass_Run2016*.root "
+    f"hadd -f outputs/dimuons_mass_Run2016.root outputs/dimuons_mass_Run2016*.root "
 )
 os.system(
-    f"hadd -f outputs/dimuon_mass_Run2017.root outputs/dimuon_mass_Run2017*.root "
+    f"hadd -f outputs/dimuons_mass_Run2017.root outputs/dimuons_mass_Run2017*.root "
 )
 os.system(
-    f"hadd -f outputs/dimuon_mass_Run2018.root outputs/dimuon_mass_Run2018*.root "
+    f"hadd -f outputs/dimuons_mass_Run2018.root outputs/dimuons_mass_Run2018*.root "
 )
