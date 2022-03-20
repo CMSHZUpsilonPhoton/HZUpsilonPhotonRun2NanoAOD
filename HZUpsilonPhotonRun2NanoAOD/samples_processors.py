@@ -41,6 +41,7 @@ def data_processor(events, dataset, year, output):
     # muons filters
     (
         filters_masks.nmuons,
+        filters_masks.muon_eta, 
         filters_masks.muon_pt, 
         filters_masks.muon_id,
         filters_masks.iso_muon,
@@ -49,6 +50,7 @@ def data_processor(events, dataset, year, output):
     # photons filters
     (
         filters_masks.nphotons,
+        filters_masks.photon_eta,
         filters_masks.photon_pt,
         filters_masks.photon_sc_eta,
         filters_masks.photon_electron_veto,

@@ -10,7 +10,7 @@ def cutflow_filling_parameters(events, filters_masks, weights):
         "trigger": filters_masks.trigger,
         "nmuons": filters_masks.nmuons,
         "muon_pt": ak.num(events.Muon[filters_masks.muon_pt]) >= 2,
-        "tight_muon": ak.num(events.Muon[filters_masks.muon_id]) >= 2,
+        "mediumPrompt_muon": ak.num(events.Muon[filters_masks.muon_id]) >= 2,
         "iso_muon": ak.num(events.Muon[filters_masks.iso_muon]) >= 2,
         "nphotons": filters_masks.nphotons,
         "photon_pt": ak.num(events.Photon[filters_masks.photon_pt]) >= 1,
@@ -32,8 +32,11 @@ def build_dimuons(events, filters_masks):
         ],
         2,
     )
-
-    return dimuons[(dimuons["0"].charge + dimuons["1"].charge) == 0]
+    charge_filter = (dimuons["0"].charge + dimuons["1"].charge) == 0
+    muon_pt_filter_0 = (dimuons["0"].pt >= 18 )  # at least one muon with pT > 18 GeV
+    muon_pt_filter_1 = (dimuons["1"].pt >= 18 ) # at least one muon with pT > 18 GeV
+    
+    return dimuons[charge_filter & (muon_pt_filter_0 | muon_pt_filter_1)]
 
 
 def save_dimuon_masses(dimuons, dataset, year):

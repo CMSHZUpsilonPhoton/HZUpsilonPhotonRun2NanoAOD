@@ -23,7 +23,7 @@ class Analyzer(processor.ProcessorABC):
                     .Bool(name="trigger")
                     .Bool(name="nmuons")
                     .Bool(name="muon_pt")
-                    .Bool(name="tight_muon")
+                    .Bool(name="mediumPrompt_muon")
                     .Bool(name="iso_muon")
                     .Bool(name="nphotons")
                     .Bool(name="photon_pt")
