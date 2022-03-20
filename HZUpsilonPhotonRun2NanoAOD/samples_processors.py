@@ -6,7 +6,6 @@ import awkward as ak
 import numpy as np
 
 
-# from samples.samples import samples_files, samples_descriptions
 from HZUpsilonPhotonRun2NanoAOD.HistAccumulator import HistAccumulator
 import HZUpsilonPhotonRun2NanoAOD.Filters as Filters
 from HZUpsilonPhotonRun2NanoAOD.utils import (
@@ -30,7 +29,7 @@ def data_processor(events, dataset, year, output):
     )
     events = events[lumisection_filter]
 
-    # Event weight holder
+    # Event weight holder 
     weights = analysis_tools.Weights(size=len(events), storeIndividual=True)
 
     # filter masks holder
@@ -42,7 +41,7 @@ def data_processor(events, dataset, year, output):
     # muons filters
     (
         filters_masks.nmuons,
-        filters_masks.muon_pt,
+        filters_masks.muon_pt, 
         filters_masks.muon_id,
         filters_masks.iso_muon,
     ) = Filters.muon_selection(events)

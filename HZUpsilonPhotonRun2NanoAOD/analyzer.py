@@ -8,7 +8,7 @@ import hist
 import uproot3
 import secrets
 
-from samples.samples import samples_files, samples_descriptions
+from samples import samples_files, samples_descriptions
 from HZUpsilonPhotonRun2NanoAOD.samples_processors import data_processor, mc_processor
 from HZUpsilonPhotonRun2NanoAOD.HistAccumulator import HistAccumulator
 
@@ -45,6 +45,8 @@ class Analyzer(processor.ProcessorABC):
         year = samples_descriptions[dataset]["year"]
         data_or_mc = samples_descriptions[dataset]["data_or_mc"]
         output = self.accumulator.identity()
+
+        # print(f"--> Processing: {dataset} - {year}")
 
         if data_or_mc == "data":
             return data_processor(events, dataset, year, output)

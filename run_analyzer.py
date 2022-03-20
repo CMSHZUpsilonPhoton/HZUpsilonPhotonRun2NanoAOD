@@ -3,7 +3,7 @@ import os
 from HZUpsilonPhotonRun2NanoAOD import file_tester
 from HZUpsilonPhotonRun2NanoAOD.analyzer import Analyzer
 from HZUpsilonPhotonRun2NanoAOD.file_tester import file_tester
-from samples.samples import samples_files, samples_descriptions
+from samples import samples_files, samples_descriptions
 
 from coffea import processor
 from coffea.nanoevents import NanoEventsFactory, NanoAODSchema
