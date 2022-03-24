@@ -58,7 +58,7 @@ def photon_selection(events):
     )  # is Barrel or Endacap - no "crack photons".
     photon_electron_veto_filter = events.Photon.electronVeto == 1  # electron veto
     # photon_tight_id_filter = events.Photon.cutBased == 3  # cut based tight photon
-    photon_tight_id_filter = events.Photon.mvaID_WP80  == 1  # cut based tight photon
+    photon_tight_id_filter = events.Photon.mvaID_WP80  == 1  # MVA (WP: 80)% photon
 
     return (
         nphotons_filter,
