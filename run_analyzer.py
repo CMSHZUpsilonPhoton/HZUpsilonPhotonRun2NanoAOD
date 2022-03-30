@@ -60,3 +60,6 @@ os.system(
 os.system(
     f"hadd -f outputs/dimuons_mass_Run2018.root outputs/dimuons_mass_Run2018*.root "
 )
+os.system(
+    f"hadd -f outputs/dimuons_mass_Run2.root outputs/dimuons_mass_Run2*.root "
+)
