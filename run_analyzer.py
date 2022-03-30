@@ -27,7 +27,7 @@ output = processor.run_uproot_job(
     processor_instance=Analyzer(),
     executor=processor.futures_executor,
     # executor = processor.iterative_executor,
-    executor_args={"schema": NanoAODSchema, "workers": 30},
+    executor_args={"schema": NanoAODSchema, "workers": 60},
     # executor_args = {"schema": NanoAODSchema},
     # chunksize =
     # maxchunks = 100,
@@ -62,4 +62,45 @@ os.system(
 )
 os.system(
     f"hadd -f outputs/dimuons_mass_Run2.root outputs/dimuons_mass_Run2*.root "
+)
+
+
+# merge preselected events
+print("--> merging preselected events...")
+for sample in samples_files.keys():
+    os.system(
+        f"hadd -f outputs/preselected_{sample}.root outputs/buffer/preselected*{sample}*.root "
+    )
+
+os.system(
+    f"hadd -f outputs/preselected_Run2016.root outputs/preselected_Run2016*.root "
+)
+os.system(
+    f"hadd -f outputs/preselected_Run2017.root outputs/preselected_Run2017*.root "
+)
+os.system(
+    f"hadd -f outputs/preselected_Run2018.root outputs/preselected_Run2018*.root "
+)
+os.system(
+    f"hadd -f outputs/preselected_Run2.root outputs/preselected_Run2*.root "
+)
+
+# merge selected events
+print("--> merging preselected events...")
+for sample in samples_files.keys():
+    os.system(
+        f"hadd -f outputs/selected_{sample}.root outputs/buffer/selected*{sample}*.root "
+    )
+
+os.system(
+    f"hadd -f outputs/selected_Run2016.root outputs/selected_Run2016*.root "
+)
+os.system(
+    f"hadd -f outputs/selected_Run2017.root outputs/selected_Run2017*.root "
+)
+os.system(
+    f"hadd -f outputs/selected_Run2018.root outputs/selected_Run2018*.root "
+)
+os.system(
+    f"hadd -f outputs/selected_Run2.root outputs/selected_Run2*.root "
 )

@@ -13,6 +13,7 @@ from HZUpsilonPhotonRun2NanoAOD.utils import (
     build_dimuons,
     save_dimuon_masses,
     build_bosons,
+    save_kinematical_information,
 )
 
 
@@ -58,15 +59,22 @@ def data_processor(events, dataset, year, output):
     ) = Filters.photon_selection(events)
 
     # dimuons sample
-    dimuons = build_dimuons(events, filters_masks)
+    dimuon_combinations = build_dimuons(events, filters_masks)
 
     # save dimuon masses
-    save_dimuon_masses(dimuons, dataset, year)
+    save_dimuon_masses(dimuon_combinations, dataset, year)
 
     # bosons
-    bosons = build_bosons(events, dimuons, filters_masks)
-    bosons_mass = (bosons["0"]["0"] + bosons["0"]["1"] + bosons["1"]).mass
-    # print(bosons_mass)
+    boson_combinations, preselected_events_filter = build_bosons(events, dimuon_combinations, filters_masks)
+
+    # save kinematical information of preselected events
+    save_kinematical_information(boson_combinations, dataset, year, "preselected_events", weights.weight()[preselected_events_filter])
+
+    # TODO: Do signal selection
+    selected_events_filter = preselected_events_filter # FIXME
+
+    # save kinematical information of selected events
+    save_kinematical_information(boson_combinations, dataset, year, "selected_events", weights.weight()[selected_events_filter])
 
     # cutflow
     output["cutflow"].histogram.fill(
