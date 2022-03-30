@@ -20,6 +20,7 @@ class Mask(BaseModel):
     iso_muon: Optional[Any] = None
     nphotons: Optional[Any] = None
     photon_pt: Optional[Any] = None
+    photon_eta: Optional[Any] = None
     photon_sc_eta: Optional[Any] = None
     photon_electron_veto: Optional[Any] = None
     photon_tight_id: Optional[Any] = None
@@ -62,6 +63,7 @@ def photon_selection(events):
 
     return (
         nphotons_filter,
+        photon_eta_filter,
         photon_pt_filter,
         photon_sc_eta_filter,
         photon_electron_veto_filter,

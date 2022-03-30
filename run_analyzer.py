@@ -18,7 +18,7 @@ from coffea.util import save
 
 # clear buffer
 os.system("rm -rf outputs/*")
-os.system("mkdir outputs/buffer ; touch outputs/buffer/__PLACEHOLDER__")
+os.system("mkdir -p outputs/buffer ; touch outputs/buffer/__PLACEHOLDER__")
 
 # run analysis code
 output = processor.run_uproot_job(
