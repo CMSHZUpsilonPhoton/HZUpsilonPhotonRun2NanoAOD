@@ -1,1 +1,1 @@
-conda activate ./HZUpsilonPhotonRun2NanoAODEnv
+conda activate ./env

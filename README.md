@@ -9,20 +9,20 @@ Install miniconda:
 https://docs.conda.io/en/latest/miniconda.html
 
 ```
-conda create -y -c conda-forge -p HZUpsilonPhotonRun2NanoAODEnv --file requirements.txt
+conda create -y -c conda-forge -p env --file requirements.txt
 ```
 
 ## Load env
 
 ```
-conda activate ./HZUpsilonPhotonRun2NanoAODEnv
+conda activate ./env
 ```
 
-or simply
+<!-- or simply
 
 ```
 source activate_env.sh
-```
+``` -->
 
 ## Run
 

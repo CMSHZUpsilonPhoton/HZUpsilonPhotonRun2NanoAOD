@@ -8,8 +8,8 @@ import hist
 import uproot3
 import secrets
 
-from samples.samples import samples_files, samples_descriptions
-from HZUpsilonPhotonRun2NanoAOD.samples_processors import data_processor, mc_processor
+from samples import samples_files, samples_descriptions
+from HZUpsilonPhotonRun2NanoAOD.sample_processor import sample_processor
 from HZUpsilonPhotonRun2NanoAOD.HistAccumulator import HistAccumulator
 
 
@@ -23,7 +23,7 @@ class Analyzer(processor.ProcessorABC):
                     .Bool(name="trigger")
                     .Bool(name="nmuons")
                     .Bool(name="muon_pt")
-                    .Bool(name="tight_muon")
+                    .Bool(name="mediumPrompt_muon")
                     .Bool(name="iso_muon")
                     .Bool(name="nphotons")
                     .Bool(name="photon_pt")
@@ -46,10 +46,9 @@ class Analyzer(processor.ProcessorABC):
         data_or_mc = samples_descriptions[dataset]["data_or_mc"]
         output = self.accumulator.identity()
 
-        if data_or_mc == "data":
-            return data_processor(events, dataset, year, output)
-        if data_or_mc == "mc":
-            return mc_processor(events, dataset, year, output)
+        # print(f"--> Processing: {dataset} - {year}")
+
+        return sample_processor(events, dataset, year, data_or_mc, output)
 
     def postprocess(self, accumulator):
         return accumulator
