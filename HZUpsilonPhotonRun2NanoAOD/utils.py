@@ -1,6 +1,7 @@
 import awkward as ak
 import uproot3
 import secrets
+import numpy as np
 
 
 def cutflow_filling_parameters(events, filters_masks, weights):
@@ -78,6 +79,9 @@ def save_kinematical_information(boson_combinations, dataset, year, prefix, weig
             "mu_2_pt": "float",
             "mu_2_eta": "float",
             "mu_2_phi": "float",
+            "delta_eta_upsilon_photon" : "float",
+            "delta_phi_upsilon_photon": "float",
+            "delta_r_upsilon_photon": "float",
             "weight" : "float",
             })
         f["Events"].extend({
@@ -101,6 +105,9 @@ def save_kinematical_information(boson_combinations, dataset, year, prefix, weig
             "mu_2_pt": mu_2.pt,
             "mu_2_eta": mu_2.eta,
             "mu_2_phi": mu_2.phi,
+            "delta_eta_upsilon_photon": np.absolute(upsilons.eta - photons.eta),
+            "delta_phi_upsilon_photon": np.absolute(upsilons.delta_phi(photons)),
+            "delta_r_upsilon_photon": upsilons.delta_r(photons),
             "weight": weights,
             })
 

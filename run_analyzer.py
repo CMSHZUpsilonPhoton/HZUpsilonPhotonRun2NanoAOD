@@ -3,7 +3,7 @@ import os
 from HZUpsilonPhotonRun2NanoAOD import file_tester
 from HZUpsilonPhotonRun2NanoAOD.analyzer import Analyzer
 from HZUpsilonPhotonRun2NanoAOD.file_tester import file_tester
-from samples import samples_files, samples_descriptions
+from samples import samples, samples_files, samples_descriptions
 
 from coffea import processor
 from coffea.nanoevents import NanoEventsFactory, NanoAODSchema
@@ -60,10 +60,15 @@ os.system(
 os.system(
     f"hadd -f outputs/dimuons_mass_Run2018.root outputs/dimuons_mass_Run2018*.root "
 )
-os.system(
-    f"hadd -f outputs/dimuons_mass_Run2.root outputs/dimuons_mass_Run2*.root "
-)
+# os.system(
+#     f"hadd -f outputs/dimuons_mass_Run2.root outputs/dimuons_mass_Run2*.root "
+# )
 
+# for sample in samples:
+#     if samples[sample]["data_or_mc"] == "mc":
+#         os.system(
+#             f"hadd -f outputs/dimuons_mass_{sample}.root outputs/dimuons_mass_{sample}*.root "
+#         )
 
 # merge preselected events
 print("--> merging preselected events...")
@@ -81,9 +86,16 @@ os.system(
 os.system(
     f"hadd -f outputs/preselected_Run2018.root outputs/preselected_Run2018*.root "
 )
-os.system(
-    f"hadd -f outputs/preselected_Run2.root outputs/preselected_Run2*.root "
-)
+
+# os.system(
+#     f"hadd -f outputs/preselected_Run2.root outputs/preselected_Run2*.root "
+# )
+
+# for sample in samples:
+#     if samples[sample]["data_or_mc"] == "mc":
+#         os.system(
+#             f"hadd -f outputs/preselected_{sample}.root outputs/preselected_{sample}*.root "
+#         )
 
 # merge selected events
 print("--> merging preselected events...")
@@ -101,6 +113,12 @@ os.system(
 os.system(
     f"hadd -f outputs/selected_Run2018.root outputs/selected_Run2018*.root "
 )
-os.system(
-    f"hadd -f outputs/selected_Run2.root outputs/selected_Run2*.root "
-)
+# os.system(
+#     f"hadd -f outputs/selected_Run2.root outputs/selected_Run2*.root "
+# )
+
+# for sample in samples:
+#     if samples[sample]["data_or_mc"] == "mc":
+#         os.system(
+#             f"hadd -f outputs/selected_{sample}.root outputs/selected_{sample}*.root "
+#         )

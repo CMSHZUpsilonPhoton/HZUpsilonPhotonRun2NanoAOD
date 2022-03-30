@@ -17,7 +17,7 @@ from HZUpsilonPhotonRun2NanoAOD.utils import (
 )
 
 
-def data_processor(events, dataset, year, output):
+def sample_processor(events, dataset, year, data_or_mc, output):
     # LumiSection filter
     if year == "2016":
         golden_json_file = "data/golden_jsons/Cert_271036-284044_13TeV_Legacy2016_Collisions16_JSON.txt"
@@ -28,7 +28,8 @@ def data_processor(events, dataset, year, output):
     lumisection_filter = lumi_tools.LumiMask(golden_json_file)(
         events.run, events.luminosityBlock
     )
-    events = events[lumisection_filter]
+    if data_or_mc == "data":
+        events = events[lumisection_filter]
 
     # Event weight holder 
     weights = analysis_tools.Weights(size=len(events), storeIndividual=True)
@@ -84,7 +85,3 @@ def data_processor(events, dataset, year, output):
     # end processing
     return output
 
-
-def mc_processor(events, dataset, year, output):
-    # FIXME
-    return data_processor(events, dataset, year, output)
