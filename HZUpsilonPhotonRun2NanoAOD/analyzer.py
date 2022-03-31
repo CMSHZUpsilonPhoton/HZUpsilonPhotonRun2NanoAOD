@@ -30,6 +30,8 @@ class Analyzer(processor.ProcessorABC):
                     .Bool(name="photon_sc_eta")
                     .Bool(name="photon_electron_veto")
                     .Bool(name="photon_tight_id")
+                    .Bool(name="signal_selection")
+                    .Bool(name="mass_selection")
                     .Double()
                 ),
             }
