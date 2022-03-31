@@ -6,8 +6,6 @@ import numpy as np
 
 from typing import Any, Optional
 from pydantic import BaseModel
-
-
 class Mask(BaseModel):
     dataset: str
     year: str
@@ -24,6 +22,10 @@ class Mask(BaseModel):
     photon_sc_eta: Optional[Any] = None
     photon_electron_veto: Optional[Any] = None
     photon_tight_id: Optional[Any] = None
+    ndimuons: Optional[Any] = None
+    nbosons: Optional[Any] = None
+    signal: Optional[Any] = None
+    mass_selection: Optional[Any] = None
 
 
 def trigger_selection(events, year):
@@ -53,7 +55,7 @@ def muon_selection(events):
 def photon_selection(events):
     nphotons_filter = ak.num(events.Photon) >= 1  # at lest one photon
     photon_eta_filter = np.absolute(events.Photon.eta) < 2.5  # |eta| < 2.5
-    photon_pt_filter = events.Photon.eCorr * events.Photon.pt > 32  # pt at least 33 GeV
+    photon_pt_filter = events.Photon.pt > 32  # pt at least 32 GeV
     photon_sc_eta_filter = (events.Photon.isScEtaEB == 1) | (
         events.Photon.isScEtaEE == 1
     )  # is Barrel or Endacap - no "crack photons".
@@ -69,4 +71,41 @@ def photon_selection(events):
         photon_electron_veto_filter,
         photon_tight_id_filter,
     )
+
+def dimuon_selection(dimuons):
+    charge_filter = (dimuons["0"].charge + dimuons["1"].charge) == 0
+    muon_pt_filter_0 = (dimuons["0"].pt >= 18 )  # at least one muon with pT > 18 GeV
+    muon_pt_filter_1 = (dimuons["1"].pt >= 18 ) # at least one muon with pT > 18 GeV
+    
+    return ak.num(dimuons[charge_filter & (muon_pt_filter_0 | muon_pt_filter_1)]) >= 1
+
+def boson_selection(boson_combinations):
+    bosons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"] + boson_combinations["1"]
+
+    return ak.num(bosons) == 1
+
+def signal_selection(boson_combinations):
+    """Signal selection, after trigger and object identification."""
+    bosons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"] + boson_combinations["1"]
+    upsilons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"]
+    photons = boson_combinations["1"]
+    mu_1 = boson_combinations["0"]["0"]
+    mu_2 = boson_combinations["0"]["1"]
+
+    delta_eta_filter = np.absolute(upsilons.eta - photons.eta) >= 0
+    delta_phi_filter = np.absolute(upsilons.delta_phi(photons)) >= 0
+    delta_r_filter = upsilons.delta_r(photons) >= 0
+    pt_filter = bosons.pt >= 0
+
+    return ak.num(delta_eta_filter & delta_phi_filter & delta_r_filter & pt_filter) >= 1
+
+def mass_selection(boson_combinations):
+    """Signal selection, after trigger and object identification."""
+    bosons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"] + boson_combinations["1"]
+    upsilons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"]
+
+    boson_mass_filter = (bosons.mass > 60) & (bosons.mass < 150)  
+    dimuon_mass_filter = (upsilons.mass > 8) & (upsilons.mass < 11)  
+
+    return ak.num(boson_mass_filter & dimuon_mass_filter) >= 1
 
