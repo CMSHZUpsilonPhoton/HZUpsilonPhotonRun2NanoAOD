@@ -14,7 +14,6 @@ from HZUpsilonPhotonRun2NanoAOD.utils import (
     save_dimuon_masses,
     build_bosons,
     save_kinematical_information,
-    # signal_selection,
 )
 
 
