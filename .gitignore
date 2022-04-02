@@ -8,6 +8,11 @@ outputs/buffer/*
 *.hist
 env/
 
+!data/pu_histos/data/2016/*.root
+!data/pu_histos/data/2017/*.root
+!data/pu_histos/data/2017/*.root
+!data/pu_histos/mc/*.root
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

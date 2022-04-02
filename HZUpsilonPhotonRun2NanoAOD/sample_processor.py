@@ -15,6 +15,7 @@ from HZUpsilonPhotonRun2NanoAOD.utils import (
     build_bosons,
     save_kinematical_information,
 )
+from HZUpsilonPhotonRun2NanoAOD.pu_weight import pu_weights
 
 
 def sample_processor(events, dataset, year, data_or_mc, output):
@@ -35,6 +36,10 @@ def sample_processor(events, dataset, year, data_or_mc, output):
 
     # Event weight holder 
     weights = analysis_tools.Weights(size=len(events), storeIndividual=True)
+
+    # if MC, get pu weights
+    if data_or_mc == "mc":
+        print(pu_weights(events.Pileup.nTrueInt, year, syst_var = "nominal"))
 
     # filter masks holder
     filters_masks = Filters.Mask(dataset=dataset, year=year)
