@@ -74,7 +74,7 @@ def sample_processor(events, dataset, year, data_or_mc, output):
     # build bosons
     boson_combinations = build_bosons(events, dimuon_combinations, filters_masks)
 
-    # select bosons
+    # select bosons - preselection
     filters_masks.nbosons = Filters.boson_selection(boson_combinations)
 
     # save kinematical information of preselected events

@@ -34,11 +34,7 @@ def build_dimuons(events, filters_masks):
         ],
         2,
     )
-    # charge_filter = (dimuons["0"].charge + dimuons["1"].charge) == 0
-    # muon_pt_filter_0 = (dimuons["0"].pt >= 18 )  # at least one muon with pT > 18 GeV
-    # muon_pt_filter_1 = (dimuons["1"].pt >= 18 ) # at least one muon with pT > 18 GeV
-    
-    # return dimuons[charge_filter & (muon_pt_filter_0 | muon_pt_filter_1)]
+
     return dimuons
 
 
