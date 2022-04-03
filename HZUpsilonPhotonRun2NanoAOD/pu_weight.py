@@ -1,5 +1,4 @@
 import numpy as np
-from hist import Hist
 import uproot
 
 pu_hist = {}
@@ -39,7 +38,6 @@ pu_hist["data"]["nominal"]["2018"] = uproot.open("data/pu_histos/data/2018/Pileu
 pu_hist["data"]["plus"]["2018"] = uproot.open("data/pu_histos/data/2018/PileupHistogram-goldenJSON-13tev-2018-72400ub-99bins.root:pileup")
 # data/pu_histos/data/2018/PileupHistogram-goldenJSON-13tev-2018-80000ub-99bins.root
 
-pu_hist = {}
 pu_hist["mc"] = {}
 
 # 2016APV - MC
@@ -58,19 +56,22 @@ def get_bin(values, histo_edges):
     """Get corresponding bins of a given histogram."""
     
     bins = np.argmin(np.absolute(histo_edges-values[..., np.newaxis]), axis=-1)
-    return np.where(bins >= len(a)-1,len(a)-2, bins) # correct underflow by setting to last bin
+    return np.where(bins >= len(histo_edges)-1, len(histo_edges)-2, bins) # correct underflow by setting to last bin
 
 
-def pu_weights(n_pu, year, syst_var = "nominal"):
+def pu_weights(n_pu, year, syst_var):
     """Returns PU weight.
     Reference: https://hypernews.cern.ch/HyperNews/CMS/get/physics-validation/3689/1/1.html"""
 
-    _pu_weights = np.ones(n_events)
-
-    pu_hist_data = pu_hist["data"][year][syst_var]
+    pu_hist_data = pu_hist["data"][syst_var][year]
     pu_hist_mc = pu_hist["mc"][year]
 
     bins_data = get_bin(n_pu, pu_hist_data.axis().edges())
     bins_mc = get_bin(n_pu-1, pu_hist_mc.axis().edges())
 
-    return pu_hist_data.values()[bins_data]/pu_hist_mc.values()[bins_mc]
+    pu_data = pu_hist_data.values()[bins_data]
+    pu_mc = np.where(pu_hist_mc.values()[bins_mc] <= 0, 1, pu_hist_mc.values()[bins_mc])
+
+
+    return pu_data/pu_mc
+    

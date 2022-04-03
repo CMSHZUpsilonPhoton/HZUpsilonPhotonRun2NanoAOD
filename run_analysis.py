@@ -78,7 +78,7 @@ def main():
 
     # Merge the many outputs 
     print("--> Merging analysis outputs...")
-    # output_merger()
+    output_merger()
 
 
 if __name__ =="__main__":

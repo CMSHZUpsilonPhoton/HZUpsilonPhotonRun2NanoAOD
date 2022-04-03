@@ -39,7 +39,11 @@ def sample_processor(events, dataset, year, data_or_mc, output):
 
     # if MC, get pu weights
     if data_or_mc == "mc":
-        print(pu_weights(events.Pileup.nTrueInt, year, syst_var = "nominal"))
+        weights.add(name="pu", 
+                    weight=pu_weights(events.Pileup.nTrueInt, year, syst_var = "nominal"), 
+                    weightUp=pu_weights(events.Pileup.nTrueInt, year, syst_var = "plus"), 
+                    weightDown=pu_weights(events.Pileup.nTrueInt, year, syst_var = "minus"),
+                    )
 
     # filter masks holder
     filters_masks = Filters.Mask(dataset=dataset, year=year)
@@ -73,7 +77,8 @@ def sample_processor(events, dataset, year, data_or_mc, output):
     filters_masks.ndimuons = Filters.dimuon_selection(dimuon_combinations)
 
     # save dimuon masses
-    save_dimuon_masses(dimuon_combinations, dataset, year, filters_masks.ndimuons)
+    if data_or_mc == "data":
+        save_dimuon_masses(dimuon_combinations, dataset, year, filters_masks.ndimuons)
 
     # build bosons
     boson_combinations = build_bosons(events, dimuon_combinations, filters_masks)
