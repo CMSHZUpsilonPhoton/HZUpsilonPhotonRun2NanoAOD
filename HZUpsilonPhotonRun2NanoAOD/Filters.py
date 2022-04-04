@@ -1,11 +1,11 @@
-# from coffea import processor
-# from coffea import analysis_tools
-
 import awkward as ak
 import numpy as np
 
 from typing import Any, Optional
 from pydantic import BaseModel
+
+from HZUpsilonPhotonRun2NanoAOD.utils import safe_mass
+
 class Mask(BaseModel):
     dataset: str
     year: str
@@ -92,10 +92,10 @@ def signal_selection(boson_combinations):
     mu_1 = boson_combinations["0"]["0"]
     mu_2 = boson_combinations["0"]["1"]
 
-    delta_eta_filter = np.absolute(upsilons.eta - photons.eta) >= 0
-    delta_phi_filter = np.absolute(upsilons.delta_phi(photons)) >= 0
+    delta_eta_filter = np.absolute(upsilons.eta - photons.eta) < 2.8
+    delta_phi_filter = np.absolute(upsilons.delta_phi(photons)) > 0.5
     delta_r_filter = upsilons.delta_r(photons) >= 0
-    pt_filter = bosons.pt >= 0
+    pt_filter = upsilons.pt > 20
 
     return ak.num(delta_eta_filter & delta_phi_filter & delta_r_filter & pt_filter) >= 1
 
@@ -104,8 +104,8 @@ def mass_selection(boson_combinations):
     bosons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"] + boson_combinations["1"]
     upsilons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"]
 
-    boson_mass_filter = (bosons.mass > 60) & (bosons.mass < 150)  
-    dimuon_mass_filter = (upsilons.mass > 8) & (upsilons.mass < 11)  
+    boson_mass_filter = (safe_mass(bosons) > 60) & (safe_mass(bosons) < 150)  
+    dimuon_mass_filter = (safe_mass(upsilons) > 8) & (safe_mass(upsilons) < 11)  
 
     return ak.num(boson_mass_filter & dimuon_mass_filter) >= 1
 

@@ -2,7 +2,39 @@ import awkward as ak
 import uproot3
 import secrets
 import numpy as np
+from particle import Particle
 
+def safe_mass(candidate):
+    """Get the mass of a canditate, taking care of negative mass**2 due to precision issues."""
+    squared_mass = candidate.mass2 
+    return np.sqrt(ak.where(squared_mass < 0, 0, squared_mass))
+
+def get_pdgid_by_name(name):
+    return Particle.from_name(name).pdgid
+
+def mc_sample_filter(dataset, events):
+    """Filter MC samples for special cases."""
+    _filter = np.ones(len(events), dtype=bool)
+
+    # Higss resonant m_ll < 30
+    if dataset.startswith("GluGluHToMuMuG_M125_MLL-0To60_Dalitz_012j_13TeV_amcatnloFXFX_pythia8"):
+        is_prompt_filter = events.GenPart.hasFlags('isPrompt')
+        is_mu_plus_filter = events.GenPart.pdgId == get_pdgid_by_name("mu+")
+        is_mu_minus_filter = events.GenPart.pdgId == get_pdgid_by_name("mu-")
+        is_gamma_filter = events.GenPart.pdgId == get_pdgid_by_name("gamma")
+        is_Higgs_children = ak.fill_none(events.GenPart.parent.pdgId == get_pdgid_by_name("H0"), False)
+
+        muons_plus = events.GenPart[is_prompt_filter & is_Higgs_children & is_mu_plus_filter]
+        muons_minus = events.GenPart[is_prompt_filter & is_Higgs_children & is_mu_minus_filter]
+
+        dimuons_masses = ak.flatten(safe_mass(muons_plus + muons_minus))
+        dimuons_masses_filter = dimuons_masses < 30
+        _filter = dimuons_masses_filter
+    
+    # Z signal m_ll > 50 (? - Not sure if it should be done)
+    # if dataset.startswith("ZToUpsilon"):
+    #     pass
+    return _filter
 
 def cutflow_filling_parameters(events, filters_masks, weights):
     return {
@@ -34,17 +66,13 @@ def build_dimuons(events, filters_masks):
         ],
         2,
     )
-    # charge_filter = (dimuons["0"].charge + dimuons["1"].charge) == 0
-    # muon_pt_filter_0 = (dimuons["0"].pt >= 18 )  # at least one muon with pT > 18 GeV
-    # muon_pt_filter_1 = (dimuons["1"].pt >= 18 ) # at least one muon with pT > 18 GeV
-    
-    # return dimuons[charge_filter & (muon_pt_filter_0 | muon_pt_filter_1)]
+
     return dimuons
 
 
 def save_dimuon_masses(dimuons, dataset, year, dimuon_filter):
     dimuons = dimuons[dimuon_filter]
-    dimuons_mass = (dimuons["0"] + dimuons["1"]).mass
+    dimuons_mass = safe_mass(dimuons["0"] + dimuons["1"])
 
     dimuons_mass_filename = f"outputs/buffer/dimuons_mass_{dataset}_{year}_{secrets.token_hex(nbytes=20)}.root"
     with uproot3.recreate(dimuons_mass_filename) as f:
@@ -106,11 +134,11 @@ def save_kinematical_information(boson_combinations, dataset, year, prefix, weig
             "weight" : "float",
             })
         f["Events"].extend({
-            "boson_mass": ak.flatten(bosons.mass),
+            "boson_mass": ak.flatten(safe_mass(bosons)),
             "boson_pt": ak.flatten(bosons.pt),
             "boson_eta": ak.flatten(bosons.eta),
             "boson_phi": ak.flatten(bosons.phi),
-            "upsilon_mass": ak.flatten(upsilons.mass),
+            "upsilon_mass": ak.flatten(safe_mass(upsilons)),
             "upsilon_pt": ak.flatten(upsilons.pt),
             "upsilon_eta": ak.flatten(upsilons.eta),
             "upsilon_phi": ak.flatten(upsilons.phi),

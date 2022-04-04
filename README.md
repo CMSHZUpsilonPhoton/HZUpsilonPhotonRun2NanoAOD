@@ -17,16 +17,9 @@ conda create -y -c conda-forge -p env --file requirements.txt
 ```
 conda activate ./env
 ```
-
-<!-- or simply
-
-```
-source activate_env.sh
-``` -->
-
 ## Run
 
 ```
-python run_analyzer.py
+./run_analysis.py
 ```
 

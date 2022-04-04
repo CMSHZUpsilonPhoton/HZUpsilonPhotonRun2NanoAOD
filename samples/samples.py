@@ -3,7 +3,7 @@ from glob import glob
 # samples to process
 samples = {
     # Data
-    "Run2018A": {
+    "Run2018A_2018": {
         "files": glob(
         "/eos/cms/store/user/ftorresd/HZUpsilonPhotonRun2/NanoAOD/Data/2018/A/*.root"
     ),
@@ -11,21 +11,21 @@ samples = {
         "data_or_mc": "data",
     },
         
-    "Run2018B": {
+    "Run2018B_2018": {
         "files": glob(
         "/eos/cms/store/user/ftorresd/HZUpsilonPhotonRun2/NanoAOD/Data/2018/B/*.root"
     ),
         "year": "2018",
         "data_or_mc": "data",
     },
-    "Run2018C": {
+    "Run2018C_2018": {
         "files": glob(
         "/eos/cms/store/user/ftorresd/HZUpsilonPhotonRun2/NanoAOD/Data/2018/C/*.root"
     ),
         "year": "2018",
         "data_or_mc": "data",
     },
-    "Run2018D": {
+    "Run2018D_2018": {
         "files": glob(
         "/eos/cms/store/user/ftorresd/HZUpsilonPhotonRun2/NanoAOD/Data/2018/D/*.root"
     ),
@@ -96,6 +96,11 @@ samples = {
 samples_files = {}
 for sample in samples:
     samples_files[sample] = samples[sample]["files"]
+
+mc_samples_files = {}
+for sample in samples:
+    if samples[sample]["data_or_mc"] == "mc":
+        mc_samples_files[sample] = samples[sample]["files"]
 
 samples_descriptions = samples
 # samples_descriptions = {}

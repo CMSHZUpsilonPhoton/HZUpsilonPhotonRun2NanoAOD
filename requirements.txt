@@ -31,7 +31,7 @@ c-compiler=1.2.0=h7f98852_0
 ca-certificates=2021.10.8=ha878542_0
 cachetools=4.2.2=pyhd8ed1ab_0
 cairo=1.16.0=h6cf1ce9_1008
-certifi=2021.10.8=py39hf3d152e_0
+certifi=2021.10.8=py39hf3d152e_2
 cffi=1.14.6=py39he32792d_0
 cfitsio=3.470=hb418390_7
 click=8.0.1=py39hf3d152e_0
@@ -44,6 +44,7 @@ dataclasses=0.8=pyhc8e2a94_3
 davix=0.7.6=hb44b51d_0
 decorator=5.0.9=pyhd3eb1b0_0
 defusedxml=0.7.1=pyhd8ed1ab_0
+deprecated=1.2.13=pyh6c4a22f_0
 entrypoints=0.3=pyhd8ed1ab_1003
 expat=2.4.1=h9c3ff4c_0
 fftw=3.3.9=nompi_h74d3f13_101
@@ -79,10 +80,12 @@ gts=0.7.6=h64030ff_2
 gxx_impl_linux-64=9.3.0=hd87eabc_19
 gxx_linux-64=9.3.0=h3fbe746_30
 harfbuzz=2.8.2=h83ec7ef_0
+hepunits=2.2.0=pyhd8ed1ab_0
 hist=2.4.0=pyhd8ed1ab_0
 histoprint=2.1.0=pyhd8ed1ab_0
 icu=68.1=h58526e2_0
 importlib-metadata=4.6.1=py39hf3d152e_0
+importlib_resources=5.6.0=pyhd8ed1ab_0
 ipykernel=5.5.5=py39hef51801_0
 ipyparallel=6.3.0=py39hf3d152e_2
 ipython=7.22.0=py39hb070fc8_0
@@ -176,6 +179,7 @@ pandocfilters=1.4.2=py_1
 pango=1.48.7=hb8ff022_0
 parquet-cpp=1.5.1=2
 parso=0.7.0=py_0
+particle=0.20.1=pyhd8ed1ab_0
 pathspec=0.9.0=pyhd8ed1ab_0
 pcre=8.45=h9c3ff4c_0
 pexpect=4.8.0=pyhd3eb1b0_3
@@ -240,6 +244,7 @@ wcwidth=0.2.5=py_0
 webencodings=0.5.1=py_1
 wheel=0.36.2=pyhd3eb1b0_0
 widgetsnbextension=3.5.1=py39hf3d152e_4
+wrapt=1.12.1=py39h3811e60_3
 xorg-fixesproto=5.0=h7f98852_1002
 xorg-kbproto=1.0.7=h7f98852_1002
 xorg-libice=1.0.10=h7f98852_0
