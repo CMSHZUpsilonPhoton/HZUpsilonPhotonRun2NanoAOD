@@ -5,7 +5,7 @@ import numpy as np
 from particle import Particle
 
 def safe_mass(candidate):
-    """Get the mass of a canditate, taking care of negative mass**2 due to precision issues."""
+    """Get the mass of a canditate, taking care of negative mass**2 due to NanoAOD precision issues."""
     squared_mass = candidate.mass2 
     return np.sqrt(ak.where(squared_mass < 0, 0, squared_mass))
 

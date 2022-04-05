@@ -6,6 +6,8 @@ from pprint import pprint
 import json
 import typer
 from tqdm import tqdm
+from enum import Enum
+
 
 
 from HZUpsilonPhotonRun2NanoAOD import file_tester
@@ -15,7 +17,7 @@ from HZUpsilonPhotonRun2NanoAOD.file_tester import file_tester
 from samples import samples, mc_samples_files, samples_files, samples_descriptions
 
 from coffea import processor
-from coffea.nanoevents import NanoEventsFactory, NanoAODSchema
+from coffea.nanoevents import NanoAODSchema
 from HZUpsilonPhotonRun2NanoAOD.HistAccumulator import HistAccumulator
 from HZUpsilonPhotonRun2NanoAOD.output_merger import output_merger
 
@@ -40,7 +42,6 @@ Usual workflow:\n
 
 --> To run the whole chain in a single shot: ./run_analysis.py all
 """
-
 app = typer.Typer(help=typer.style(help_str, fg=typer.colors.BRIGHT_BLUE, bold=True))
 
 @app.command()
@@ -55,7 +56,7 @@ def test_files():
 
 @app.command()
 def clear():
-    """Clear buffers."""
+    """Clear outputs."""
 
     os.system("rm -rf outputs/*")
     os.system("mkdir -p outputs/buffer")
@@ -86,9 +87,28 @@ def gen():
     with open(gen_output_filename,"w") as f:
         f.write(json.dumps(gen_output))
 
+
+class CoffeaExecutors(str, Enum):
+    futures = "futures"
+    iterative = "iterative"
+
 @app.command()
-def main():
+def main(maxchunks: int = -1, executor: CoffeaExecutors = CoffeaExecutors.futures, workers: int = 60):
     """Run main analysis and saves outputs."""
+
+    executor_args={"schema": NanoAODSchema, "workers": workers}
+    if executor.value == "interative":
+        executor_args = {"schema": NanoAODSchema}
+
+    executor = getattr(processor, f"{executor.value}_executor")
+
+
+    if maxchunks == -1:
+        maxchunks = None
+
+    # clear buffers
+    os.system("rm -rf outputs/buffer")
+    os.system("mkdir -p outputs/buffer")
 
     # gets gen level output
     gen_output_filename = "outputs/gen_output.json"
@@ -101,12 +121,13 @@ def main():
         fileset=samples_files,
         treename="Events",
         processor_instance=Analyzer(gen_output=gen_output),
-        executor=processor.futures_executor,
+        # executor=processor.futures_executor,
         # executor = processor.iterative_executor,
-        executor_args={"schema": NanoAODSchema, "workers": 60},
+        executor = executor,
+        executor_args=executor_args,
         # executor_args = {"schema": NanoAODSchema},
         # chunksize =
-        # maxchunks = 100,
+        maxchunks = maxchunks,
     )
 
     # save outputs

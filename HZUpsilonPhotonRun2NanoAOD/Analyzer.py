@@ -22,7 +22,7 @@ class Analyzer(processor.ProcessorABC):
             {
                 "cutflow": HistAccumulator(
                     hist.Hist.new.StrCat(samples_files.keys(), name="dataset")
-                    .StrCat(["2016", "2017", "2018"], name="year")
+                    .StrCat(["2016APV", "2016", "2017", "2018"], name="year")
                     .Bool(name="trigger")
                     .Bool(name="nmuons")
                     .Bool(name="muon_pt")
