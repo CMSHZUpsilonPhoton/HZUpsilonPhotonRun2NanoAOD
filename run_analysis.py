@@ -4,6 +4,8 @@
 import os
 from pprint import pprint
 import json
+import typer
+from tqdm import tqdm
 
 
 from HZUpsilonPhotonRun2NanoAOD import file_tester
@@ -19,15 +21,48 @@ from HZUpsilonPhotonRun2NanoAOD.output_merger import output_merger
 
 from coffea.util import save
 
-def main():
-    # # test uproot.open each sample
-    # for k in samples_files.keys():
-    #     for f in samples_files[k]:
-    #         file_tester(f)
+# create typer app
+help_str = """
+H/Z --> Y(nS) + gamma analysis code (NanoAOD - Run2) \n\n
 
-    # clear buffer
+Usual workflow:\n
+# clear output buffers\n
+./run_analysis.py clear \n
+
+# generator level analysis (filtering, getting total number of events, polarization, ...)\n
+./run_analysis.py gen \n
+
+# main analysis code for signal selection\n
+./run_analysis.py main \n
+
+# merge the many outputs [buffers], per sample and per process [Data or MC sample]\n
+./run_analysis.py merge \n
+
+--> To run the whole chain in a single shot: ./run_analysis.py all
+"""
+
+app = typer.Typer(help=typer.style(help_str, fg=typer.colors.BRIGHT_BLUE, bold=True))
+
+@app.command()
+def test_files():
+    """Test uproot.open each sample file."""
+    files = []
+    for s in samples:
+        for f in samples[s]['files']:
+            files.append(f)
+    for f in tqdm(files):
+        file_tester(f)
+
+@app.command()
+def clear():
+    """Clear buffers."""
+
     os.system("rm -rf outputs/*")
     os.system("mkdir -p outputs/buffer")
+
+@app.command()
+def gen():
+    """Run gen level analysis and saves outputs."""
 
     # run gen level analysis 
     print("--> Running GEN level analysis...")
@@ -51,6 +86,15 @@ def main():
     with open(gen_output_filename,"w") as f:
         f.write(json.dumps(gen_output))
 
+@app.command()
+def main():
+    """Run main analysis and saves outputs."""
+
+    # gets gen level output
+    gen_output_filename = "outputs/gen_output.json"
+    with open(gen_output_filename,"r") as f:
+        gen_output = json.load(f)
+
     # run analysis 
     print("--> Running MAIN level analysis...")
     output = processor.run_uproot_job(
@@ -71,15 +115,26 @@ def main():
     os.system(f"rm -rf {output_filename}")
     save(output["cutflow"].histogram, output_filename)
 
-    # # how to access the saved object
-    # # from coffea.util import load
-    # # import hist
-    # # load('outputs/buffer/cutflow.hist')
 
-    # Merge the many outputs 
+
+
+@app.command()
+def merge():
+    """Merge the many outputs."""
     print("--> Merging analysis outputs...")
     output_merger()
 
 
-if __name__ =="__main__":
+@app.command()
+def all():
+    """Run default workflow (CLEAR --> GEN --> MAIN --> MERGE)."""
+    
+    clear()
+    gen()
     main()
+    merge()
+
+
+if __name__ =="__main__":
+    app() # start typer app
+    

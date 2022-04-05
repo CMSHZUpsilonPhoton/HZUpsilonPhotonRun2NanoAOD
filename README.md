@@ -19,7 +19,34 @@ conda activate ./env
 ```
 ## Run
 
-```
-./run_analysis.py
-```
+Usual workflow:
 
+- Clear output buffers
+
+`./run_analysis.py clear`
+
+- Generator level analysis (filtering, getting total number of events, polarization, ...)
+
+`./run_analysis.py gen` 
+
+- Main analysis code for signal selection
+
+`./run_analysis.py main`  
+
+- Merge the many outputs [buffers], per sample and per process [Data or MC sample]
+
+`./run_analysis.py merge`
+
+***To run the whole chain in a single shot:***
+
+`./run_analysis.py all`
+
+## Notes and tips
+
+### How to open `.hist` files
+
+```python
+from coffea.util import load
+import hist
+load('outputs/buffer/cutflow.hist')
+```

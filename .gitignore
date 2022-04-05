@@ -8,6 +8,7 @@ outputs/buffer/*
 *.hist
 env/
 *.log
+outputs/gen_output.json
 
 !data/pu_histos/data/2016/*.root
 !data/pu_histos/data/2017/*.root
