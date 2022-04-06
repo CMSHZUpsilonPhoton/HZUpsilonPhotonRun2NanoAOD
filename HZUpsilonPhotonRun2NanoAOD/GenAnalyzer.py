@@ -44,7 +44,9 @@ class GenAnalyzer(processor.ProcessorABC):
 
         # Event weight holder
         weights = analysis_tools.Weights(size=len(events), storeIndividual=True)
-        weights.add("Generator_weight", np.sign(events.Generator.weight))
+        weights.add("Generator_weight", events.genWeight)
+        # weights.add("Generator_weight", np.sign(events.genWeight))
+        # weights.add("Generator_weight", np.sign(events.Generator.weight))
 
         output["unweighted_sum_of_events"][dataset] += len(events)
         output["weighted_sum_of_events"][dataset] += np.sum(weights.weight())

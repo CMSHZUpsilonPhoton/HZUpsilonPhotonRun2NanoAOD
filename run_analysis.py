@@ -67,6 +67,9 @@ def clear():
 def gen():
     """Run gen level analysis and saves outputs."""
 
+    os.system("rm -rf outputs/gen_output.json")
+    os.system("mkdir -p outputs/")
+
     # run gen level analysis
     print("--> Running GEN level analysis...")
     gen_output = processor.run_uproot_job(
@@ -115,7 +118,7 @@ def main(
     # clear buffers
     os.system("rm -rf outputs/buffer")
     os.system("mkdir -p outputs/buffer")
-
+    
     # gets gen level output
     gen_output_filename = "outputs/gen_output.json"
     with open(gen_output_filename, "r") as f:
@@ -155,7 +158,7 @@ def merge():
 @app.command()
 def all():
     """Run default workflow (CLEAR --> GEN --> MAIN --> MERGE)."""
-
+    
     clear()
     gen()
     main()

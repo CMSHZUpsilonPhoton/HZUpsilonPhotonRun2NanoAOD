@@ -16,7 +16,7 @@ from HZUpsilonPhotonRun2NanoAOD.HistAccumulator import HistAccumulator
 class Analyzer(processor.ProcessorABC):
     def __init__(self, gen_output):
         self.unweighted_sum_of_events = gen_output["unweighted_sum_of_events"]
-        self.weighted_sum_of_events = gen_output["weighted_sum_of_events"]
+        self.weighted_sum_of_events = gen_output["weighted_sum_of_events"] # <-- the one to use for plotting and normalization
 
         self._accumulator = processor.dict_accumulator(
             {
@@ -53,7 +53,7 @@ class Analyzer(processor.ProcessorABC):
 
         # print(f"--> Processing: {dataset} - {year}")
 
-        return sample_processor(events, dataset, year, data_or_mc, output)
+        return sample_processor(events, dataset, year, data_or_mc, output, self.weighted_sum_of_events)
 
     def postprocess(self, accumulator):
         return accumulator
