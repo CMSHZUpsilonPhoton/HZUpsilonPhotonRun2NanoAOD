@@ -64,8 +64,7 @@ def photon_electron_veto_weights(photon, year, syst_var="nominal"):
     References: https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018
     """
 
-    photon_sc_region = ak.where(Photon.isScEtaEB == 1 , 0, 3)
-    print("\n\n\n\n\nphoton_sc_region", photon_sc_region, "photon_electron_veto_sf", photon_electron_veto_sf, "\n\n\n\n")
+    photon_sc_region = ak.where(photon.isScEtaEB == 1 , 0, 3)
 
     photon_electron_veto_sf = evaluator[f"photon_electron_veto_{y}"](photon_sc_region)
 
@@ -83,17 +82,15 @@ def photon_id_weights(photon, year, syst_var="nominal"):
     """Returns Photon ID SFs.
     References: https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018
     """
-    photon_sc_region = ak.where(Photon.isScEtaEB == 1 , 0, 3)
-    print(photon_sc_region)
 
-    photon_id_sf = evaluator[f"photon_id_{y}"](photon_sc_region)
+    photon_id_sf = evaluator[f"photon_id_{y}"](photon.eta, photon.pt)
 
     if syst_var != "nominal":
         if syst_var != "plus":
-            photon_id_sf = photon_id_sf+evaluator[f"photon_id_{y}_error"](photon_sc_region)
+            photon_id_sf = photon_id_sf+evaluator[f"photon_id_{y}_error"](photon.eta, photon.pt)
 
         if syst_var != "minus":
-            photon_id_sf = photon_id_sf-evaluator[f"photon_id_{y}_error"](photon_sc_region)
+            photon_id_sf = photon_id_sf-evaluator[f"photon_id_{y}_error"](photon.eta, photon.pt)
 
     return ak.firsts(ak.fill_none(ak.ones_like(photon_id_sf), 1.0))
 

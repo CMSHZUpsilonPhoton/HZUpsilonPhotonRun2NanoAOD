@@ -93,20 +93,36 @@ def sample_processor(events, dataset, year, data_or_mc, output):
     if data_or_mc == "mc":
         mu_1 = boson_combinations["0"]["0"]
         mu_2 = boson_combinations["0"]["1"]
+        photon = boson_combinations["1"]
 
         # Muon ID
         weights.add(
             name="muon_id",
             weight=muon_id_weights(mu_1, mu_2, year, syst_var="nominal"),
-            # weightUp=muon_id_weights(mu_1, mu_2, year, syst_var="plus"),
-            # weightDown=muon_id_weights(mu_1, mu_2, year, syst_var="minus"),
+            weightUp=muon_id_weights(mu_1, mu_2, year, syst_var="plus"),
+            weightDown=muon_id_weights(mu_1, mu_2, year, syst_var="minus"),
         )
         # Muon ISO
         weights.add(
             name="muon_iso",
             weight=muon_iso_weights(mu_1, mu_2, year, syst_var="nominal"),
-            # weightUp=muon_iso_weights(mu_1, mu_2, year, syst_var="plus"),
-            # weightDown=muon_iso_weights(mu_1, mu_2, year, syst_var="minus"),
+            weightUp=muon_iso_weights(mu_1, mu_2, year, syst_var="plus"),
+            weightDown=muon_iso_weights(mu_1, mu_2, year, syst_var="minus"),
+        )
+
+        # Photon ID
+        weights.add(
+            name="photon_id",
+            weight=photon_id_weights(photon, year, syst_var="nominal"),
+            weightUp=photon_id_weights(photon, year, syst_var="plus"),
+            weightDown=photon_id_weights(photon, year, syst_var="minus"),
+        )
+        # PhotonElectron Veto
+        weights.add(
+            name="photon_electron_veto",
+            weight=photon_electron_veto_weights(photon, year, syst_var="nominal"),
+            weightUp=photon_electron_veto_weights(photon, year, syst_var="plus"),
+            weightDown=photon_electron_veto_weights(photon, year, syst_var="minus"),
         )
 
     # save kinematical information of preselected events
