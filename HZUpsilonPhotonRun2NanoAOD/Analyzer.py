@@ -17,7 +17,7 @@ class Analyzer(processor.ProcessorABC):
     def __init__(self, gen_output):
         self.unweighted_sum_of_events = gen_output["unweighted_sum_of_events"]
         self.weighted_sum_of_events = gen_output["weighted_sum_of_events"]
-        
+
         self._accumulator = processor.dict_accumulator(
             {
                 "cutflow": HistAccumulator(

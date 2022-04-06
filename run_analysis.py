@@ -9,7 +9,6 @@ from tqdm import tqdm
 from enum import Enum
 
 
-
 from HZUpsilonPhotonRun2NanoAOD import file_tester
 from HZUpsilonPhotonRun2NanoAOD.Analyzer import Analyzer
 from HZUpsilonPhotonRun2NanoAOD.GenAnalyzer import GenAnalyzer
@@ -44,15 +43,17 @@ Usual workflow:\n
 """
 app = typer.Typer(help=typer.style(help_str, fg=typer.colors.BRIGHT_BLUE, bold=True))
 
+
 @app.command()
 def test_files():
     """Test uproot.open each sample file."""
     files = []
     for s in samples:
-        for f in samples[s]['files']:
+        for f in samples[s]["files"]:
             files.append(f)
     for f in tqdm(files):
         file_tester(f)
+
 
 @app.command()
 def clear():
@@ -61,11 +62,12 @@ def clear():
     os.system("rm -rf outputs/*")
     os.system("mkdir -p outputs/buffer")
 
+
 @app.command()
 def gen():
     """Run gen level analysis and saves outputs."""
 
-    # run gen level analysis 
+    # run gen level analysis
     print("--> Running GEN level analysis...")
     gen_output = processor.run_uproot_job(
         fileset=mc_samples_files,
@@ -84,7 +86,7 @@ def gen():
     gen_output_filename = "outputs/gen_output.json"
     os.system(f"rm -rf {gen_output_filename}")
     # create json object from dictionary
-    with open(gen_output_filename,"w") as f:
+    with open(gen_output_filename, "w") as f:
         f.write(json.dumps(gen_output))
 
 
@@ -92,16 +94,20 @@ class CoffeaExecutors(str, Enum):
     futures = "futures"
     iterative = "iterative"
 
+
 @app.command()
-def main(maxchunks: int = -1, executor: CoffeaExecutors = CoffeaExecutors.futures, workers: int = 60):
+def main(
+    maxchunks: int = -1,
+    executor: CoffeaExecutors = CoffeaExecutors.futures,
+    workers: int = 60,
+):
     """Run main analysis and saves outputs."""
 
-    executor_args={"schema": NanoAODSchema, "workers": workers}
+    executor_args = {"schema": NanoAODSchema, "workers": workers}
     if executor.value == "interative":
         executor_args = {"schema": NanoAODSchema}
 
     executor = getattr(processor, f"{executor.value}_executor")
-
 
     if maxchunks == -1:
         maxchunks = None
@@ -112,10 +118,10 @@ def main(maxchunks: int = -1, executor: CoffeaExecutors = CoffeaExecutors.future
 
     # gets gen level output
     gen_output_filename = "outputs/gen_output.json"
-    with open(gen_output_filename,"r") as f:
+    with open(gen_output_filename, "r") as f:
         gen_output = json.load(f)
 
-    # run analysis 
+    # run analysis
     print("--> Running MAIN level analysis...")
     output = processor.run_uproot_job(
         fileset=samples_files,
@@ -123,11 +129,11 @@ def main(maxchunks: int = -1, executor: CoffeaExecutors = CoffeaExecutors.future
         processor_instance=Analyzer(gen_output=gen_output),
         # executor=processor.futures_executor,
         # executor = processor.iterative_executor,
-        executor = executor,
+        executor=executor,
         executor_args=executor_args,
         # executor_args = {"schema": NanoAODSchema},
         # chunksize =
-        maxchunks = maxchunks,
+        maxchunks=maxchunks,
     )
 
     # save outputs
@@ -135,8 +141,6 @@ def main(maxchunks: int = -1, executor: CoffeaExecutors = CoffeaExecutors.future
     output_filename = "outputs/cutflow.hist"
     os.system(f"rm -rf {output_filename}")
     save(output["cutflow"].histogram, output_filename)
-
-
 
 
 @app.command()
@@ -149,13 +153,12 @@ def merge():
 @app.command()
 def all():
     """Run default workflow (CLEAR --> GEN --> MAIN --> MERGE)."""
-    
+
     clear()
     gen()
     main()
     merge()
 
 
-if __name__ =="__main__":
-    app() # start typer app
-    
+if __name__ == "__main__":
+    app()  # start typer app

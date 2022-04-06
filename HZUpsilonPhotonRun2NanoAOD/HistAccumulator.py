@@ -1,9 +1,9 @@
 from coffea.processor import AccumulatorABC
 import hist
 
+
 class HistAccumulator(AccumulatorABC):
-    """A histogram accumulator based 'hist' module.
-    """
+    """A histogram accumulator based 'hist' module."""
 
     def __init__(self, histo):
         if not isinstance(histo, hist.Hist):
@@ -18,20 +18,22 @@ class HistAccumulator(AccumulatorABC):
         return self._histo
 
     def identity(self):
-        return HistAccumulator(hist.Hist(*self._histo.axes, storage=hist.storage.Double()))
+        return HistAccumulator(
+            hist.Hist(*self._histo.axes, storage=hist.storage.Double())
+        )
 
     def add(self, other):
         """Add another accumulator to this one in-place"""
         if isinstance(other, HistAccumulator(hist.Hist)):
-            # self._histo =  self._histo 
-            self._histo =  self._histo + other.histogram
+            # self._histo =  self._histo
+            self._histo = self._histo + other.histogram
         else:
             raise ValueError
 
     # inplace add operator
     def __iadd__(self, other):
-        self._histo =  self._histo + other.histogram
-        return self  
+        self._histo = self._histo + other.histogram
+        return self
 
     # add operator
     def __add__(self, other):

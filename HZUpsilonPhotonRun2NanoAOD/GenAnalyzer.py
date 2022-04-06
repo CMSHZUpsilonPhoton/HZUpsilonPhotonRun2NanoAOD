@@ -12,7 +12,11 @@ from pprint import pprint
 from samples import samples_files, samples_descriptions
 from HZUpsilonPhotonRun2NanoAOD.sample_processor import sample_processor
 from HZUpsilonPhotonRun2NanoAOD.HistAccumulator import HistAccumulator
-from HZUpsilonPhotonRun2NanoAOD.utils import get_pdgid_by_name, safe_mass, mc_sample_filter
+from HZUpsilonPhotonRun2NanoAOD.utils import (
+    get_pdgid_by_name,
+    safe_mass,
+    mc_sample_filter,
+)
 
 
 class GenAnalyzer(processor.ProcessorABC):
@@ -38,7 +42,7 @@ class GenAnalyzer(processor.ProcessorABC):
         # Special MC sample filter
         events = events[mc_sample_filter(dataset, events)]
 
-        # Event weight holder 
+        # Event weight holder
         weights = analysis_tools.Weights(size=len(events), storeIndividual=True)
         weights.add("Generator_weight", np.sign(events.Generator.weight))
 

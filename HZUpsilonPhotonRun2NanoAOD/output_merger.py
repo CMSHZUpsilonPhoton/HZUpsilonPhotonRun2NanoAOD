@@ -63,15 +63,9 @@ def output_merger():
             f"hadd -f outputs/selected_{sample}.root outputs/buffer/selected*{sample}*.root "
         )
 
-    os.system(
-        f"hadd -f outputs/selected_Run2016.root outputs/selected_Run2016*.root "
-    )
-    os.system(
-        f"hadd -f outputs/selected_Run2017.root outputs/selected_Run2017*.root "
-    )
-    os.system(
-        f"hadd -f outputs/selected_Run2018.root outputs/selected_Run2018*.root "
-    )
+    os.system(f"hadd -f outputs/selected_Run2016.root outputs/selected_Run2016*.root ")
+    os.system(f"hadd -f outputs/selected_Run2017.root outputs/selected_Run2017*.root ")
+    os.system(f"hadd -f outputs/selected_Run2018.root outputs/selected_Run2018*.root ")
     # os.system(
     #     f"hadd -f outputs/selected_Run2.root outputs/selected_Run2*.root "
     # )

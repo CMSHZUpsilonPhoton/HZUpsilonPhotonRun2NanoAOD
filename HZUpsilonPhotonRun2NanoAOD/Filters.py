@@ -6,6 +6,7 @@ from pydantic import BaseModel
 
 from HZUpsilonPhotonRun2NanoAOD.utils import safe_mass
 
+
 class Mask(BaseModel):
     dataset: str
     year: str
@@ -46,10 +47,16 @@ def muon_selection(events):
     nmuons_filter = ak.num(events.Muon) >= 2  # at least 2 muons
     muon_eta_filter = np.absolute(events.Muon.eta) < 2.4  # |eta| < 2.4
     muon_pt_filter = events.Muon.pt > 5  # minimum muon pt
-    muon_id_filter = events.Muon.mediumPromptId  == 1  # muon id: mediumPromptId
+    muon_id_filter = events.Muon.mediumPromptId == 1  # muon id: mediumPromptId
     iso_muon_filter = events.Muon.pfRelIso03_all < 0.15  # PF_Isolation < 0.15
-    
-    return nmuons_filter, muon_eta_filter, muon_pt_filter, muon_id_filter, iso_muon_filter
+
+    return (
+        nmuons_filter,
+        muon_eta_filter,
+        muon_pt_filter,
+        muon_id_filter,
+        iso_muon_filter,
+    )
 
 
 def photon_selection(events):
@@ -61,7 +68,7 @@ def photon_selection(events):
     )  # is Barrel or Endacap - no "crack photons".
     photon_electron_veto_filter = events.Photon.electronVeto == 1  # electron veto
     # photon_tight_id_filter = events.Photon.cutBased == 3  # cut based tight photon
-    photon_tight_id_filter = events.Photon.mvaID_WP80  == 1  # MVA (WP: 80)% photon
+    photon_tight_id_filter = events.Photon.mvaID_WP80 == 1  # MVA (WP: 80)% photon
 
     return (
         nphotons_filter,
@@ -72,21 +79,32 @@ def photon_selection(events):
         photon_tight_id_filter,
     )
 
+
 def dimuon_selection(dimuons):
     charge_filter = (dimuons["0"].charge + dimuons["1"].charge) == 0
-    muon_pt_filter_0 = (dimuons["0"].pt >= 18 )  # at least one muon with pT > 18 GeV
-    muon_pt_filter_1 = (dimuons["1"].pt >= 18 ) # at least one muon with pT > 18 GeV
-    
+    muon_pt_filter_0 = dimuons["0"].pt >= 18  # at least one muon with pT > 18 GeV
+    muon_pt_filter_1 = dimuons["1"].pt >= 18  # at least one muon with pT > 18 GeV
+
     return ak.num(dimuons[charge_filter & (muon_pt_filter_0 | muon_pt_filter_1)]) >= 1
 
+
 def boson_selection(boson_combinations):
-    bosons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"] + boson_combinations["1"]
+    bosons = (
+        boson_combinations["0"]["0"]
+        + boson_combinations["0"]["1"]
+        + boson_combinations["1"]
+    )
 
     return ak.num(bosons) == 1
 
+
 def signal_selection(boson_combinations):
     """Signal selection, after trigger and object identification."""
-    bosons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"] + boson_combinations["1"]
+    bosons = (
+        boson_combinations["0"]["0"]
+        + boson_combinations["0"]["1"]
+        + boson_combinations["1"]
+    )
     upsilons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"]
     photons = boson_combinations["1"]
     mu_1 = boson_combinations["0"]["0"]
@@ -99,13 +117,17 @@ def signal_selection(boson_combinations):
 
     return ak.num(delta_eta_filter & delta_phi_filter & delta_r_filter & pt_filter) >= 1
 
+
 def mass_selection(boson_combinations):
     """Signal selection, after trigger and object identification."""
-    bosons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"] + boson_combinations["1"]
+    bosons = (
+        boson_combinations["0"]["0"]
+        + boson_combinations["0"]["1"]
+        + boson_combinations["1"]
+    )
     upsilons = boson_combinations["0"]["0"] + boson_combinations["0"]["1"]
 
-    boson_mass_filter = (safe_mass(bosons) > 60) & (safe_mass(bosons) < 150)  
-    dimuon_mass_filter = (safe_mass(upsilons) > 8) & (safe_mass(upsilons) < 11)  
+    boson_mass_filter = (safe_mass(bosons) > 60) & (safe_mass(bosons) < 150)
+    dimuon_mass_filter = (safe_mass(upsilons) > 8) & (safe_mass(upsilons) < 11)
 
     return ak.num(boson_mass_filter & dimuon_mass_filter) >= 1
-

@@ -19,6 +19,10 @@ conda activate ./env
 ```
 ## Run
 
+How to run the code:
+
+`./run_analysis --help`
+
 Usual workflow:
 
 - Clear output buffers

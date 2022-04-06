@@ -17,6 +17,7 @@ from HZUpsilonPhotonRun2NanoAOD.utils import (
 )
 from HZUpsilonPhotonRun2NanoAOD.pu_weight import pu_weights
 from HZUpsilonPhotonRun2NanoAOD.muon_sf import muon_id_weights, muon_iso_weights
+from HZUpsilonPhotonRun2NanoAOD.photon_sf import photon_id_weights, photon_electron_veto_weights
 
 
 def sample_processor(events, dataset, year, data_or_mc, output):
@@ -35,16 +36,17 @@ def sample_processor(events, dataset, year, data_or_mc, output):
     if data_or_mc == "data":
         events = events[lumisection_filter]
 
-    # Event weight holder 
+    # Event weight holder
     weights = analysis_tools.Weights(size=len(events), storeIndividual=True)
 
     # if MC, get pu weights
     if data_or_mc == "mc":
-        weights.add(name="pu", 
-                    weight=pu_weights(events.Pileup.nTrueInt, year, syst_var = "nominal"), 
-                    weightUp=pu_weights(events.Pileup.nTrueInt, year, syst_var = "plus"), 
-                    weightDown=pu_weights(events.Pileup.nTrueInt, year, syst_var = "minus"),
-                    )
+        weights.add(
+            name="pu",
+            weight=pu_weights(events.Pileup.nTrueInt, year, syst_var="nominal"),
+            weightUp=pu_weights(events.Pileup.nTrueInt, year, syst_var="plus"),
+            weightDown=pu_weights(events.Pileup.nTrueInt, year, syst_var="minus"),
+        )
 
     # filter masks holder
     filters_masks = Filters.Mask(dataset=dataset, year=year)
@@ -55,8 +57,8 @@ def sample_processor(events, dataset, year, data_or_mc, output):
     # muons filters
     (
         filters_masks.nmuons,
-        filters_masks.muon_eta, 
-        filters_masks.muon_pt, 
+        filters_masks.muon_eta,
+        filters_masks.muon_pt,
         filters_masks.muon_id,
         filters_masks.iso_muon,
     ) = Filters.muon_selection(events)
@@ -94,30 +96,44 @@ def sample_processor(events, dataset, year, data_or_mc, output):
 
         # Muon ID
         weights.add(
-                    name="muon_id", 
-                    weight=muon_id_weights(mu_1, mu_2, year, syst_var="nominal"), 
-                    # weightUp=muon_id_weights(mu_1, mu_2, year, syst_var="plus"), 
-                    # weightDown=muon_id_weights(mu_1, mu_2, year, syst_var="minus"),
-                    )
+            name="muon_id",
+            weight=muon_id_weights(mu_1, mu_2, year, syst_var="nominal"),
+            # weightUp=muon_id_weights(mu_1, mu_2, year, syst_var="plus"),
+            # weightDown=muon_id_weights(mu_1, mu_2, year, syst_var="minus"),
+        )
         # Muon ISO
         weights.add(
-                    name="muon_iso", 
-                    weight=muon_iso_weights(mu_1, mu_2, year, syst_var="nominal"), 
-                    # weightUp=muon_iso_weights(mu_1, mu_2, year, syst_var="plus"), 
-                    # weightDown=muon_iso_weights(mu_1, mu_2, year, syst_var="minus"),
-                    )
+            name="muon_iso",
+            weight=muon_iso_weights(mu_1, mu_2, year, syst_var="nominal"),
+            # weightUp=muon_iso_weights(mu_1, mu_2, year, syst_var="plus"),
+            # weightDown=muon_iso_weights(mu_1, mu_2, year, syst_var="minus"),
+        )
 
     # save kinematical information of preselected events
-    save_kinematical_information(boson_combinations, dataset, year, "preselected_events", weights.weight(), filters_masks.trigger & filters_masks.nbosons)
+    save_kinematical_information(
+        boson_combinations,
+        dataset,
+        year,
+        "preselected_events",
+        weights.weight(),
+        filters_masks.trigger & filters_masks.nbosons,
+    )
 
     # signal selection
-    filters_masks.signal = Filters.signal_selection(boson_combinations) 
+    filters_masks.signal = Filters.signal_selection(boson_combinations)
 
     # save kinematical information of selected events
-    save_kinematical_information(boson_combinations, dataset, year, "selected_events", weights.weight(), filters_masks.trigger & filters_masks.nbosons & filters_masks.signal)
+    save_kinematical_information(
+        boson_combinations,
+        dataset,
+        year,
+        "selected_events",
+        weights.weight(),
+        filters_masks.trigger & filters_masks.nbosons & filters_masks.signal,
+    )
 
     # mass selection
-    filters_masks.mass_selection = Filters.mass_selection(boson_combinations) 
+    filters_masks.mass_selection = Filters.mass_selection(boson_combinations)
 
     # cutflow
     output["cutflow"].histogram.fill(
@@ -126,4 +142,3 @@ def sample_processor(events, dataset, year, data_or_mc, output):
 
     # end processing
     return output
-
