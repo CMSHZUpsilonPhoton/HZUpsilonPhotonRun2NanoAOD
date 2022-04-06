@@ -18,6 +18,7 @@ from HZUpsilonPhotonRun2NanoAOD.utils import (
 from HZUpsilonPhotonRun2NanoAOD.pu_weight import pu_weights
 from HZUpsilonPhotonRun2NanoAOD.muon_sf import muon_id_weights, muon_iso_weights
 from HZUpsilonPhotonRun2NanoAOD.photon_sf import photon_id_weights, photon_electron_veto_weights
+from HZUpsilonPhotonRun2NanoAOD.l1prefiring_sf import l1prefiring_weights
 
 
 def sample_processor(events, dataset, year, data_or_mc, output):
@@ -89,7 +90,7 @@ def sample_processor(events, dataset, year, data_or_mc, output):
     # select bosons - preselection
     filters_masks.nbosons = Filters.boson_selection(boson_combinations)
 
-    # if MC, get Muon SFs
+    # if MC, get SFs
     if data_or_mc == "mc":
         mu_1 = boson_combinations["0"]["0"]
         mu_2 = boson_combinations["0"]["1"]
@@ -124,6 +125,16 @@ def sample_processor(events, dataset, year, data_or_mc, output):
             weightUp=photon_electron_veto_weights(photon, year, syst_var="plus"),
             weightDown=photon_electron_veto_weights(photon, year, syst_var="minus"),
         )
+
+        # L1 PreFiring 
+        weights.add(
+            name="L1PreFiring",
+            weight=l1prefiring_weights(len(events), year, syst_var="nominal"),
+            weightUp=l1prefiring_weights(len(events), year, syst_var="plus"),
+            weightDown=l1prefiring_weights(len(events), year, syst_var="minus"),
+        )
+        
+
 
     # save kinematical information of preselected events
     save_kinematical_information(
