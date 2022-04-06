@@ -1,5 +1,5 @@
 import awkward as ak
-import uproot3
+import uproot
 import secrets
 import numpy as np
 from particle import Particle
@@ -87,9 +87,8 @@ def save_dimuon_masses(dimuons, dataset, year, dimuon_filter):
     dimuons_mass = safe_mass(dimuons["0"] + dimuons["1"])
 
     dimuons_mass_filename = f"outputs/buffer/dimuons_mass_{dataset}_{year}_{secrets.token_hex(nbytes=20)}.root"
-    with uproot3.recreate(dimuons_mass_filename) as f:
-        f["dimuons_masses"] = uproot3.newtree({"mass": "float"})
-        f["dimuons_masses"].extend({"mass": ak.flatten(dimuons_mass)})
+    with uproot.recreate(dimuons_mass_filename) as f:
+        f["dimuons_masses"] = {"mass": ak.flatten(dimuons_mass)}
 
 
 def build_bosons(events, dimuons, filters_masks):
@@ -128,37 +127,8 @@ def save_kinematical_information(
     output_filename = (
         f"outputs/buffer/{prefix}_{dataset}_{year}_{secrets.token_hex(nbytes=20)}.root"
     )
-    with uproot3.recreate(output_filename) as f:
-        f["Events"] = uproot3.newtree(
-            {
-                "boson_mass": "float",
-                "boson_pt": "float",
-                "boson_eta": "float",
-                "boson_phi": "float",
-                "upsilon_mass": "float",
-                "upsilon_pt": "float",
-                "upsilon_eta": "float",
-                "upsilon_phi": "float",
-                "photon_mass": "float",
-                "photon_pt": "float",
-                "photon_eta": "float",
-                "photon_phi": "float",
-                "mu_1_mass": "float",
-                "mu_1_pt": "float",
-                "mu_1_eta": "float",
-                "mu_1_phi": "float",
-                "mu_2_mass": "float",
-                "mu_2_pt": "float",
-                "mu_2_eta": "float",
-                "mu_2_phi": "float",
-                "delta_eta_upsilon_photon": "float",
-                "delta_phi_upsilon_photon": "float",
-                "delta_r_upsilon_photon": "float",
-                "weight": "float",
-            }
-        )
-        f["Events"].extend(
-            {
+    with uproot.recreate(output_filename) as f:
+        f["Events"] = {
                 "boson_mass": ak.flatten(safe_mass(bosons)),
                 "boson_pt": ak.flatten(bosons.pt),
                 "boson_eta": ak.flatten(bosons.eta),
@@ -188,4 +158,4 @@ def save_kinematical_information(
                 "delta_r_upsilon_photon": ak.flatten(upsilons.delta_r(photons)),
                 "weight": weights,
             }
-        )
+        

@@ -146,6 +146,8 @@ def main(
 @app.command()
 def merge():
     """Merge the many outputs."""
+    os.system("rm -rf outputs/*.root")
+    
     print("--> Merging analysis outputs...")
     output_merger()
 
