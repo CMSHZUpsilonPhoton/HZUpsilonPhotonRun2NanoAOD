@@ -17,6 +17,8 @@ outputs/gen_output.json
 !data/muon_sfs/*
 !data/muon_sfs/*/*.root
 
+env_2
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
