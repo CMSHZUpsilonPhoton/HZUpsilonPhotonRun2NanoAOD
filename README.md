@@ -9,7 +9,9 @@ Install miniconda:
 https://docs.conda.io/en/latest/miniconda.html
 
 ```
-conda create -y -c conda-forge -p env --file requirements.txt
+conda create -y -c conda-forge -p ../HZUpsilonPhotonRun2NanoAOD_env python=3.9.12 mamba
+conda activate ../HZUpsilonPhotonRun2NanoAOD_env
+mamba install -y -c conda-forge --file requirements.txt
 ```
 
 ## Load env
