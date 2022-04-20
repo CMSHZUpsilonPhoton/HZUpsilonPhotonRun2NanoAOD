@@ -2,13 +2,13 @@
 
 
 ## Setup
-Assuming a CC7 machine with miniconda installed.
+Assuming a CC7/Ubuntu 20.04 machine with Miniconda installed.
 
 Install miniconda:
 
 https://docs.conda.io/en/latest/miniconda.html
 
-```
+```bash
 conda create -y -c conda-forge -p ../HZUpsilonPhotonRun2NanoAOD_env python=3.9.12 mamba
 conda activate ../HZUpsilonPhotonRun2NanoAOD_env
 mamba install -y -c conda-forge --file requirements.txt
