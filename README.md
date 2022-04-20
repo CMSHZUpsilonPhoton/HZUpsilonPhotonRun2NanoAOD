@@ -2,7 +2,7 @@
 
 
 ## Setup
-Assuming a CC7 machine with miniconda installed.
+Assuming a CC7/Ubuntu 20.04 machine with Miniconda installed.
 
 Install miniconda:
 
