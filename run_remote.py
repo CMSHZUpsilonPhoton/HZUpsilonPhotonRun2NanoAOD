@@ -28,12 +28,12 @@ def sync_working_directories(
             f"ssh {username}@{hostname} 'mkdir -p /tmp/{username}/analysis_temp_dir'"
         )
         execute_command(create_temp_dir)
-        sync_command = f"rsync -ah --info=progress2 --no-inc-recursive --delete --exclude='*.pyc' --exclude={{'__pycache__','plots','outputs','.git'}} ./ {username}@lxplus.cern.ch:/tmp/{username}/analysis_temp_dir"
+        sync_command = f"rsync -ah --info=progress2 --no-inc-recursive --delete --exclude='*.pyc' --exclude='.git' --exclude='__pycache__' --exclude='plots' --exclude='outputs' ./ {username}@lxplus.cern.ch:/tmp/{username}/analysis_temp_dir"
         execute_command(sync_command)
-        re_sync_command = f"ssh {username}@{hostname} 'rsync -ah --info=progress2 --no-inc-recursive --exclude='*.pyc' --exclude={{'__pycache__','plots','outputs','.git'}} --delete /tmp/{username}/analysis_temp_dir/ uerj-usr:{working_dir}'"
+        re_sync_command = f"ssh {username}@{hostname} 'rsync -ah --info=progress2 --no-inc-recursive --exclude='*.pyc' --exclude='.git' --exclude='__pycache__' --exclude='plots' --exclude='outputs' --delete /tmp/{username}/analysis_temp_dir/ uerj-usr:{working_dir}'"
         execute_command(re_sync_command)
     else:
-        sync_command = f"rsync -ah --info=progress2 --no-inc-recursive --delete --exclude='*.pyc' --exclude={'__pycache__','plots','outputs','.git'} ./ {username}@{hostname}:{working_dir}"
+        sync_command = f"rsync -ah --info=progress2 --no-inc-recursive --delete --exclude='*.pyc' --exclude='.git' --exclude='__pycache__' --exclude='plots' --exclude='outputs' ./ {username}@{hostname}:{working_dir}"
         execute_command(sync_command)
 
 

@@ -1,22 +1,10 @@
 from coffea import processor
 from coffea import analysis_tools
-from coffea import lumi_tools
 
-import awkward as ak
 import numpy as np
-import hist
-import uproot3
-import secrets
-from pprint import pprint
 
-from samples import samples_files, samples_descriptions
-from HZUpsilonPhotonRun2NanoAOD.sample_processor import sample_processor
-from HZUpsilonPhotonRun2NanoAOD.HistAccumulator import HistAccumulator
-from HZUpsilonPhotonRun2NanoAOD.utils import (
-    get_pdgid_by_name,
-    safe_mass,
-    mc_sample_filter,
-)
+from samples import samples_descriptions
+from HZUpsilonPhotonRun2NanoAOD.utils import mc_sample_filter
 
 
 class GenAnalyzer(processor.ProcessorABC):

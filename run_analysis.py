@@ -10,14 +10,14 @@ from enum import Enum
 
 
 from HZUpsilonPhotonRun2NanoAOD import file_tester
-from HZUpsilonPhotonRun2NanoAOD.Analyzer import Analyzer
-from HZUpsilonPhotonRun2NanoAOD.GenAnalyzer import GenAnalyzer
+from HZUpsilonPhotonRun2NanoAOD.analyzer import Analyzer
+from HZUpsilonPhotonRun2NanoAOD.gen_analyzer import GenAnalyzer
 from HZUpsilonPhotonRun2NanoAOD.file_tester import file_tester
 from samples import samples, mc_samples_files, samples_files, samples_descriptions
 
 from coffea import processor
 from coffea.nanoevents import NanoAODSchema
-from HZUpsilonPhotonRun2NanoAOD.HistAccumulator import HistAccumulator
+from HZUpsilonPhotonRun2NanoAOD.hist_accumulator import HistAccumulator
 from HZUpsilonPhotonRun2NanoAOD.output_merger import output_merger
 
 from coffea.util import save

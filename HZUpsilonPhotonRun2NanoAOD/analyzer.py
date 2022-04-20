@@ -1,22 +1,17 @@
-from coffea import processor
-from coffea import analysis_tools
-from coffea import lumi_tools
-
-import awkward as ak
-import numpy as np
 import hist
-import uproot3
-import secrets
+from coffea import processor
 
 from samples import samples_files, samples_descriptions
-from HZUpsilonPhotonRun2NanoAOD.sample_processor import sample_processor
-from HZUpsilonPhotonRun2NanoAOD.HistAccumulator import HistAccumulator
+from HZUpsilonPhotonRun2NanoAOD.hist_accumulator import HistAccumulator
+from HZUpsilonPhotonRun2NanoAOD.sample_processor import SampleProcessor
 
 
 class Analyzer(processor.ProcessorABC):
     def __init__(self, gen_output):
         self.unweighted_sum_of_events = gen_output["unweighted_sum_of_events"]
-        self.weighted_sum_of_events = gen_output["weighted_sum_of_events"] # <-- the one to use for plotting and normalization
+        self.weighted_sum_of_events = gen_output[
+            "weighted_sum_of_events"  # <-- the one to use for plotting and normalization
+        ]
 
         self._accumulator = processor.dict_accumulator(
             {
@@ -44,16 +39,16 @@ class Analyzer(processor.ProcessorABC):
     def accumulator(self):
         return self._accumulator
 
-    # we will receive a NanoEvents
+    # we will receive NanoEvents
     def process(self, events):
         dataset = events.metadata["dataset"]
         year = samples_descriptions[dataset]["year"]
         data_or_mc = samples_descriptions[dataset]["data_or_mc"]
         output = self.accumulator.identity()
-
-        # print(f"--> Processing: {dataset} - {year}")
-
-        return sample_processor(events, dataset, year, data_or_mc, output, self.weighted_sum_of_events)
+        processor = SampleProcessor(
+            events, dataset, year, data_or_mc, output, self.weighted_sum_of_events
+        )
+        return processor()
 
     def postprocess(self, accumulator):
         return accumulator
