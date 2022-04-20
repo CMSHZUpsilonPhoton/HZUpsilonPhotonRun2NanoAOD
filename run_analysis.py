@@ -118,7 +118,7 @@ def main(
     # clear buffers
     os.system("rm -rf outputs/buffer")
     os.system("mkdir -p outputs/buffer")
-    
+
     # gets gen level output
     gen_output_filename = "outputs/gen_output.json"
     with open(gen_output_filename, "r") as f:
@@ -156,13 +156,10 @@ def merge():
         f.write(output_merger())
 
 
-    
-
-
 @app.command()
 def all():
     """Run default workflow (CLEAR \n\n\n--> GEN \n\n\n--> MAIN \n\n\n--> MERGE)."""
-    
+
     clear()
     gen()
     main()

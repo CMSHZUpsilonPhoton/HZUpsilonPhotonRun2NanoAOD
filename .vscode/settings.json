@@ -6,6 +6,6 @@
         "nmuons",
         "nphotons"
     ]
-    // "editor.formatOnSave": true,
-    // "python.formatting.provider": "black"
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black"
 }
