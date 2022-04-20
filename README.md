@@ -47,6 +47,22 @@ Usual workflow:
 
 `./run_analysis.py all`
 
+### Remote
+
+It is possible to run the analysis code, on a remote machine, from you local computer. It needs SSH passwordless login available. 
+
+More information:
+
+```bash
+./run_remote.py --help
+```
+
+Example:
+
+```bash
+./run_remote.py --outputs --uerj-usr lxplus ftorresd /data/ftorresd/HZUpsilonPhotonRun2NanoAOD_working_area/HZUpsilonPhotonRun2NanoAOD
+```
+
 ## Notes and tips
 
 ### How to open `.hist` files

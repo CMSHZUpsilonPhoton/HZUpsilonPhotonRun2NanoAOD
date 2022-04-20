@@ -24,7 +24,7 @@ from coffea.util import save
 
 # create typer app
 help_str = """
-H/Z --> Y(nS) + gamma analysis code (NanoAOD - Run2) \n\n
+H/Z \n\n\n--> Y(nS) + gamma analysis code (NanoAOD - Run2) \n\n
 
 Usual workflow:\n
 # clear output buffers\n
@@ -39,7 +39,7 @@ Usual workflow:\n
 # merge the many outputs [buffers], per sample and per process [Data or MC sample]\n
 ./run_analysis.py merge \n
 
---> To run the whole chain in a single shot: ./run_analysis.py all
+\n\n\n--> To run the whole chain in a single shot: ./run_analysis.py all
 """
 app = typer.Typer(help=typer.style(help_str, fg=typer.colors.BRIGHT_BLUE, bold=True))
 
@@ -71,7 +71,7 @@ def gen():
     os.system("mkdir -p outputs/")
 
     # run gen level analysis
-    print("--> Running GEN level analysis...")
+    print("\n\n\n--> Running GEN level analysis...")
     gen_output = processor.run_uproot_job(
         fileset=mc_samples_files,
         treename="Events",
@@ -85,7 +85,7 @@ def gen():
     )
 
     # save gen level outputs
-    print("--> saving GEN level output...")
+    print("\n\n\n--> Saving GEN level output...")
     gen_output_filename = "outputs/gen_output.json"
     os.system(f"rm -rf {gen_output_filename}")
     # create json object from dictionary
@@ -125,7 +125,7 @@ def main(
         gen_output = json.load(f)
 
     # run analysis
-    print("--> Running MAIN level analysis...")
+    print("\n\n\n--> Running MAIN level analysis...")
     output = processor.run_uproot_job(
         fileset=samples_files,
         treename="Events",
@@ -140,7 +140,7 @@ def main(
     )
 
     # save outputs
-    print("--> saving output...")
+    print("\n\n\n--> saving output...")
     output_filename = "outputs/cutflow.hist"
     os.system(f"rm -rf {output_filename}")
     save(output["cutflow"].histogram, output_filename)
@@ -151,13 +151,17 @@ def merge():
     """Merge the many outputs."""
     os.system("rm -rf outputs/*.root")
 
-    print("--> Merging analysis outputs...")
-    output_merger()
+    print("\n\n\n--> Merging analysis outputs...")
+    with open("outputs/output_merger.log", "w") as f:
+        f.write(output_merger())
+
+
+    
 
 
 @app.command()
 def all():
-    """Run default workflow (CLEAR --> GEN --> MAIN --> MERGE)."""
+    """Run default workflow (CLEAR \n\n\n--> GEN \n\n\n--> MAIN \n\n\n--> MERGE)."""
     
     clear()
     gen()

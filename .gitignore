@@ -10,7 +10,7 @@ env/
 *.log
 outputs/gen_output.json
 outputs
-
+output_merger.log
 !data/pu_histos/data/2016/*.root
 !data/pu_histos/data/2017/*.root
 !data/pu_histos/data/2017/*.root
