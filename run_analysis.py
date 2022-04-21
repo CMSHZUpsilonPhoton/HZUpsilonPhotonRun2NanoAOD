@@ -119,17 +119,12 @@ def main(
     os.system("rm -rf outputs/buffer")
     os.system("mkdir -p outputs/buffer")
 
-    # gets gen level output
-    gen_output_filename = "outputs/gen_output.json"
-    with open(gen_output_filename, "r") as f:
-        gen_output = json.load(f)
-
     # run analysis
     print("\n\n\n--> Running MAIN level analysis...")
     output = processor.run_uproot_job(
         fileset=samples_files,
         treename="Events",
-        processor_instance=Analyzer(gen_output=gen_output),
+        processor_instance=Analyzer(),
         # executor=processor.futures_executor,
         # executor = processor.iterative_executor,
         executor=executor,
@@ -157,13 +152,14 @@ def merge():
 
 
 @app.command()
-def all():
+def all(debug: bool = False):
     """Run default workflow (CLEAR \n\n\n--> GEN \n\n\n--> MAIN \n\n\n--> MERGE)."""
 
     clear()
     gen()
     main()
-    merge()
+    if not debug:
+        merge()
 
 
 if __name__ == "__main__":
