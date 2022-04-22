@@ -1,17 +1,21 @@
-from samples import samples, samples_files, samples_descriptions
+from samples import samples_files
 import subprocess
+
 
 def execute_command(command: str) -> str:
     """Will execute a given `command` and return its output."""
     print(f"\n\n\n--> Will execute:\n {command}")
     try:
-        output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True, universal_newlines=True)
+        output = subprocess.check_output(
+            command, stderr=subprocess.STDOUT, shell=True, universal_newlines=True
+        )
     except subprocess.CalledProcessError as exc:
         error_message = f"--> ERROR: Command execution failled. \nError code: {exc.returncode}, \nError output: {exc.output}"
         print(error_message)
         return error_message
     else:
         return output
+
 
 def output_merger() -> str:
     # merge dimuon masses
@@ -22,24 +26,21 @@ def output_merger() -> str:
             f"hadd -f outputs/dimuons_mass_{sample}.root outputs/buffer/dimuons_mass_{sample}*.root "
         )
 
-    merger_output += execute_command(
-        f"hadd -f outputs/dimuons_mass_Run2016.root outputs/dimuons_mass_Run2016*.root "
-    )
-    merger_output += execute_command(
-        f"hadd -f outputs/dimuons_mass_Run2017.root outputs/dimuons_mass_Run2017*.root "
-    )
+    # merger_output += execute_command(
+    #     f"hadd -f outputs/dimuons_mass_Run2016APV.root outputs/dimuons_mass_Run2016APV*.root "
+    # )
+    # merger_output += execute_command(
+    #     f"hadd -f outputs/dimuons_mass_Run2016.root outputs/dimuons_mass_Run2016*.root "
+    # )
+    # merger_output += execute_command(
+    #     f"hadd -f outputs/dimuons_mass_Run2017.root outputs/dimuons_mass_Run2017*.root "
+    # )
     merger_output += execute_command(
         f"hadd -f outputs/dimuons_mass_Run2018.root outputs/dimuons_mass_Run2018*.root "
     )
     # merger_output += execute_command(
-    #     f"hadd -f outputs/dimuons_mass_Run2.root outputs/dimuons_mass_Run2*.root "
+    #     f"hadd -f outputs/dimuons_mass_Run2.root outputs/dimuons_mass_Run2016APV.root outputs/dimuons_mass_Run2016.root outputs/dimuons_mass_Run2017.root outputs/dimuons_mass_Run2018.root "
     # )
-
-    # for sample in samples:
-    #     if samples[sample]["data_or_mc"] == "mc":
-    #         merger_output += execute_command(
-    #             f"hadd -f outputs/dimuons_mass_{sample}.root outputs/dimuons_mass_{sample}*.root "
-    #         )
 
     # merge preselected events
     print("--> merging preselected events...")
@@ -48,25 +49,22 @@ def output_merger() -> str:
             f"hadd -f outputs/preselected_{sample}.root outputs/buffer/preselected*{sample}*.root "
         )
 
-    merger_output += execute_command(
-        f"hadd -f outputs/preselected_Run2016.root outputs/preselected_Run2016*.root "
-    )
-    merger_output += execute_command(
-        f"hadd -f outputs/preselected_Run2017.root outputs/preselected_Run2017*.root "
-    )
+    # merger_output += execute_command(
+    #     f"hadd -f outputs/preselected_Run2016APV.root outputs/preselected_Run2016APV*.root "
+    # )
+    # merger_output += execute_command(
+    #     f"hadd -f outputs/preselected_Run2016.root outputs/preselected_Run2016*.root "
+    # )
+    # merger_output += execute_command(
+    #     f"hadd -f outputs/preselected_Run2017.root outputs/preselected_Run2017*.root "
+    # )
     merger_output += execute_command(
         f"hadd -f outputs/preselected_Run2018.root outputs/preselected_Run2018*.root "
     )
 
     # execute_command(
-    #     f"hadd -f outputs/preselected_Run2.root outputs/preselected_Run2*.root "
+    #     f"hadd -f outputs/preselected_Run2.root outputs/preselected_Run2016APV.root outputs/preselected_Run2016.root outputs/preselected_Run2017.root outputs/preselected_Run2018.root "
     # )
-
-    # for sample in samples:
-    #     if samples[sample]["data_or_mc"] == "mc":
-    #         execute_command(
-    #             f"hadd -f outputs/preselected_{sample}.root outputs/preselected_{sample}*.root "
-    #         )
 
     # merge selected events
     print("--> merging preselected events...")
@@ -75,16 +73,20 @@ def output_merger() -> str:
             f"hadd -f outputs/selected_{sample}.root outputs/buffer/selected*{sample}*.root "
         )
 
-    merger_output += execute_command(f"hadd -f outputs/selected_Run2016.root outputs/selected_Run2016*.root ")
-    merger_output += execute_command(f"hadd -f outputs/selected_Run2017.root outputs/selected_Run2017*.root ")
-    merger_output += execute_command(f"hadd -f outputs/selected_Run2018.root outputs/selected_Run2018*.root ")
     # merger_output += execute_command(
-    #     f"hadd -f outputs/selected_Run2.root outputs/selected_Run2*.root "
+    #     f"hadd -f outputs/selected_Run2016APV.root outputs/selected_Run2016AVP*.root "
+    # )
+    # merger_output += execute_command(
+    #     f"hadd -f outputs/selected_Run2016.root outputs/selected_Run2016*.root "
+    # )
+    # merger_output += execute_command(
+    #     f"hadd -f outputs/selected_Run2017.root outputs/selected_Run2017*.root "
+    # )
+    merger_output += execute_command(
+        f"hadd -f outputs/selected_Run2018.root outputs/selected_Run2018*.root "
+    )
+    # merger_output += execute_command(
+    #     f"hadd -f outputs/selected_Run2.root outputs/selected_Run2016APV.root outputs/selected_Run2016.root outputs/selected_Run2017.root outputs/selected_Run2018.root "
     # )
 
-    # for sample in samples:
-    #     if samples[sample]["data_or_mc"] == "mc":
-    #         merger_output += execute_command(
-    #             f"hadd -f outputs/selected_{sample}.root outputs/selected_{sample}*.root "
-    #         )
     return merger_output

@@ -12,7 +12,7 @@ from enum import Enum
 from HZUpsilonPhotonRun2NanoAOD.utils import file_tester
 from HZUpsilonPhotonRun2NanoAOD.analyzer import Analyzer
 from HZUpsilonPhotonRun2NanoAOD.gen_analyzer import GenAnalyzer
-from samples import samples, mc_samples_files, samples_files, samples_descriptions
+from samples import samples, mc_samples_files, samples_files
 
 from coffea import processor
 from coffea.nanoevents import NanoAODSchema
@@ -148,8 +148,9 @@ def merge():
     os.system("rm -rf outputs/*.root")
 
     print("\n\n\n--> Merging analysis outputs...")
+    merger_log = output_merger()
     with open("outputs/output_merger.log", "w") as f:
-        f.write(output_merger())
+        f.write(merger_log)
 
 
 @app.command()

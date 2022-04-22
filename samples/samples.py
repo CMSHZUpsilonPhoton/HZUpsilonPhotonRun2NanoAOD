@@ -102,6 +102,3 @@ for sample in samples:
         mc_samples_files[sample] = samples[sample]["files"]
 
 samples_descriptions = samples
-# samples_descriptions = {}
-# for sample in samples:
-#     samples_descriptions[sample]["year"] = samples[sample]["year"]
