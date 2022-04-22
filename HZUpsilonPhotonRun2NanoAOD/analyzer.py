@@ -1,45 +1,177 @@
+from pprint import pprint
 import hist
 from coffea import processor
 
-from samples import samples_files
-from HZUpsilonPhotonRun2NanoAOD.hist_accumulator import HistAccumulator
-from HZUpsilonPhotonRun2NanoAOD.sample_processor import SampleProcessor
+
+from coffea.processor import Accumulatable
+from coffea.processor import dict_accumulator
+from coffea.processor import defaultdict_accumulator
+from coffea.processor import LazyDataFrame
+
+
+from HZUpsilonPhotonRun2NanoAOD.events import Events
+from HZUpsilonPhotonRun2NanoAOD.forward_events import forward_events
+from HZUpsilonPhotonRun2NanoAOD.utils import (
+    fill_cutflow,
+    save_dimuon_masses,
+    save_events,
+)
 
 
 class Analyzer(processor.ProcessorABC):
-    def __init__(self):
-        self._accumulator = processor.dict_accumulator(
+    def __init__(self) -> None:
+        self._accumulator = dict_accumulator(
             {
-                "cutflow": HistAccumulator(
-                    hist.Hist.new.StrCat(samples_files.keys(), name="dataset")
-                    .StrCat(["2016APV", "2016", "2017", "2018"], name="year")
-                    .Bool(name="trigger")
-                    .Bool(name="nmuons")
-                    .Bool(name="muon_pt")
-                    .Bool(name="mediumPrompt_muon")
-                    .Bool(name="iso_muon")
-                    .Bool(name="nphotons")
-                    .Bool(name="photon_pt")
-                    .Bool(name="photon_sc_eta")
-                    .Bool(name="photon_electron_veto")
-                    .Bool(name="photon_tight_id")
-                    .Bool(name="signal_selection")
-                    .Bool(name="mass_selection")
-                    .Double()
-                ),
+                "cutflow": dict_accumulator(
+                    {
+                        "total": defaultdict_accumulator(float),
+                        "preselected": defaultdict_accumulator(float),
+                        "selected": defaultdict_accumulator(float),
+                        # "mass_window": defaultdict_accumulator(float),
+                    }
+                )
             }
         )
 
     @property
-    def accumulator(self):
+    def accumulator(self) -> Accumulatable:
         return self._accumulator
 
     # we will receive NanoEvents
-    def process(self, events):
+    def process(self, events: LazyDataFrame) -> Accumulatable:
 
-        output = self.accumulator.identity()
-        processor = SampleProcessor(events, output)
-        return processor()
+        # Forward events over the defined analysis workflow
+        evts = forward_events(Events(events))
 
-    def postprocess(self, accumulator):
+        # Fill cutflow
+        # Add total number of events
+        fill_cutflow(
+            accumulator=self.accumulator,
+            evts=evts,
+            key="total",
+            list_of_weights=["pileup", "generator", "l1_prefiring"],
+            list_of_filters=["lumisection"],
+        )
+
+        # Add number oif preselected
+        fill_cutflow(
+            accumulator=self.accumulator,
+            evts=evts,
+            key="preselected",
+            list_of_weights=[
+                "pileup",
+                "generator",
+                "l1_prefiring",
+                "muon_id",
+                "muon_iso",
+                "photon_id",
+                "photon_electron_veto",
+            ],
+            list_of_filters=[
+                "lumisection",
+                "trigger",
+                "n_muons",
+                "n_photons",
+                "n_dimuons",
+                "n_bosons",
+            ],
+        )
+
+        # Add number oif preselected
+        fill_cutflow(
+            accumulator=self.accumulator,
+            evts=evts,
+            key="selected",
+            list_of_weights=[
+                "pileup",
+                "generator",
+                "l1_prefiring",
+                "muon_id",
+                "muon_iso",
+                "photon_id",
+                "photon_electron_veto",
+            ],
+            list_of_filters=[
+                "lumisection",
+                "trigger",
+                "n_muons",
+                "n_photons",
+                "n_dimuons",
+                "n_bosons",
+                "signal_selection",
+            ],
+        )
+
+        # Add number oif selected
+        fill_cutflow(
+            accumulator=self.accumulator,
+            evts=evts,
+            key="selected",
+            list_of_weights=[
+                "pileup",
+                "generator",
+                "l1_prefiring",
+                "muon_id",
+                "muon_iso",
+                "photon_id",
+                "photon_electron_veto",
+            ],
+            list_of_filters=[
+                "lumisection",
+                "trigger",
+                "n_muons",
+                "n_photons",
+                "n_dimuons",
+                "n_bosons",
+                "signal_selection",
+                "mass_selection",
+            ],
+        )
+
+        # Save dimuon masses
+        if evts.data_or_mc == "data":
+            save_dimuon_masses(
+                evts=evts,
+                list_of_dimuons_mass_filters=[
+                    "lumisection",
+                    "trigger",
+                    "n_muons",
+                    "n_photons",
+                    "n_dimuons",
+                ],
+            )
+
+        # Save kinematical information of preselected events
+        save_events(
+            evts=evts,
+            prefix="preselected_events",
+            list_of_filters=[
+                "lumisection",
+                "trigger",
+                "n_muons",
+                "n_photons",
+                "n_dimuons",
+                "n_bosons",
+            ],
+        )
+
+        # Save kinematical information of selected events
+        save_events(
+            evts=evts,
+            prefix="selected_events",
+            list_of_filters=[
+                "lumisection",
+                "trigger",
+                "n_muons",
+                "n_photons",
+                "n_dimuons",
+                "n_bosons",
+                "signal_selection",
+                "mass_selection",
+            ],
+        )
+
+        return self.accumulator
+
+    def postprocess(self, accumulator: Accumulatable) -> Accumulatable:
         return accumulator

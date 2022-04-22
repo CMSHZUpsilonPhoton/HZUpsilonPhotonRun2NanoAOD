@@ -9,10 +9,9 @@ from tqdm import tqdm
 from enum import Enum
 
 
-from HZUpsilonPhotonRun2NanoAOD import file_tester
+from HZUpsilonPhotonRun2NanoAOD.utils import file_tester
 from HZUpsilonPhotonRun2NanoAOD.analyzer import Analyzer
 from HZUpsilonPhotonRun2NanoAOD.gen_analyzer import GenAnalyzer
-from HZUpsilonPhotonRun2NanoAOD.file_tester import file_tester
 from samples import samples, mc_samples_files, samples_files, samples_descriptions
 
 from coffea import processor
@@ -100,9 +99,9 @@ class CoffeaExecutors(str, Enum):
 
 @app.command()
 def main(
-    maxchunks: int = -1,
+    maxchunks: int = -1,  # default -1
     executor: CoffeaExecutors = CoffeaExecutors.futures,
-    workers: int = 60,
+    workers: int = 60,  # default 60
 ):
     """Run main analysis and saves outputs."""
 
@@ -136,9 +135,11 @@ def main(
 
     # save outputs
     print("\n\n\n--> saving output...")
-    output_filename = "outputs/cutflow.hist"
+    output_filename = "outputs/cutflow.json"
     os.system(f"rm -rf {output_filename}")
-    save(output["cutflow"].histogram, output_filename)
+    # pprint(output)
+    with open(output_filename, "w") as f:
+        f.write(json.dumps(output["cutflow"]))
 
 
 @app.command()

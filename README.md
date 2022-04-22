@@ -65,10 +65,5 @@ Example:
 
 ## Notes and tips
 
-### How to open `.hist` files
+...
 
-```python
-from coffea.util import load
-import hist
-load('outputs/buffer/cutflow.hist')
-```

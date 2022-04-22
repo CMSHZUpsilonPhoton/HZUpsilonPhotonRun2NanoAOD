@@ -17,6 +17,7 @@ output_merger.log
 !data/pu_histos/mc/*.root
 !data/muon_sfs/*
 !data/muon_sfs/*/*.root
+foo.txt
 
 env_2
 
