@@ -111,7 +111,7 @@ def save_events(evts: Events, prefix: str, list_of_filters: list[str]) -> None:
         "weight": evts.weights.weight()[selection_filter],
     }
     for var in evts.weights.variations:
-        buffer[f"sigma_{var}"] = evts.weights.weight(var)[selection_filter]
+        buffer[f"weight_{var}"] = evts.weights.weight(var)[selection_filter]
 
     with uproot.recreate(output_filename) as f:
         f["Events"] = buffer
