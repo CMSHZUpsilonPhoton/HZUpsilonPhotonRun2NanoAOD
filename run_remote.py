@@ -19,6 +19,7 @@ def run_analysis(
     inner_commands = f"cd {working_dir} ; conda activate ../HZUpsilonPhotonRun2NanoAOD_env ; ./run_analysis.py all"
     if debug:
         inner_commands += " --debug"
+    inner_commands += " ; rm -rf outputs/buffer"
     full_command = f"ssh {username}@{hostname} '{inner_commands}'"
     if uerj_usr:
         full_command = f"ssh {username}@{hostname} 'ssh uerj-usr \"{inner_commands}\"'"

@@ -5,7 +5,7 @@ import uproot
 import secrets
 import numpy as np
 from particle import Particle
-from coffea.nanoevents.methods import Candidate
+from coffea.nanoevents.methods.candidate import Candidate
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events
 

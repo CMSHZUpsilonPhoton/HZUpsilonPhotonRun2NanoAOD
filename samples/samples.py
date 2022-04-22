@@ -96,6 +96,11 @@ samples_files = {}
 for sample in samples:
     samples_files[sample] = samples[sample]["files"]
 
+data_samples_files = {}
+for sample in samples:
+    if samples[sample]["data_or_mc"] == "data":
+        data_samples_files[sample] = samples[sample]["files"]
+
 mc_samples_files = {}
 for sample in samples:
     if samples[sample]["data_or_mc"] == "mc":

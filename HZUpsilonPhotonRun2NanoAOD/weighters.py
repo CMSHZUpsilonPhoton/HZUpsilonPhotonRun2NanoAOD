@@ -2,8 +2,11 @@ import json
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events
 
-from HZUpsilonPhotonRun2NanoAOD.pu_weight import pu_weights
-from HZUpsilonPhotonRun2NanoAOD.scale_factors.muon_sf import muon_id_weights, muon_iso_weights
+from HZUpsilonPhotonRun2NanoAOD.scale_factors.pu_weight import pu_weights
+from HZUpsilonPhotonRun2NanoAOD.scale_factors.muon_sf import (
+    muon_id_weights,
+    muon_iso_weights,
+)
 from HZUpsilonPhotonRun2NanoAOD.scale_factors.l1prefiring_sf import l1prefiring_weights
 from HZUpsilonPhotonRun2NanoAOD.scale_factors.photon_sf import (
     photon_id_weights,

@@ -1,4 +1,4 @@
-from samples import samples_files
+from samples import samples_files, data_samples_files
 import subprocess
 
 
@@ -21,7 +21,7 @@ def output_merger() -> str:
     # merge dimuon masses
     print("--> merging dimuon masses...")
     merger_output = ""
-    for sample in samples_files.keys():
+    for sample in data_samples_files.keys():
         merger_output += execute_command(
             f"hadd -f outputs/dimuons_mass_{sample}.root outputs/buffer/dimuons_mass_{sample}*.root "
         )

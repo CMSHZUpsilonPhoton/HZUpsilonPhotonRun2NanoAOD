@@ -27,7 +27,7 @@ class Analyzer(processor.ProcessorABC):
                         "total": defaultdict_accumulator(float),
                         "preselected": defaultdict_accumulator(float),
                         "selected": defaultdict_accumulator(float),
-                        # "mass_window": defaultdict_accumulator(float),
+                        "mass_window": defaultdict_accumulator(float),
                     }
                 )
             }
@@ -49,7 +49,7 @@ class Analyzer(processor.ProcessorABC):
             accumulator=self.accumulator,
             evts=evts,
             key="total",
-            list_of_weights=["pileup", "generator", "l1_prefiring"],
+            list_of_weights=["pileup", "generator"],
             list_of_filters=["lumisection"],
         )
 
@@ -106,7 +106,7 @@ class Analyzer(processor.ProcessorABC):
         fill_cutflow(
             accumulator=self.accumulator,
             evts=evts,
-            key="selected",
+            key="mass_window",
             list_of_weights=[
                 "pileup",
                 "generator",
