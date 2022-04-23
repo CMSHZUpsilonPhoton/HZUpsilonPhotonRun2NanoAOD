@@ -69,8 +69,6 @@ class Events:
             self.weights.add(
                 name=weight_name,
                 weight=weight,
-                weightUp=weight,
-                weightDown=weight,
             )
         self._stop_filtering = True
 

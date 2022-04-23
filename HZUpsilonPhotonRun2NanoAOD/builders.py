@@ -43,6 +43,7 @@ def build_good_photons(evts: Events):
 
 def build_dimuons(evts: Events):
     dimuons = ak.combinations(evts.events.good_muons, 2)
+    dimuons = dimuons[(dimuons["0"].charge + dimuons["1"].charge == 0)]
 
     return dimuons
 

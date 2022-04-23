@@ -17,6 +17,8 @@ from HZUpsilonPhotonRun2NanoAOD.utils import (
     save_events,
 )
 
+from samples import samples
+
 
 class Analyzer(processor.ProcessorABC):
     def __init__(self) -> None:
