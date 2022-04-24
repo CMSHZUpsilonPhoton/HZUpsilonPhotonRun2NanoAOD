@@ -1,16 +1,25 @@
 import numpy as np
 import awkward as ak
 
+from dataclasses import dataclass
+
 from coffea import analysis_tools
-from coffea.processor import LazyDataFrame
 
 from HZUpsilonPhotonRun2NanoAOD import array_like
 
 from samples import samples_descriptions
 
 
+@dataclass
+class Systematics:
+    """Class for keeping track systematics."""
+
+    name: str
+    has_variations: bool
+
+
 class Events:
-    def __init__(self, events: LazyDataFrame) -> None:
+    def __init__(self, events: ak.Array) -> None:
         self.events = events
         self.length = len(self.events)
         self.dataset = events.metadata["dataset"]
@@ -19,6 +28,7 @@ class Events:
 
         # Build event weight holder
         self.weights = analysis_tools.Weights(size=self.length, storeIndividual=True)
+        self.weights = []
 
         # Build event filters holder
         self.filters = analysis_tools.PackedSelection()

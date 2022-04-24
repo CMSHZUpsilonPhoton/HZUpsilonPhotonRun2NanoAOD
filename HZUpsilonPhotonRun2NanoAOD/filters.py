@@ -57,14 +57,15 @@ def n_dimuons_filter(evts: Events):
 
 
 def n_bosons_combination_filter(evts: Events):
-    return ak.num(evts.bosons_combinations) >= 1
+    return ak.num(evts.events.bosons_combinations) >= 1
 
 
 def signal_selection_filter(evts: Events):
     upsilon_vectors = (
-        evts.bosons_combinations["0"]["0"] + evts.bosons_combinations["0"]["1"]
+        evts.events.bosons_combinations["0"]["0"]
+        + evts.events.bosons_combinations["0"]["1"]
     )
-    photons_vectors = evts.bosons_combinations["1"]
+    photons_vectors = evts.events.bosons_combinations["1"]
 
     delta_eta_filter = np.absolute(upsilon_vectors.eta - photons_vectors.eta) < 2.8
     delta_phi_filter = np.absolute(upsilon_vectors.delta_phi(photons_vectors)) > 0.5

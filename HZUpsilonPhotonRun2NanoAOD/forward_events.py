@@ -2,42 +2,64 @@ from HZUpsilonPhotonRun2NanoAOD.filters import *
 from HZUpsilonPhotonRun2NanoAOD.builders import *
 from HZUpsilonPhotonRun2NanoAOD.weighters import *
 
+from HZUpsilonPhotonRun2NanoAOD.feed_forward import (
+    FeedForwardSequence,
+    FilterSequence,
+    WeightSequence,
+    ObjectSequence,
+)
 
-def forward_events(evts: Events) -> Events:
-    evts.add_filter("lumisection", lumisection_filter(evts))
-    # evts.filter_events(lumisection_filter(evts))
 
-    evts.add_weight("pileup", pileup_weight(evts))
-    evts.add_weight("generator", generator_weight(evts))
-    evts.add_weight("l1_prefiring", l1prefr_weights(evts))
+forward_events = FeedForwardSequence("base_sequence")
+forward_events.register_sequence(FilterSequence("lumisection", lumisection_filter))
 
-    evts.add_filter("trigger", trigger_filter(evts))
+forward_events.register_sequence(WeightSequence("pileup", pileup_weight))
+forward_events.register_sequence(WeightSequence("generator", generator_weight))
+forward_events.register_sequence(WeightSequence("l1_prefiring", l1prefr_weights))
 
-    evts.add_object("good_muons", build_good_muons(evts))
-    evts.add_object("good_photons", build_good_photons(evts))
+forward_events.register_sequence(FilterSequence("trigger", trigger_filter))
 
-    evts.add_filter("n_muons", n_muons_filter(evts))
-    evts.add_filter("n_photons", n_photons_filter(evts))
+forward_events.register_sequence(ObjectSequence("good_muons", build_good_muons))
+forward_events.register_sequence(ObjectSequence("good_photons", build_good_photons))
 
-    evts.add_object("dimuons", build_dimuons(evts))
-    evts.add_filter("n_dimuons", n_dimuons_filter(evts))
+forward_events.register_sequence(
+    FilterSequence("n_muons", lambda evts: ak.num(evts.events.good_muons) >= 2)
+)
+forward_events.register_sequence(
+    FilterSequence("n_photons", lambda evts: ak.num(evts.events.good_photons) >= 1)
+)
 
-    evts.bosons_combinations = build_bosons_combination(evts)
-    evts.add_filter("n_bosons", n_bosons_combination_filter(evts))
+forward_events.register_sequence(ObjectSequence("dimuons", build_dimuons))
+forward_events.register_sequence(
+    FilterSequence("n_dimuons", lambda evts: ak.num(evts.events.dimuons) >= 1)
+)
 
-    evts.add_object("boson", build_boson(evts))
-    evts.add_object("mu_1", build_mu_1(evts))
-    evts.add_object("mu_2", build_mu_2(evts))
-    evts.add_object("upsilon", build_upsilon(evts))
-    evts.add_object("photon", build_photon(evts))
+forward_events.register_sequence(
+    ObjectSequence("bosons_combinations", build_bosons_combination)
+)
+forward_events.register_sequence(
+    FilterSequence(
+        "n_bosons", lambda evts: ak.num(evts.events.bosons_combinations) >= 1
+    )
+)
 
-    evts.add_weight("muon_id", muon_id_weight(evts))
-    evts.add_weight("muon_iso", muon_iso_weight(evts))
-    evts.add_weight("photon_id", photon_id_weight(evts))
-    evts.add_weight("photon_electron_veto", photon_electron_veto_weight(evts))
+forward_events.register_sequence(ObjectSequence("boson", build_boson))
+forward_events.register_sequence(ObjectSequence("mu_1", build_mu_1))
+forward_events.register_sequence(ObjectSequence("mu_2", build_mu_2))
+forward_events.register_sequence(ObjectSequence("upsilon", build_upsilon))
+forward_events.register_sequence(ObjectSequence("photon", build_photon))
 
-    evts.add_filter("signal_selection", signal_selection_filter(evts))
-    evts.add_filter("mass_selection", mass_selection_filter(evts))
+forward_events.register_sequence(WeightSequence("muon_id", muon_id_weight))
+forward_events.register_sequence(WeightSequence("muon_iso", muon_iso_weight))
+forward_events.register_sequence(WeightSequence("photon_id", photon_id_weight))
+forward_events.register_sequence(
+    WeightSequence("photon_electron_veto", photon_electron_veto_weight)
+)
 
-    # return modified events
-    return evts
+forward_events.register_sequence(
+    FilterSequence("signal_selection", signal_selection_filter)
+)
+forward_events.register_sequence(
+    FilterSequence("mass_selection", mass_selection_filter)
+)
+

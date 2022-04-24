@@ -65,8 +65,8 @@ def muon_id_weight(evts: Events):
     if evts.data_or_mc == "data":
         return evts.ones
     else:
-        mu_1 = evts.bosons_combinations["0"]["0"]
-        mu_2 = evts.bosons_combinations["0"]["1"]
+        mu_1 = evts.events.bosons_combinations["0"]["0"]
+        mu_2 = evts.events.bosons_combinations["0"]["1"]
 
         nominal = muon_id_weights(mu_1, mu_2, evts.year, syst_var="nominal")
         up = muon_id_weights(mu_1, mu_2, evts.year, syst_var="plus")
@@ -79,8 +79,8 @@ def muon_iso_weight(evts: Events):
     if evts.data_or_mc == "data":
         return evts.ones
     else:
-        mu_1 = evts.bosons_combinations["0"]["0"]
-        mu_2 = evts.bosons_combinations["0"]["1"]
+        mu_1 = evts.events.bosons_combinations["0"]["0"]
+        mu_2 = evts.events.bosons_combinations["0"]["1"]
 
         nominal = muon_iso_weights(mu_1, mu_2, evts.year, syst_var="nominal")
         up = muon_iso_weights(mu_1, mu_2, evts.year, syst_var="plus")
@@ -93,7 +93,7 @@ def photon_id_weight(evts: Events):
     if evts.data_or_mc == "data":
         return evts.ones
     else:
-        photon = evts.bosons_combinations["1"]
+        photon = evts.events.bosons_combinations["1"]
 
         nominal = photon_id_weights(photon, evts.year, syst_var="nominal")
         up = photon_id_weights(photon, evts.year, syst_var="plus")
@@ -106,7 +106,7 @@ def photon_electron_veto_weight(evts: Events):
     if evts.data_or_mc == "data":
         return evts.ones
     else:
-        photon = evts.bosons_combinations["1"]
+        photon = evts.events.bosons_combinations["1"]
 
         nominal = photon_electron_veto_weights(photon, evts.year, syst_var="nominal")
         up = photon_electron_veto_weights(photon, evts.year, syst_var="plus")

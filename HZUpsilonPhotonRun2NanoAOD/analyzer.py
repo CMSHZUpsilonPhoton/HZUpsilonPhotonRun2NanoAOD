@@ -1,12 +1,11 @@
+import awkward as ak
 from pprint import pprint
-import hist
 from coffea import processor
 
 
 from coffea.processor import Accumulatable
 from coffea.processor import dict_accumulator
 from coffea.processor import defaultdict_accumulator
-from coffea.processor import LazyDataFrame
 
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events
@@ -16,8 +15,6 @@ from HZUpsilonPhotonRun2NanoAOD.utils import (
     save_dimuon_masses,
     save_events,
 )
-
-from samples import samples
 
 
 class Analyzer(processor.ProcessorABC):
@@ -40,7 +37,7 @@ class Analyzer(processor.ProcessorABC):
         return self._accumulator
 
     # we will receive NanoEvents
-    def process(self, events: LazyDataFrame) -> Accumulatable:
+    def process(self, events: ak.Array) -> Accumulatable:
 
         # Forward events over the defined analysis workflow
         evts = forward_events(Events(events))

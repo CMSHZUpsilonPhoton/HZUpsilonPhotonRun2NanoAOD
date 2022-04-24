@@ -64,23 +64,26 @@ def build_bosons_combination(evts: Events):
 
 def build_boson(evts: Events):
     return (
-        evts.bosons_combinations["0"]["0"]
-        + evts.bosons_combinations["0"]["1"]
-        + evts.bosons_combinations["1"]
+        evts.events.bosons_combinations["0"]["0"]
+        + evts.events.bosons_combinations["0"]["1"]
+        + evts.events.bosons_combinations["1"]
     )
 
 
 def build_mu_1(evts: Events):
-    return evts.bosons_combinations["0"]["0"]
+    return evts.events.bosons_combinations["0"]["0"]
 
 
 def build_mu_2(evts: Events):
-    return evts.bosons_combinations["0"]["1"]
+    return evts.events.bosons_combinations["0"]["1"]
 
 
 def build_upsilon(evts: Events):
-    return evts.bosons_combinations["0"]["0"] + evts.bosons_combinations["0"]["1"]
+    return (
+        evts.events.bosons_combinations["0"]["0"]
+        + evts.events.bosons_combinations["0"]["1"]
+    )
 
 
 def build_photon(evts: Events):
-    return evts.bosons_combinations["1"]
+    return evts.events.bosons_combinations["1"]
