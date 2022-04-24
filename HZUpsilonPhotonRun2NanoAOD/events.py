@@ -1,8 +1,6 @@
 import numpy as np
 import awkward as ak
 
-from dataclasses import dataclass
-
 from coffea import analysis_tools
 
 from HZUpsilonPhotonRun2NanoAOD import array_like
@@ -10,12 +8,41 @@ from HZUpsilonPhotonRun2NanoAOD import array_like
 from samples import samples_descriptions
 
 
-@dataclass
-class Systematics:
-    """Class for keeping track systematics."""
+class EventWeights(analysis_tools.Weights):
+    """Extension of analysis_tools.Weights to get weights names and if they are systematics."""
 
-    name: str
-    has_variations: bool
+    def __init__(self, size: int, storeIndividual: bool = False):
+        super().__init__(size, storeIndividual)
+
+    @property
+    def names(self) -> list[str]:
+        list_of_weights_names = list(self._weights.keys()) + list(
+            self._modifiers.keys()
+        )
+        list_of_weights_names.sort()
+        return list_of_weights_names
+
+    def individual_weight(self, name: str) -> np.ndarray:
+        if name.endswith("Up") or name.endswith("Down"):
+            return (
+                self._weights[name.replace("Up", "").replace("Down", "")]
+                * self._modifiers[name]
+            )
+        return self._weights[name]
+
+    def partial_weight_with_variation(
+        self,
+        variation_name: str = "nominal",
+        include: list[str] = [],
+        exclude: list[str] = [],
+    ) -> np.ndarray:
+        if variation_name == "nominal":
+            return self.partial_weight(include, exclude)
+        return self.partial_weight(include, exclude) * self._modifiers[variation_name]
+
+    @property
+    def systematics_names(self) -> list[str]:
+        return list(self.variations)
 
 
 class Events:
@@ -27,8 +54,7 @@ class Events:
         self.data_or_mc = samples_descriptions[self.dataset]["data_or_mc"]
 
         # Build event weight holder
-        self.weights = analysis_tools.Weights(size=self.length, storeIndividual=True)
-        self.weights = []
+        self.weights = EventWeights(size=self.length, storeIndividual=True)
 
         # Build event filters holder
         self.filters = analysis_tools.PackedSelection()
@@ -56,7 +82,7 @@ class Events:
         self.length = len(self.events)
 
         # Re-Build event weight holder
-        self.weights = analysis_tools.Weights(size=self.length, storeIndividual=True)
+        self.weights = EventWeights(size=self.length, storeIndividual=True)
 
         # Re-Build event filters holder
         self.filters = analysis_tools.PackedSelection()

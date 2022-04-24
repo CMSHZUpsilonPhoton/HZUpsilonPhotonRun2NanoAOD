@@ -19,18 +19,7 @@ from HZUpsilonPhotonRun2NanoAOD.utils import (
 
 class Analyzer(processor.ProcessorABC):
     def __init__(self) -> None:
-        self._accumulator = dict_accumulator(
-            {
-                "cutflow": dict_accumulator(
-                    {
-                        "total": defaultdict_accumulator(float),
-                        "preselected": defaultdict_accumulator(float),
-                        "selected": defaultdict_accumulator(float),
-                        "mass_window": defaultdict_accumulator(float),
-                    }
-                )
-            }
-        )
+        self._accumulator = dict_accumulator({})
 
     @property
     def accumulator(self) -> Accumulatable:
@@ -43,89 +32,105 @@ class Analyzer(processor.ProcessorABC):
         evts = forward_events(Events(events))
 
         # Fill cutflow
-        # Add total number of events
-        fill_cutflow(
-            accumulator=self.accumulator,
-            evts=evts,
-            key="total",
-            list_of_weights=["pileup", "generator"],
-            list_of_filters=["lumisection"],
-        )
+        systematics_variations = evts.weights.systematics_names + ["nominal"]
+        for variation in systematics_variations:
+            cutflow_dict = dict_accumulator(
+                {
+                    "total": defaultdict_accumulator(float),
+                    "preselected": defaultdict_accumulator(float),
+                    "selected": defaultdict_accumulator(float),
+                    "mass_window": defaultdict_accumulator(float),
+                }
+            )
 
-        # Add number oif preselected
-        fill_cutflow(
-            accumulator=self.accumulator,
-            evts=evts,
-            key="preselected",
-            list_of_weights=[
-                "pileup",
-                "generator",
-                "l1_prefiring",
-                "muon_id",
-                "muon_iso",
-                "photon_id",
-                "photon_electron_veto",
-            ],
-            list_of_filters=[
-                "lumisection",
-                "trigger",
-                "n_muons",
-                "n_photons",
-                "n_dimuons",
-                "n_bosons",
-            ],
-        )
+            # Add total number of events
+            fill_cutflow(
+                accumulator=cutflow_dict,
+                evts=evts,
+                key="total",
+                variation=variation,
+                list_of_weights=["pileup", "generator"],
+                list_of_filters=["lumisection"],
+            )
 
-        # Add number oif preselected
-        fill_cutflow(
-            accumulator=self.accumulator,
-            evts=evts,
-            key="selected",
-            list_of_weights=[
-                "pileup",
-                "generator",
-                "l1_prefiring",
-                "muon_id",
-                "muon_iso",
-                "photon_id",
-                "photon_electron_veto",
-            ],
-            list_of_filters=[
-                "lumisection",
-                "trigger",
-                "n_muons",
-                "n_photons",
-                "n_dimuons",
-                "n_bosons",
-                "signal_selection",
-            ],
-        )
+            # Add number of preselected events
+            fill_cutflow(
+                accumulator=cutflow_dict,
+                evts=evts,
+                key="preselected",
+                variation=variation,
+                list_of_weights=[
+                    "pileup",
+                    "generator",
+                    "l1_prefiring",
+                    "muon_id",
+                    "muon_iso",
+                    "photon_id",
+                    "photon_electron_veto",
+                ],
+                list_of_filters=[
+                    "lumisection",
+                    "trigger",
+                    "n_muons",
+                    "n_photons",
+                    "n_dimuons",
+                    "n_bosons",
+                ],
+            )
 
-        # Add number oif selected
-        fill_cutflow(
-            accumulator=self.accumulator,
-            evts=evts,
-            key="mass_window",
-            list_of_weights=[
-                "pileup",
-                "generator",
-                "l1_prefiring",
-                "muon_id",
-                "muon_iso",
-                "photon_id",
-                "photon_electron_veto",
-            ],
-            list_of_filters=[
-                "lumisection",
-                "trigger",
-                "n_muons",
-                "n_photons",
-                "n_dimuons",
-                "n_bosons",
-                "signal_selection",
-                "mass_selection",
-            ],
-        )
+            # Add number of selected events
+            fill_cutflow(
+                accumulator=cutflow_dict,
+                evts=evts,
+                key="selected",
+                variation=variation,
+                list_of_weights=[
+                    "pileup",
+                    "generator",
+                    "l1_prefiring",
+                    "muon_id",
+                    "muon_iso",
+                    "photon_id",
+                    "photon_electron_veto",
+                ],
+                list_of_filters=[
+                    "lumisection",
+                    "trigger",
+                    "n_muons",
+                    "n_photons",
+                    "n_dimuons",
+                    "n_bosons",
+                    "signal_selection",
+                ],
+            )
+
+            # Add number of events within mass_window
+            fill_cutflow(
+                accumulator=cutflow_dict,
+                evts=evts,
+                key="mass_window",
+                variation=variation,
+                list_of_weights=[
+                    "pileup",
+                    "generator",
+                    "l1_prefiring",
+                    "muon_id",
+                    "muon_iso",
+                    "photon_id",
+                    "photon_electron_veto",
+                ],
+                list_of_filters=[
+                    "lumisection",
+                    "trigger",
+                    "n_muons",
+                    "n_photons",
+                    "n_dimuons",
+                    "n_bosons",
+                    "signal_selection",
+                    "mass_selection",
+                ],
+            )
+            self._accumulator[f"cutflow_{variation}"] = cutflow_dict
 
         # Save dimuon masses
         if evts.data_or_mc == "data":

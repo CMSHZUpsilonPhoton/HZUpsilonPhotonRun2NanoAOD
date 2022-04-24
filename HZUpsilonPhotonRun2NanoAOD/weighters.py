@@ -19,7 +19,7 @@ from samples import lumis, x_section
 def pileup_weight(evts: Events):
     # if MC, get pu weights
     if evts.data_or_mc == "data":
-        return evts.ones
+        return (evts.ones, evts.ones, evts.ones)
     else:
         nominal = pu_weights(evts.events.Pileup.nTrueInt, evts.year, syst_var="nominal")
         up = pu_weights(evts.events.Pileup.nTrueInt, evts.year, syst_var="plus")
@@ -52,7 +52,7 @@ def generator_weight(evts: Events):
 def l1prefr_weights(evts: Events):
     # if MC, get pu weights
     if evts.data_or_mc == "data":
-        return evts.ones
+        return (evts.ones, evts.ones, evts.ones)
     else:
         nominal = l1prefiring_weights(evts.length, evts.year, syst_var="nominal")
         up = l1prefiring_weights(evts.length, evts.year, syst_var="plus")
@@ -63,7 +63,7 @@ def l1prefr_weights(evts: Events):
 def muon_id_weight(evts: Events):
     # if MC, get pu weights
     if evts.data_or_mc == "data":
-        return evts.ones
+        return (evts.ones, evts.ones, evts.ones)
     else:
         mu_1 = evts.events.bosons_combinations["0"]["0"]
         mu_2 = evts.events.bosons_combinations["0"]["1"]
@@ -77,7 +77,7 @@ def muon_id_weight(evts: Events):
 def muon_iso_weight(evts: Events):
     # if MC, get pu weights
     if evts.data_or_mc == "data":
-        return evts.ones
+        return (evts.ones, evts.ones, evts.ones)
     else:
         mu_1 = evts.events.bosons_combinations["0"]["0"]
         mu_2 = evts.events.bosons_combinations["0"]["1"]
@@ -91,7 +91,7 @@ def muon_iso_weight(evts: Events):
 def photon_id_weight(evts: Events):
     # if MC, get pu weights
     if evts.data_or_mc == "data":
-        return evts.ones
+        return (evts.ones, evts.ones, evts.ones)
     else:
         photon = evts.events.bosons_combinations["1"]
 
@@ -104,7 +104,7 @@ def photon_id_weight(evts: Events):
 def photon_electron_veto_weight(evts: Events):
     # if MC, get pu weights
     if evts.data_or_mc == "data":
-        return evts.ones
+        return (evts.ones, evts.ones, evts.ones)
     else:
         photon = evts.events.bosons_combinations["1"]
 

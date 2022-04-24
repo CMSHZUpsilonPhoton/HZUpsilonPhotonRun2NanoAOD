@@ -137,7 +137,7 @@ def main(
     print("\n\n\n--> saving output...")
     output_filename = "outputs/cutflow.json"
     os.system(f"rm -rf {output_filename}")
-    pprint(output)
+    # pprint(output)
     with open(output_filename, "w") as f:
         f.write(json.dumps(output["cutflow"]))
 

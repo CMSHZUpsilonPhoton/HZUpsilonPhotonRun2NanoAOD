@@ -8,6 +8,7 @@ from particle import Particle
 from coffea.nanoevents.methods.candidate import Candidate
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events
+from coffea.processor import Accumulatable
 
 
 def file_tester(file_path: str) -> None:
@@ -38,7 +39,7 @@ def mc_sample_filter(dataset, events):
         is_prompt_filter = events.GenPart.hasFlags("isPrompt")
         is_mu_plus_filter = events.GenPart.pdgId == get_pdgid_by_name("mu+")
         is_mu_minus_filter = events.GenPart.pdgId == get_pdgid_by_name("mu-")
-        is_gamma_filter = events.GenPart.pdgId == get_pdgid_by_name("gamma")
+        # is_gamma_filter = events.GenPart.pdgId == get_pdgid_by_name("gamma")
         is_Higgs_children = ak.fill_none(
             events.GenPart.parent.pdgId == get_pdgid_by_name("H0"), False
         )
@@ -110,16 +111,25 @@ def save_events(evts: Events, prefix: str, list_of_filters: list[str]) -> None:
         "delta_r_upsilon_photon": ak.flatten(upsilon.delta_r(photon)),
         "weight": evts.weights.weight()[selection_filter],
     }
-    for var in evts.weights.variations:
-        buffer[f"weight_{var}"] = evts.weights.weight(var)[selection_filter]
+    for w in evts.weights.names:
+        buffer[f"weight_{w}"] = evts.weights.individual_weight(w)[selection_filter]
 
     with uproot.recreate(output_filename) as f:
         f["Events"] = buffer
 
 
-def fill_cutflow(accumulator, evts, key, list_of_weights, list_of_filters):
-    accumulator["cutflow"][key][
+def fill_cutflow(
+    accumulator: Accumulatable,
+    evts: Events,
+    key: str,
+    variation: str,
+    list_of_weights: list[str],
+    list_of_filters: list[str],
+) -> None:
+    accumulator[key][
         f"{evts.dataset}_{evts.year}"
-    ] = evts.weights.partial_weight(include=list_of_weights)[
+    ] = evts.weights.partial_weight_with_variation(
+        variation_name=variation, include=list_of_weights
+    )[
         evts.filters.all(*list_of_filters)
     ].sum()
