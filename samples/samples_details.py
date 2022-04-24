@@ -1,7 +1,15 @@
 from glob import glob
+from typing import TypedDict
+
+
+class Sample(TypedDict):
+    files: list[str]
+    year: str
+    data_or_mc: str
+
 
 # samples to process
-samples = {
+samples: dict[str, Sample] = {
     # Data
     "Run2018A_2018": {
         "files": glob(
@@ -105,5 +113,3 @@ mc_samples_files = {}
 for sample in samples:
     if samples[sample]["data_or_mc"] == "mc":
         mc_samples_files[sample] = samples[sample]["files"]
-
-samples_descriptions = samples

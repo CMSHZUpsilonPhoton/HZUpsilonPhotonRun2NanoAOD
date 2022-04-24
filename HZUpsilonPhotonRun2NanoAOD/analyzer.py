@@ -11,7 +11,7 @@ from HZUpsilonPhotonRun2NanoAOD.utils import (
 )
 
 
-class Analyzer(processor.ProcessorABC):
+class Analyzer(processor.ProcessorABC):  # type: ignore
     def __init__(self) -> None:
         self._accumulator = dict_accumulator({})
 

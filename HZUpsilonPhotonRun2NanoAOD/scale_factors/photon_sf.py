@@ -47,44 +47,50 @@ ext.finalize()
 evaluator = ext.make_evaluator()
 
 
-def photon_electron_veto_weights(photon, year, syst_var="nominal"):
+def photon_electron_veto_weights(
+    photon: ak.Array, year: str, syst_var: str = "nominal"
+) -> ak.Array:
     """Returns Photon Electron Veto SFs.
     References: https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018
     """
 
     photon_sc_region = ak.where(photon.isScEtaEB == 1, 0, 3)
 
-    photon_electron_veto_sf = evaluator[f"photon_electron_veto_{y}"](photon_sc_region)
+    photon_electron_veto_sf = evaluator[f"photon_electron_veto_{year}"](
+        photon_sc_region
+    )
 
     if syst_var != "nominal":
         if syst_var != "plus":
             photon_electron_veto_sf = photon_electron_veto_sf + evaluator[
-                f"photon_electron_veto_{y}_error"
+                f"photon_electron_veto_{year}_error"
             ](photon_sc_region)
 
         if syst_var != "minus":
             photon_electron_veto_sf = photon_electron_veto_sf - evaluator[
-                f"photon_electron_veto_{y}_error"
+                f"photon_electron_veto_{year}_error"
             ](photon_sc_region)
 
     return ak.firsts(ak.fill_none(ak.ones_like(photon_electron_veto_sf), 1.0))
 
 
-def photon_id_weights(photon, year, syst_var="nominal"):
+def photon_id_weights(
+    photon: ak.Array, year: str, syst_var: str = "nominal"
+) -> ak.Array:
     """Returns Photon ID SFs.
     References: https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018
     """
 
-    photon_id_sf = evaluator[f"photon_id_{y}"](photon.eta, photon.pt)
+    photon_id_sf = evaluator[f"photon_id_{year}"](photon.eta, photon.pt)
 
     if syst_var != "nominal":
         if syst_var != "plus":
-            photon_id_sf = photon_id_sf + evaluator[f"photon_id_{y}_error"](
+            photon_id_sf = photon_id_sf + evaluator[f"photon_id_{year}_error"](
                 photon.eta, photon.pt
             )
 
         if syst_var != "minus":
-            photon_id_sf = photon_id_sf - evaluator[f"photon_id_{y}_error"](
+            photon_id_sf = photon_id_sf - evaluator[f"photon_id_{year}_error"](
                 photon.eta, photon.pt
             )
 

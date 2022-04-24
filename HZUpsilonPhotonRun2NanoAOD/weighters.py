@@ -1,4 +1,7 @@
 import json
+from typing import Union
+
+from numpy.typing import ArrayLike
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events
 from HZUpsilonPhotonRun2NanoAOD.scale_factors.l1prefiring_sf import l1prefiring_weights
@@ -14,8 +17,12 @@ from HZUpsilonPhotonRun2NanoAOD.scale_factors.pu_weight import pu_weights
 from samples.lumis import lumis
 from samples.xsecs import x_section
 
+Weight = Union[tuple[ArrayLike, ArrayLike, ArrayLike], ArrayLike]
 
-def pileup_weight(evts: Events):
+
+def pileup_weight(
+    evts: Events,
+) -> Weight:
     # if MC, get pu weights
     if evts.data_or_mc == "data":
         return (evts.ones, evts.ones, evts.ones)
@@ -26,7 +33,7 @@ def pileup_weight(evts: Events):
         return nominal, up, down
 
 
-def generator_weight(evts: Events):
+def generator_weight(evts: Events) -> Weight:
     # if MC, get gen weights
     if evts.data_or_mc == "data":
         return evts.ones
@@ -48,20 +55,22 @@ def generator_weight(evts: Events):
         )
 
 
-def l1prefr_weights(evts: Events):
+def l1prefr_weights(evts: Events) -> Weight:
     # if MC, get pu weights
     if evts.data_or_mc == "data":
         return (evts.ones, evts.ones, evts.ones)
     else:
         nominal = l1prefiring_weights(
-            evts.events, evts.length, evts, syst_var="nominal"
+            evts.events, evts.length, evts.year, syst_var="nominal"
         )
-        up = l1prefiring_weights(evts.events.length, evts, syst_var="plus")
-        down = l1prefiring_weights(evts.events.length, evts, syst_var="minus")
+        up = l1prefiring_weights(evts.events, evts.length, evts.year, syst_var="plus")
+        down = l1prefiring_weights(
+            evts.events, evts.length, evts.year, syst_var="minus"
+        )
         return nominal, up, down
 
 
-def muon_id_weight(evts: Events):
+def muon_id_weight(evts: Events) -> Weight:
     # if MC, get pu weights
     if evts.data_or_mc == "data":
         return (evts.ones, evts.ones, evts.ones)
@@ -75,7 +84,7 @@ def muon_id_weight(evts: Events):
         return nominal, up, down
 
 
-def muon_iso_weight(evts: Events):
+def muon_iso_weight(evts: Events) -> Weight:
     # if MC, get pu weights
     if evts.data_or_mc == "data":
         return (evts.ones, evts.ones, evts.ones)
@@ -89,7 +98,7 @@ def muon_iso_weight(evts: Events):
         return nominal, up, down
 
 
-def photon_id_weight(evts: Events):
+def photon_id_weight(evts: Events) -> Weight:
     # if MC, get pu weights
     if evts.data_or_mc == "data":
         return (evts.ones, evts.ones, evts.ones)
@@ -102,7 +111,7 @@ def photon_id_weight(evts: Events):
         return nominal, up, down
 
 
-def photon_electron_veto_weight(evts: Events):
+def photon_electron_veto_weight(evts: Events) -> Weight:
     # if MC, get pu weights
     if evts.data_or_mc == "data":
         return (evts.ones, evts.ones, evts.ones)

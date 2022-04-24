@@ -1,12 +1,15 @@
+from typing import Union
+
 import awkward as ak
 import numpy as np
 from coffea import lumi_tools
+from numpy.typing import ArrayLike
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events
 from HZUpsilonPhotonRun2NanoAOD.utils import safe_mass
 
 
-def lumisection_filter(evts: Events):
+def lumisection_filter(evts: Events) -> ArrayLike:
     if evts.data_or_mc == "mc":
         return evts.trues
     else:
@@ -26,7 +29,7 @@ def lumisection_filter(evts: Events):
         return lumisection_filter
 
 
-def trigger_filter(evts: Events):
+def trigger_filter(evts: Events) -> Union[ArrayLike, ak.Array]:
     if evts.data_or_mc == "data":
         return evts.trues
     else:
@@ -43,23 +46,23 @@ def trigger_filter(evts: Events):
         return trigger_filter
 
 
-def n_muons_filter(evts: Events):
+def n_muons_filter(evts: Events) -> ak.Array:
     return ak.num(evts.events.good_muons) >= 2
 
 
-def n_photons_filter(evts: Events):
+def n_photons_filter(evts: Events) -> ak.Array:
     return ak.num(evts.events.good_photons) >= 1
 
 
-def n_dimuons_filter(evts: Events):
+def n_dimuons_filter(evts: Events) -> ak.Array:
     return ak.num(evts.events.dimuons) >= 1
 
 
-def n_bosons_combination_filter(evts: Events):
+def n_bosons_combination_filter(evts: Events) -> ak.Array:
     return ak.num(evts.events.bosons_combinations) >= 1
 
 
-def signal_selection_filter(evts: Events):
+def signal_selection_filter(evts: Events) -> ak.Array:
     upsilon_vectors = (
         evts.events.bosons_combinations["0"]["0"]
         + evts.events.bosons_combinations["0"]["1"]
@@ -78,7 +81,7 @@ def signal_selection_filter(evts: Events):
     return signal_selection
 
 
-def mass_selection_filter(evts: Events):
+def mass_selection_filter(evts: Events) -> ak.Array:
     boson_mass_filter = (safe_mass(evts.events.boson) > 60) & (
         safe_mass(evts.events.boson) < 150
     )

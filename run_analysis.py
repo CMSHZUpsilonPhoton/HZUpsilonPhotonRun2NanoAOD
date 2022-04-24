@@ -4,6 +4,7 @@
 import json
 import os
 from enum import Enum
+from typing import Optional
 
 import typer
 from coffea import processor
@@ -14,7 +15,7 @@ from HZUpsilonPhotonRun2NanoAOD.analyzer import Analyzer
 from HZUpsilonPhotonRun2NanoAOD.gen_analyzer import GenAnalyzer
 from HZUpsilonPhotonRun2NanoAOD.output_merger import output_merger
 from HZUpsilonPhotonRun2NanoAOD.utils import file_tester
-from samples.samples import mc_samples_files, samples, samples_files
+from samples.samples_details import mc_samples_files, samples, samples_files
 
 # create typer app
 help_str = """
@@ -39,7 +40,7 @@ app = typer.Typer(help=typer.style(help_str, fg=typer.colors.BRIGHT_BLUE, bold=T
 
 
 @app.command()
-def test_files():
+def test_files() -> None:
     """Test uproot.open each sample file."""
     files = []
     for s in samples:
@@ -50,7 +51,7 @@ def test_files():
 
 
 @app.command()
-def clear():
+def clear() -> None:
     """Clear outputs."""
 
     os.system("rm -rf outputs/*")
@@ -58,7 +59,7 @@ def clear():
 
 
 @app.command()
-def gen():
+def gen() -> None:
     """Run gen level analysis and saves outputs."""
 
     os.system("rm -rf outputs/gen_output.json")
@@ -94,10 +95,10 @@ class CoffeaExecutors(str, Enum):
 
 @app.command()
 def main(
-    maxchunks: int = -1,  # default -1
+    maxchunks: Optional[int] = -1,  # default -1
     executor: CoffeaExecutors = CoffeaExecutors.futures,
     workers: int = 60,  # default 60
-):
+) -> None:
     """Run main analysis and saves outputs."""
 
     executor_args = {"schema": NanoAODSchema, "workers": workers}
@@ -134,11 +135,11 @@ def main(
     os.system(f"rm -rf {output_filename}")
     # pprint(output)
     with open(output_filename, "w") as f:
-        f.write(json.dumps(output["cutflow"]))
+        f.write(json.dumps(output))
 
 
 @app.command()
-def merge():
+def merge() -> None:
     """Merge the many outputs."""
     os.system("rm -rf outputs/*.root")
 
@@ -149,7 +150,7 @@ def merge():
 
 
 @app.command()
-def all(debug: bool = False):
+def all(debug: bool = False) -> None:
     """Run default workflow (CLEAR \n\n\n--> GEN \n\n\n--> MAIN \n\n\n--> MERGE)."""
 
     clear()

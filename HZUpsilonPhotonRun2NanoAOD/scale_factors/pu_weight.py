@@ -1,7 +1,8 @@
 import numpy as np
 import uproot
+from numpy.typing import ArrayLike
 
-pu_hist = {}
+pu_hist: dict[str, dict[str, dict[str, uproot.reading.ReadOnlyDirectory]]] = {}
 pu_hist["data"] = {}
 pu_hist["data"]["minus"] = {}
 pu_hist["data"]["nominal"] = {}
@@ -79,7 +80,7 @@ pu_hist["mc"]["2017"] = uproot.open("data/pu_histos/mc/pileup_2017_shifts.root:p
 pu_hist["mc"]["2018"] = uproot.open("data/pu_histos/mc/pileup_2018_shifts.root:pileup")
 
 
-def get_bin(values, histo_edges):
+def get_bin(values: np.ndarray, histo_edges: np.ndarray) -> ArrayLike:
     """Get corresponding bins of a given histogram."""
 
     bins = np.argmin(np.absolute(histo_edges - values[..., np.newaxis]), axis=-1)
@@ -88,12 +89,12 @@ def get_bin(values, histo_edges):
     )  # correct underflow by setting to last bin
 
 
-def pu_weights(n_pu, year, syst_var):
+def pu_weights(n_pu: int, year: str, syst_var: str) -> ArrayLike:
     """Returns PU weight.
     Reference: https://hypernews.cern.ch/HyperNews/CMS/get/physics-validation/3689/1/1.html"""
 
-    pu_hist_data = pu_hist["data"][syst_var][year]
-    pu_hist_mc = pu_hist["mc"][year]
+    pu_hist_data: uproot.reading.ReadOnlyDirectory = pu_hist["data"][syst_var][year]
+    pu_hist_mc: uproot.reading.ReadOnlyDirectory = pu_hist["mc"][year]
 
     bins_data = get_bin(n_pu, pu_hist_data.axis().edges())
     bins_mc = get_bin(n_pu - 1, pu_hist_mc.axis().edges())

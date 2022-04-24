@@ -3,10 +3,10 @@ import numpy as np
 from coffea import analysis_tools
 
 from HZUpsilonPhotonRun2NanoAOD import array_like
-from samples.samples import samples_descriptions
+from samples.samples_details import samples
 
 
-class EventWeights(analysis_tools.Weights):
+class EventWeights(analysis_tools.Weights):  # type: ignore
     """Extension of analysis_tools.Weights to get weights names and if they are systematics."""
 
     def __init__(self, size: int, storeIndividual: bool = False):
@@ -45,11 +45,11 @@ class EventWeights(analysis_tools.Weights):
 
 class Events:
     def __init__(self, events: ak.Array) -> None:
-        self.events = events
-        self.length = len(self.events)
-        self.dataset = events.metadata["dataset"]
-        self.year = samples_descriptions[self.dataset]["year"]
-        self.data_or_mc = samples_descriptions[self.dataset]["data_or_mc"]
+        self.events: ak.Array = events
+        self.length: int = len(self.events)
+        self.dataset: str = events.metadata["dataset"]
+        self.year: str = samples[self.dataset]["year"]
+        self.data_or_mc: str = samples[self.dataset]["data_or_mc"]
 
         # Build event weight holder
         self.weights = EventWeights(size=self.length, storeIndividual=True)
@@ -59,7 +59,7 @@ class Events:
 
         # fill a no_cut filter with all True values
         self.filters.add(
-            "no_cut", np.full(shape=self.length, fill_value=True, dtype=np.bool)
+            "no_cut", np.full(shape=self.length, fill_value=True, dtype=np.bool_)
         )
 
         self._stop_filtering = False
@@ -87,7 +87,7 @@ class Events:
 
         # fill a no_cut filter with all True values
         self.filters.add(
-            "no_cut", np.full(shape=self.length, fill_value=True, dtype=np.bool)
+            "no_cut", np.full(shape=self.length, fill_value=True, dtype=np.bool_)
         )
 
     def add_weight(self, weight_name: str, weight: array_like) -> None:
@@ -120,4 +120,4 @@ class Events:
 
     @property
     def trues(self) -> np.ndarray:
-        return np.full(shape=self.length, fill_value=True, dtype=np.bool)
+        return np.full(shape=self.length, fill_value=True, dtype=np.bool_)

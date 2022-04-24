@@ -1,6 +1,9 @@
 from __future__ import annotations
 
-from typing import Callable
+from typing import Callable, Union
+
+import awkward as ak
+from numpy.typing import ArrayLike
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events
 
@@ -9,7 +12,7 @@ class FeedForwardSequence:
     def __init__(self, name: str) -> None:
         """Base Sequence."""
         self.name = name
-        self.sequences = []
+        self.sequences: list[FeedForwardSequence] = []
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -21,7 +24,7 @@ class FeedForwardSequence:
         # will call sequences from its register
         if from_register:
             for seq in self.sequences:
-                evts = seq(evts)
+                evts = seq(evts=evts, from_register=False)
             return evts
 
         # default behavior
@@ -35,13 +38,12 @@ class FeedForwardSequence:
 
 
 class FilterSequence(FeedForwardSequence):
-    def __init__(self, name: str, filter_function: Callable) -> None:
+    def __init__(
+        self, name: str, filter_function: Callable[[Events], Union[ArrayLike, ak.Array]]
+    ) -> None:
         """Lambda Filter Sequence."""
         super().__init__(name)
         self.filter_function = filter_function
-
-    def __call__(self, evts: Events) -> Events:
-        return self.forward(evts)
 
     def forward(self, evts: Events) -> Events:
         evts.add_filter(self.name, self.filter_function(evts))
@@ -49,13 +51,12 @@ class FilterSequence(FeedForwardSequence):
 
 
 class WeightSequence(FeedForwardSequence):
-    def __init__(self, name: str, weight_function: Callable) -> None:
+    def __init__(
+        self, name: str, weight_function: Callable[[Events], Union[ArrayLike, ak.Array]]
+    ) -> None:
         """Lambda Filter Sequence."""
         super().__init__(name)
         self.weight_function = weight_function
-
-    def __call__(self, evts: Events) -> Events:
-        return self.forward(evts)
 
     def forward(self, evts: Events) -> Events:
         evts.add_weight(self.name, self.weight_function(evts))
@@ -63,13 +64,12 @@ class WeightSequence(FeedForwardSequence):
 
 
 class ObjectSequence(FeedForwardSequence):
-    def __init__(self, name: str, object_function: Callable) -> None:
+    def __init__(
+        self, name: str, object_function: Callable[[Events], ak.Array]
+    ) -> None:
         """Lambda Filter Sequence."""
         super().__init__(name)
         self.object_function = object_function
-
-    def __call__(self, evts: Events) -> Events:
-        return self.forward(evts)
 
     def forward(self, evts: Events) -> Events:
         evts.add_object(self.name, self.object_function(evts))

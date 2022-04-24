@@ -1,6 +1,6 @@
 [tool.isort]
 profile = "black"
-known_third_party = ["awkward", "coffea", "hist", "numpy", "particle", "tqdm", "typer", "uproot"]
+known_third_party = ["awkward", "coffea", "numpy", "particle", "tqdm", "typer", "uproot"]
 
 [tool.flakeheaven]
 # optionally inherit from remote config (or local if you want)
@@ -15,3 +15,13 @@ show_source = true
 [tool.flakeheaven.plugins]
 pycodestyle = ["+*", "-W503"]
 pyflakes = ["+*"]
+
+[mypy]
+plugins = ["numpy.typing.mypy_plugin"]
+warn_unused_configs = true
+warn_unused_ignores = true
+python_version = "3.9"
+strict = true
+show_error_codes = true
+warn_unreachable = true
+enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]

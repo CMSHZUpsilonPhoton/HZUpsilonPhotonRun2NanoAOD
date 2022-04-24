@@ -1,6 +1,6 @@
 import subprocess
 
-from samples.samples import data_samples_files, samples_files
+from samples.samples_details import data_samples_files, samples_files
 
 
 def execute_command(command: str) -> str:

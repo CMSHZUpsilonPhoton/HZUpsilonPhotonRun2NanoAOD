@@ -1,7 +1,11 @@
+import awkward as ak
 import numpy as np
+from numpy.typing import ArrayLike
 
 
-def l1prefiring_weights(events, n_events, year, syst_var="nominal"):
+def l1prefiring_weights(
+    events: ak.Array, n_events: int, year: str, syst_var: str = "nominal"
+) -> ArrayLike:
     """Returns Photon Electron Veto SFs.
     References:
     https://twiki.cern.ch/twiki/bin/view/CMS/L1PrefiringWeightRecipe

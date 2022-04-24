@@ -5,7 +5,7 @@ import os
 import typer
 
 
-def execute_command(command):
+def execute_command(command: str) -> None:
     print(f"\n\n\n\n--> Will execute:\n {command}")
     os.system(command)
 
@@ -16,7 +16,7 @@ def run_analysis(
     working_dir: str,
     uerj_usr: bool = False,
     debug: bool = True,
-):
+) -> None:
     inner_commands = f"cd {working_dir} ; conda activate ../HZUpsilonPhotonRun2NanoAOD_env ; ./run_analysis.py all"
     if debug:
         inner_commands += " --debug"
@@ -30,7 +30,7 @@ def run_analysis(
 
 def sync_working_directories(
     hostname: str, username: str, working_dir: str, uerj_usr: bool = False
-):
+) -> None:
     if uerj_usr:
         create_temp_dir = (
             f"ssh {username}@{hostname} 'mkdir -p /tmp/{username}/analysis_temp_dir'"
@@ -47,7 +47,7 @@ def sync_working_directories(
 
 def sync_outputs(
     hostname: str, username: str, working_dir: str, uerj_usr: bool = False
-):
+) -> None:
     if uerj_usr:
         create_temp_dir = f"ssh {username}@{hostname} 'mkdir -p /tmp/{username}/analysis_temp_dir/outputs'"
         execute_command(create_temp_dir)
@@ -69,7 +69,7 @@ def main(
     uerj_usr: bool = False,
     outputs: bool = False,
     debug: bool = True,
-):
+) -> None:
     sync_working_directories(hostname, username, working_dir, uerj_usr)
     run_analysis(hostname, username, working_dir, uerj_usr, debug)
     if outputs:

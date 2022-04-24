@@ -1,11 +1,13 @@
+import awkward as ak
 import numpy as np
 from coffea import analysis_tools, processor
+from coffea.processor import Accumulatable
 
 from HZUpsilonPhotonRun2NanoAOD.utils import mc_sample_filter
 
 
-class GenAnalyzer(processor.ProcessorABC):
-    def __init__(self):
+class GenAnalyzer(processor.ProcessorABC):  # type: ignore
+    def __init__(self) -> None:
         self._accumulator = processor.dict_accumulator(
             {
                 "unweighted_sum_of_events": processor.defaultdict_accumulator(float),
@@ -14,14 +16,14 @@ class GenAnalyzer(processor.ProcessorABC):
         )
 
     @property
-    def accumulator(self):
+    def accumulator(self) -> Accumulatable:
         return self._accumulator
 
     # we will receive a NanoEvents
-    def process(self, events):
+    def process(self, events: ak.Array) -> Accumulatable:
         dataset = events.metadata["dataset"]
-        # year = samples_descriptions[dataset]["year"]
-        # data_or_mc = samples_descriptions[dataset]["data_or_mc"]
+        # year = samples[dataset]["year"]
+        # data_or_mc = samples[dataset]["data_or_mc"]
         output = self.accumulator.identity()
 
         # Special MC sample filter
@@ -39,5 +41,5 @@ class GenAnalyzer(processor.ProcessorABC):
         # end processing
         return output
 
-    def postprocess(self, accumulator):
+    def postprocess(self, accumulator: Accumulatable) -> Accumulatable:
         return accumulator

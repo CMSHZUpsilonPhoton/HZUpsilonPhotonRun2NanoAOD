@@ -46,7 +46,9 @@ ext.finalize()
 evaluator = ext.make_evaluator()
 
 
-def muon_id_weights(muon_1, muon_2, year, syst_var="nominal"):
+def muon_id_weights(
+    muon_1: ak.Array, muon_2: ak.Array, year: str, syst_var: str = "nominal"
+) -> ak.Array:
     """Returns Muon ID SFs.
     References:
     2016: https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonUL2018#Introduction
@@ -94,7 +96,9 @@ def muon_id_weights(muon_1, muon_2, year, syst_var="nominal"):
     return ak.firsts(ak.fill_none(muon_1_id_sf * muon_2_id_sf, 1.0))
 
 
-def muon_iso_weights(muon_1, muon_2, year, syst_var="nominal"):
+def muon_iso_weights(
+    muon_1: ak.Array, muon_2: ak.Array, year: str, syst_var: str = "nominal"
+) -> ak.Array:
     """Returns Muon ID SFs.
     References:
     2016: https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonUL2018#Introduction

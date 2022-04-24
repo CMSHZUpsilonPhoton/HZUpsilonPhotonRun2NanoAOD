@@ -4,7 +4,7 @@ import numpy as np
 from HZUpsilonPhotonRun2NanoAOD.events import Events
 
 
-def build_good_muons(evts: Events):
+def build_good_muons(evts: Events) -> ak.Array:
     nmuons_filter = ak.num(evts.events.Muon) >= 2  # at least 2 muons
     muon_eta_filter = np.absolute(evts.events.Muon.eta) < 2.4  # |eta| < 2.4
     muon_pt_filter = evts.events.Muon.pt > 5  # minimum muon pt
@@ -20,7 +20,7 @@ def build_good_muons(evts: Events):
     ]
 
 
-def build_good_photons(evts: Events):
+def build_good_photons(evts: Events) -> ak.Array:
     nphotons_filter = ak.num(evts.events.Photon) >= 1  # at lest one photon
     photon_eta_filter = np.absolute(evts.events.Photon.eta) < 2.5  # |eta| < 2.5
     photon_pt_filter = evts.events.Photon.pt > 32  # pt at least 32 GeV
@@ -41,14 +41,14 @@ def build_good_photons(evts: Events):
     ]
 
 
-def build_dimuons(evts: Events):
+def build_dimuons(evts: Events) -> ak.Array:
     dimuons = ak.combinations(evts.events.good_muons, 2)
     dimuons = dimuons[(dimuons["0"].charge + dimuons["1"].charge == 0)]
 
     return dimuons
 
 
-def build_bosons_combination(evts: Events):
+def build_bosons_combination(evts: Events) -> ak.Array:
     bosons = ak.cartesian(
         [
             evts.events.dimuons,
@@ -62,7 +62,7 @@ def build_bosons_combination(evts: Events):
     return bosons_combinations
 
 
-def build_boson(evts: Events):
+def build_boson(evts: Events) -> ak.Array:
     return (
         evts.events.bosons_combinations["0"]["0"]
         + evts.events.bosons_combinations["0"]["1"]
@@ -70,20 +70,20 @@ def build_boson(evts: Events):
     )
 
 
-def build_mu_1(evts: Events):
+def build_mu_1(evts: Events) -> ak.Array:
     return evts.events.bosons_combinations["0"]["0"]
 
 
-def build_mu_2(evts: Events):
+def build_mu_2(evts: Events) -> ak.Array:
     return evts.events.bosons_combinations["0"]["1"]
 
 
-def build_upsilon(evts: Events):
+def build_upsilon(evts: Events) -> ak.Array:
     return (
         evts.events.bosons_combinations["0"]["0"]
         + evts.events.bosons_combinations["0"]["1"]
     )
 
 
-def build_photon(evts: Events):
+def build_photon(evts: Events) -> ak.Array:
     return evts.events.bosons_combinations["1"]

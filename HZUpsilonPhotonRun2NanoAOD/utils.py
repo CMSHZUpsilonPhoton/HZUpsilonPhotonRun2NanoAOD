@@ -1,11 +1,13 @@
 import secrets
+from typing import Union
 
 import awkward as ak
 import numpy as np
 import uproot
 from coffea.nanoevents.methods.candidate import Candidate
 from coffea.processor import Accumulatable
-from particle import Particle
+from numpy.typing import ArrayLike
+from particle import PDGID, Particle
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events
 
@@ -17,17 +19,17 @@ def file_tester(file_path: str) -> None:
         print(f"An exception occurred trying to open: {file_path}")
 
 
-def safe_mass(candidate: Candidate):
+def safe_mass(candidate: Candidate) -> ArrayLike:
     """Get the mass of a canditate, taking care of negative mass**2 due to NanoAOD precision issues."""
     squared_mass = candidate.mass2
     return np.sqrt(ak.where(squared_mass < 0, 0, squared_mass))
 
 
-def get_pdgid_by_name(name: str) -> int:
+def get_pdgid_by_name(name: str) -> PDGID:
     return Particle.from_name(name).pdgid
 
 
-def mc_sample_filter(dataset, events):
+def mc_sample_filter(dataset: str, events: ak.Array) -> Union[ArrayLike, ak.Array]:
     """Filter MC samples for special cases."""
     _filter = np.ones(len(events), dtype=bool)
 

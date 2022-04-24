@@ -1,6 +1,6 @@
 # References: https://docs.google.com/spreadsheets/d/1zvvedRr1K4NFylNqxNdkWbFgoMPvh9E9BrqxywBpu-Y/edit#gid=0
 
-xsecs = {}
+xsecs: dict[str, float] = {}
 xsecs["ggH_HToUps1SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8"] = 7.1364e-9  # in pb
 xsecs["ggH_HToUps2SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8"] = 1.5108e-9  # in pb
 xsecs["ggH_HToUps3SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8"] = 1.0936e-9  # in pb
@@ -13,7 +13,8 @@ xsecs["ZToUpsilon2SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8"] = 2.6887e-05  # in
 xsecs["ZToUpsilon3SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8"] = 2.3400e-05  # in pb
 
 
-def x_section(dataset):
+def x_section(dataset: str) -> float:
     for xs in xsecs:
         if dataset.startswith(xs):
             return xsecs[xs]
+    return 0
