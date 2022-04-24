@@ -1,12 +1,6 @@
 import awkward as ak
-from pprint import pprint
 from coffea import processor
-
-
-from coffea.processor import Accumulatable
-from coffea.processor import dict_accumulator
-from coffea.processor import defaultdict_accumulator
-
+from coffea.processor import Accumulatable, defaultdict_accumulator, dict_accumulator
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events
 from HZUpsilonPhotonRun2NanoAOD.forward_events import forward_events

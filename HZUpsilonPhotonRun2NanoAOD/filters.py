@@ -1,6 +1,5 @@
 import awkward as ak
 import numpy as np
-
 from coffea import lumi_tools
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events

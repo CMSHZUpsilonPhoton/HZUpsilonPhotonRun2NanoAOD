@@ -1,9 +1,6 @@
-from coffea import processor
-from coffea import analysis_tools
-
 import numpy as np
+from coffea import analysis_tools, processor
 
-from samples import samples_descriptions
 from HZUpsilonPhotonRun2NanoAOD.utils import mc_sample_filter
 
 
@@ -23,8 +20,8 @@ class GenAnalyzer(processor.ProcessorABC):
     # we will receive a NanoEvents
     def process(self, events):
         dataset = events.metadata["dataset"]
-        year = samples_descriptions[dataset]["year"]
-        data_or_mc = samples_descriptions[dataset]["data_or_mc"]
+        # year = samples_descriptions[dataset]["year"]
+        # data_or_mc = samples_descriptions[dataset]["data_or_mc"]
         output = self.accumulator.identity()
 
         # Special MC sample filter

@@ -1,25 +1,20 @@
 #!/usr/bin/env python
 
 
-import os
-from pprint import pprint
 import json
-import typer
-from tqdm import tqdm
+import os
 from enum import Enum
 
-
-from HZUpsilonPhotonRun2NanoAOD.utils import file_tester
-from HZUpsilonPhotonRun2NanoAOD.analyzer import Analyzer
-from HZUpsilonPhotonRun2NanoAOD.gen_analyzer import GenAnalyzer
-from samples import samples, mc_samples_files, samples_files
-
+import typer
 from coffea import processor
 from coffea.nanoevents import NanoAODSchema
-from HZUpsilonPhotonRun2NanoAOD.hist_accumulator import HistAccumulator
-from HZUpsilonPhotonRun2NanoAOD.output_merger import output_merger
+from tqdm import tqdm
 
-from coffea.util import save
+from HZUpsilonPhotonRun2NanoAOD.analyzer import Analyzer
+from HZUpsilonPhotonRun2NanoAOD.gen_analyzer import GenAnalyzer
+from HZUpsilonPhotonRun2NanoAOD.output_merger import output_merger
+from HZUpsilonPhotonRun2NanoAOD.utils import file_tester
+from samples.samples import mc_samples_files, samples, samples_files
 
 # create typer app
 help_str = """

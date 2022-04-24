@@ -1,5 +1,5 @@
-from coffea.processor import AccumulatorABC
 import hist
+from coffea.processor import AccumulatorABC
 
 
 class HistAccumulator(AccumulatorABC):

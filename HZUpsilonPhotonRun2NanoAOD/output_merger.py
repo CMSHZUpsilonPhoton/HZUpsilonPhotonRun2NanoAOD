@@ -1,5 +1,6 @@
-from samples import samples_files, data_samples_files
 import subprocess
+
+from samples.samples import data_samples_files, samples_files
 
 
 def execute_command(command: str) -> str:
@@ -36,7 +37,7 @@ def output_merger() -> str:
     #     f"hadd -f outputs/dimuons_mass_Run2017.root outputs/dimuons_mass_Run2017*.root "
     # )
     merger_output += execute_command(
-        f"hadd -f outputs/dimuons_mass_Run2018.root outputs/dimuons_mass_Run2018*.root "
+        "hadd -f outputs/dimuons_mass_Run2018.root outputs/dimuons_mass_Run2018*.root "
     )
     # merger_output += execute_command(
     #     f"hadd -f outputs/dimuons_mass_Run2.root outputs/dimuons_mass_Run2016APV.root outputs/dimuons_mass_Run2016.root outputs/dimuons_mass_Run2017.root outputs/dimuons_mass_Run2018.root "
@@ -59,7 +60,7 @@ def output_merger() -> str:
     #     f"hadd -f outputs/preselected_Run2017.root outputs/preselected_Run2017*.root "
     # )
     merger_output += execute_command(
-        f"hadd -f outputs/preselected_Run2018.root outputs/preselected_Run2018*.root "
+        "hadd -f outputs/preselected_Run2018.root outputs/preselected_Run2018*.root "
     )
 
     # execute_command(
@@ -83,7 +84,7 @@ def output_merger() -> str:
     #     f"hadd -f outputs/selected_Run2017.root outputs/selected_Run2017*.root "
     # )
     merger_output += execute_command(
-        f"hadd -f outputs/selected_Run2018.root outputs/selected_Run2018*.root "
+        "hadd -f outputs/selected_Run2018.root outputs/selected_Run2018*.root "
     )
     # merger_output += execute_command(
     #     f"hadd -f outputs/selected_Run2.root outputs/selected_Run2016APV.root outputs/selected_Run2016.root outputs/selected_Run2017.root outputs/selected_Run2018.root "

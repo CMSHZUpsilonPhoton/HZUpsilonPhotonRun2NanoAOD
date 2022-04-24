@@ -1,0 +1,17 @@
+[tool.isort]
+profile = "black"
+known_third_party = ["awkward", "coffea", "hist", "numpy", "particle", "tqdm", "typer", "uproot"]
+
+[tool.flakeheaven]
+# optionally inherit from remote config (or local if you want)
+base = "https://raw.githubusercontent.com/flakeheaven/flakeheaven/main/pyproject.toml"
+# make output nice
+format = "grouped"
+# don't limit yourself
+max_line_length = 600
+# show line of source code in output
+show_source = true
+
+[tool.flakeheaven.plugins]
+pycodestyle = ["+*", "-W503"]
+pyflakes = ["+*"]

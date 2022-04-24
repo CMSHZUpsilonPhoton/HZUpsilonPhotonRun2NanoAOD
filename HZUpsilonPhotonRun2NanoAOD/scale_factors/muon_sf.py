@@ -1,6 +1,5 @@
-import numpy as np
 import awkward as ak
-
+import numpy as np
 from coffea.lookup_tools import extractor
 
 # setup a extractor
@@ -78,18 +77,18 @@ def muon_id_weights(muon_1, muon_2, year, syst_var="nominal"):
 
         if syst_var != "plus":
             muon_1_id_sf = muon_1_id_sf + np.sqrt(
-                muon_1_id_sf_stat ** 2 + muon_1_id_sf_syst ** 2
+                muon_1_id_sf_stat**2 + muon_1_id_sf_syst**2
             )
             muon_2_id_sf = muon_2_id_sf + np.sqrt(
-                muon_2_id_sf_stat ** 2 + muon_2_id_sf_syst ** 2
+                muon_2_id_sf_stat**2 + muon_2_id_sf_syst**2
             )
 
         if syst_var != "minus":
             muon_1_id_sf = muon_1_id_sf - np.sqrt(
-                muon_1_id_sf_stat ** 2 + muon_1_id_sf_syst ** 2
+                muon_1_id_sf_stat**2 + muon_1_id_sf_syst**2
             )
             muon_2_id_sf = muon_2_id_sf - np.sqrt(
-                muon_2_id_sf_stat ** 2 + muon_2_id_sf_syst ** 2
+                muon_2_id_sf_stat**2 + muon_2_id_sf_syst**2
             )
 
     return ak.firsts(ak.fill_none(muon_1_id_sf * muon_2_id_sf, 1.0))
@@ -126,18 +125,18 @@ def muon_iso_weights(muon_1, muon_2, year, syst_var="nominal"):
 
         if syst_var != "plus":
             muon_1_iso_sf = muon_1_iso_sf + np.sqrt(
-                muon_1_iso_sf_stat ** 2 + muon_1_iso_sf_syst ** 2
+                muon_1_iso_sf_stat**2 + muon_1_iso_sf_syst**2
             )
             muon_2_iso_sf = muon_2_iso_sf + np.sqrt(
-                muon_2_iso_sf_stat ** 2 + muon_2_iso_sf_syst ** 2
+                muon_2_iso_sf_stat**2 + muon_2_iso_sf_syst**2
             )
 
         if syst_var != "minus":
             muon_1_iso_sf = muon_1_iso_sf - np.sqrt(
-                muon_1_iso_sf_stat ** 2 + muon_1_iso_sf_syst ** 2
+                muon_1_iso_sf_stat**2 + muon_1_iso_sf_syst**2
             )
             muon_2_iso_sf = muon_2_iso_sf - np.sqrt(
-                muon_2_iso_sf_stat ** 2 + muon_2_iso_sf_syst ** 2
+                muon_2_iso_sf_stat**2 + muon_2_iso_sf_syst**2
             )
 
     return ak.firsts(ak.fill_none(muon_1_iso_sf * muon_2_iso_sf, 1.0))

@@ -12,6 +12,7 @@ https://docs.conda.io/en/latest/miniconda.html
 conda create -y -c conda-forge -p ../HZUpsilonPhotonRun2NanoAOD_env python=3.9.12 mamba
 conda activate ../HZUpsilonPhotonRun2NanoAOD_env
 mamba install -y -c conda-forge --file requirements.txt
+pre-commit install
 ```
 
 ## Load env
@@ -33,11 +34,11 @@ Usual workflow:
 
 - Generator level analysis (filtering, getting total number of events, polarization, ...)
 
-`./run_analysis.py gen` 
+`./run_analysis.py gen`
 
 - Main analysis code for signal selection
 
-`./run_analysis.py main`  
+`./run_analysis.py main`
 
 - Merge the many outputs [buffers], per sample and per process [Data or MC sample]
 
@@ -49,7 +50,7 @@ Usual workflow:
 
 ### Remote
 
-It is possible to run the analysis code, on a remote machine, from you local computer. It needs SSH passwordless login available. 
+It is possible to run the analysis code, on a remote machine, from you local computer. It needs SSH passwordless login available.
 
 More information:
 
@@ -66,4 +67,3 @@ Example:
 ## Notes and tips
 
 ...
-

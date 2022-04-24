@@ -1,19 +1,18 @@
 import json
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events
-
-from HZUpsilonPhotonRun2NanoAOD.scale_factors.pu_weight import pu_weights
+from HZUpsilonPhotonRun2NanoAOD.scale_factors.l1prefiring_sf import l1prefiring_weights
 from HZUpsilonPhotonRun2NanoAOD.scale_factors.muon_sf import (
     muon_id_weights,
     muon_iso_weights,
 )
-from HZUpsilonPhotonRun2NanoAOD.scale_factors.l1prefiring_sf import l1prefiring_weights
 from HZUpsilonPhotonRun2NanoAOD.scale_factors.photon_sf import (
-    photon_id_weights,
     photon_electron_veto_weights,
+    photon_id_weights,
 )
-
-from samples import lumis, x_section
+from HZUpsilonPhotonRun2NanoAOD.scale_factors.pu_weight import pu_weights
+from samples.lumis import lumis
+from samples.xsecs import x_section
 
 
 def pileup_weight(evts: Events):
@@ -54,9 +53,11 @@ def l1prefr_weights(evts: Events):
     if evts.data_or_mc == "data":
         return (evts.ones, evts.ones, evts.ones)
     else:
-        nominal = l1prefiring_weights(evts.length, evts.year, syst_var="nominal")
-        up = l1prefiring_weights(evts.length, evts.year, syst_var="plus")
-        down = l1prefiring_weights(evts.length, evts.year, syst_var="minus")
+        nominal = l1prefiring_weights(
+            evts.events, evts.length, evts, syst_var="nominal"
+        )
+        up = l1prefiring_weights(evts.events.length, evts, syst_var="plus")
+        down = l1prefiring_weights(evts.events.length, evts, syst_var="minus")
         return nominal, up, down
 
 

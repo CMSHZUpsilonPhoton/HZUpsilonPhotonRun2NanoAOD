@@ -1,11 +1,9 @@
-import numpy as np
 import awkward as ak
-
+import numpy as np
 from coffea import analysis_tools
 
 from HZUpsilonPhotonRun2NanoAOD import array_like
-
-from samples import samples_descriptions
+from samples.samples import samples_descriptions
 
 
 class EventWeights(analysis_tools.Weights):
@@ -73,7 +71,7 @@ class Events:
         return f"Dataset: {self.dataset} - Is: {self.data_or_mc} - Year: {self.year} - Number of events: {self.length}"
 
     def filter_events(self, filter: array_like) -> None:
-        if self._stop_filtering == True:
+        if self._stop_filtering:
             raise Exception(
                 "Can not filter an instance which has already been modified (add_filter/add_weight/add_object). Please, filter before any of those operations."
             )

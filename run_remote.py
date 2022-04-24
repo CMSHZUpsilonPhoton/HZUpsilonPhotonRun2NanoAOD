@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+
 import typer
 
 
@@ -55,7 +56,7 @@ def sync_outputs(
         re_sync_command = f"rsync -ah --info=progress2 --no-inc-recursive {username}@lxplus.cern.ch:/tmp/{username}/analysis_temp_dir/outputs/ ./outputs "
         execute_command(re_sync_command)
     else:
-        create_outputs_dir = f"mkdir -p outputs"
+        create_outputs_dir = "mkdir -p outputs"
         execute_command(create_outputs_dir)
         sync_command = f"rsync -ah --info=progress2 --no-inc-recursive {username}@{hostname}:{working_dir}/outputs/ ./outputs "
         execute_command(sync_command)

@@ -1,14 +1,13 @@
-from typing import Union
+import secrets
+
 import awkward as ak
 import numpy as np
 import uproot
-import secrets
-import numpy as np
-from particle import Particle
 from coffea.nanoevents.methods.candidate import Candidate
+from coffea.processor import Accumulatable
+from particle import Particle
 
 from HZUpsilonPhotonRun2NanoAOD.events import Events
-from coffea.processor import Accumulatable
 
 
 def file_tester(file_path: str) -> None:
