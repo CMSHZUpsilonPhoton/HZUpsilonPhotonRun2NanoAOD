@@ -75,7 +75,11 @@ def signal_selection_filter(evts: Events) -> ak.Array:
     pt_filter = upsilon_vectors.pt > 20
 
     signal_selection = (
-        ak.num(delta_eta_filter & delta_phi_filter & delta_r_filter & pt_filter) >= 1
+        # ak.num(delta_eta_filter & delta_phi_filter & delta_r_filter & pt_filter) >= 1
+        ak.fill_none(
+            ak.firsts(delta_eta_filter & delta_phi_filter & delta_r_filter & pt_filter),
+            False,
+        )
     )
 
     return signal_selection
@@ -89,4 +93,4 @@ def mass_selection_filter(evts: Events) -> ak.Array:
         safe_mass(evts.events.upsilon) < 11
     )
 
-    return ak.num(boson_mass_filter & dimuon_mass_filter) >= 1
+    return ak.fill_none(ak.firsts(boson_mass_filter & dimuon_mass_filter), False)

@@ -1,4 +1,4 @@
-# HZ --> Upsilon + Photon - Run 2 - NanoAOD
+# H/Z --> Upsilon + Photon - Run 2 - NanoAOD
 
 
 ## Setup
