@@ -16,7 +16,8 @@ void make_plot_2d()
 	gStyle->SetPaintTextFormat("5.2f");
 	gStyle->SetPalette(53);
 
-	TString selection = "../preselected";
+	// TString selection = "../preselected";
+	TString selection = "outputs/preselected";
 
 	TFile *_file1 = TFile::Open(selection + "_ggH_HToUps1SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
 	TFile *_file2 = TFile::Open(selection + "_ggH_HToUps2SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
@@ -52,7 +53,7 @@ void make_plot_2d()
 			std::cout << "(i,j): (" << ii << "," << j << ")" << std::endl;
 
 			TH1F *h1_H1 = new TH1F("h1_H1", "weigth", 2, 0, 2);
-			Double_t var_w_H1;
+			Float_t var_w_H1;
 			treeH1->SetBranchAddress("weight", &var_w_H1);
 			Float_t var_delta_eta_upsilon_photon_H1;
 			treeH1->SetBranchAddress("delta_eta_upsilon_photon", &var_delta_eta_upsilon_photon_H1);
@@ -65,7 +66,7 @@ void make_plot_2d()
 					h1_H1->Fill(1, var_w_H1);
 			}
 			TH1F *h1_H2 = new TH1F("h1_H2", "weigth", 2, 0, 2);
-			Double_t var_w_H2;
+			Float_t var_w_H2;
 			treeH2->SetBranchAddress("weight", &var_w_H2);
 			Float_t var_delta_eta_upsilon_photon_H2;
 			treeH2->SetBranchAddress("delta_eta_upsilon_photon", &var_delta_eta_upsilon_photon_H2);
@@ -78,7 +79,7 @@ void make_plot_2d()
 					h1_H2->Fill(1, var_w_H2);
 			}
 			TH1F *h1_H3 = new TH1F("h1_H3", "weigth", 2, 0, 2);
-			Double_t var_w_H3;
+			Float_t var_w_H3;
 			treeH3->SetBranchAddress("weight", &var_w_H3);
 			Float_t var_delta_eta_upsilon_photon_H3;
 			treeH3->SetBranchAddress("delta_eta_upsilon_photon", &var_delta_eta_upsilon_photon_H3);
@@ -94,7 +95,7 @@ void make_plot_2d()
 			h1_H1->Add(h1_H3);
 
 			TH1F *h1_Z1 = new TH1F("h1_Z1", "weigth", 2, 0, 2);
-			Double_t var_w_Z1;
+			Float_t var_w_Z1;
 			treeZ1->SetBranchAddress("weight", &var_w_Z1);
 			Float_t var_delta_eta_upsilon_photon_Z1;
 			treeZ1->SetBranchAddress("delta_eta_upsilon_photon", &var_delta_eta_upsilon_photon_Z1);
@@ -107,7 +108,7 @@ void make_plot_2d()
 					h1_Z1->Fill(1, var_w_Z1);
 			}
 			TH1F *h1_Z2 = new TH1F("h1_Z2", "weigth", 2, 0, 2);
-			Double_t var_w_Z2;
+			Float_t var_w_Z2;
 			treeZ2->SetBranchAddress("weight", &var_w_Z2);
 			Float_t var_delta_eta_upsilon_photon_Z2;
 			treeZ2->SetBranchAddress("delta_eta_upsilon_photon", &var_delta_eta_upsilon_photon_Z2);
@@ -120,7 +121,7 @@ void make_plot_2d()
 					h1_Z2->Fill(1, var_w_Z2);
 			}
 			TH1F *h1_Z3 = new TH1F("h1_Z3", "weigth", 2, 0, 2);
-			Double_t var_w_Z3;
+			Float_t var_w_Z3;
 			treeZ3->SetBranchAddress("weight", &var_w_Z3);
 			Float_t var_delta_eta_upsilon_photon_Z3;
 			treeZ3->SetBranchAddress("delta_eta_upsilon_photon", &var_delta_eta_upsilon_photon_Z3);
@@ -136,7 +137,7 @@ void make_plot_2d()
 			h1_Z1->Add(h1_Z3);
 
 			TH1F *h1_data = new TH1F("h1_data", "weigth", 2, 0, 2);
-			Double_t var_w_data;
+			Float_t var_w_data;
 			treedata->SetBranchAddress("weight", &var_w_data);
 			Float_t var_delta_eta_upsilon_photon_data;
 			treedata->SetBranchAddress("delta_eta_upsilon_photon", &var_delta_eta_upsilon_photon_data);
@@ -179,11 +180,11 @@ void make_plot_2d()
 
 	TCanvas *cH = new TCanvas("cH", "", 0, 0, 4500, 9000);
 	h2_H->Draw("COLZ text");
-	cH->SaveAs("plots/" + "H_upsilon_boson_window_large.png");
-	cH->SaveAs("plots/" + "H_upsilon_boson_window_large.pdf");
+	cH->SaveAs("plots/H_upsilon_boson_window_large.png");
+	cH->SaveAs("plots/H_upsilon_boson_window_large.pdf");
 
 	TCanvas *cZ = new TCanvas("cZ", "", 0, 0, 4500, 9000);
 	h2_Z->Draw("COLZ text");
-	cZ->SaveAs("plots/" + "Z_upsilon_boson_window_large.png");
-	cZ->SaveAs("plots/" + "Z_upsilon_boson_window_large.pdf");
+	cZ->SaveAs("plots/Z_upsilon_boson_window_large.png");
+	cZ->SaveAs("plots/Z_upsilon_boson_window_large.pdf");
 }

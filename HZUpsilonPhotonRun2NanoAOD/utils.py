@@ -87,33 +87,41 @@ def save_events(evts: Events, prefix: str, list_of_filters: list[str]) -> None:
 
     output_filename = f"outputs/buffer/{prefix}_{evts.dataset}_{evts.year}_{secrets.token_hex(nbytes=20)}.root"
     buffer = {
-        "boson_mass": ak.flatten(safe_mass(boson)),
-        "boson_pt": ak.flatten(boson.pt),
-        "boson_eta": ak.flatten(boson.eta),
-        "boson_phi": ak.flatten(boson.phi),
-        "upsilon_mass": ak.flatten(safe_mass(upsilon)),
-        "upsilon_pt": ak.flatten(upsilon.pt),
-        "upsilon_eta": ak.flatten(upsilon.eta),
-        "upsilon_phi": ak.flatten(upsilon.phi),
-        "photon_mass": ak.flatten(photon.mass),
-        "photon_pt": ak.flatten(photon.pt),
-        "photon_eta": ak.flatten(photon.eta),
-        "photon_phi": ak.flatten(photon.phi),
-        "mu_1_mass": ak.flatten(mu_1.mass),
-        "mu_1_pt": ak.flatten(mu_1.pt),
-        "mu_1_eta": ak.flatten(mu_1.eta),
-        "mu_1_phi": ak.flatten(mu_1.phi),
-        "mu_2_mass": ak.flatten(mu_2.mass),
-        "mu_2_pt": ak.flatten(mu_2.pt),
-        "mu_2_eta": ak.flatten(mu_2.eta),
-        "mu_2_phi": ak.flatten(mu_2.phi),
-        "delta_eta_upsilon_photon": ak.flatten(np.absolute(upsilon.eta - photon.eta)),
-        "delta_phi_upsilon_photon": ak.flatten(np.absolute(upsilon.delta_phi(photon))),
-        "delta_r_upsilon_photon": ak.flatten(upsilon.delta_r(photon)),
-        "weight": evts.weights.weight()[selection_filter],
+        "boson_mass": ak.values_astype(ak.flatten(safe_mass(boson)), np.single),
+        "boson_pt": ak.values_astype(ak.flatten(boson.pt), np.single),
+        "boson_eta": ak.values_astype(ak.flatten(boson.eta), np.single),
+        "boson_phi": ak.values_astype(ak.flatten(boson.phi), np.single),
+        "upsilon_mass": ak.values_astype(ak.flatten(safe_mass(upsilon)), np.single),
+        "upsilon_pt": ak.values_astype(ak.flatten(upsilon.pt), np.single),
+        "upsilon_eta": ak.values_astype(ak.flatten(upsilon.eta), np.single),
+        "upsilon_phi": ak.values_astype(ak.flatten(upsilon.phi), np.single),
+        "photon_mass": ak.values_astype(ak.flatten(photon.mass), np.single),
+        "photon_pt": ak.values_astype(ak.flatten(photon.pt), np.single),
+        "photon_eta": ak.values_astype(ak.flatten(photon.eta), np.single),
+        "photon_phi": ak.values_astype(ak.flatten(photon.phi), np.single),
+        "mu_1_mass": ak.values_astype(ak.flatten(mu_1.mass), np.single),
+        "mu_1_pt": ak.values_astype(ak.flatten(mu_1.pt), np.single),
+        "mu_1_eta": ak.values_astype(ak.flatten(mu_1.eta), np.single),
+        "mu_1_phi": ak.values_astype(ak.flatten(mu_1.phi), np.single),
+        "mu_2_mass": ak.values_astype(ak.flatten(mu_2.mass), np.single),
+        "mu_2_pt": ak.values_astype(ak.flatten(mu_2.pt), np.single),
+        "mu_2_eta": ak.values_astype(ak.flatten(mu_2.eta), np.single),
+        "mu_2_phi": ak.values_astype(ak.flatten(mu_2.phi), np.single),
+        "delta_eta_upsilon_photon": ak.values_astype(
+            ak.flatten(np.absolute(upsilon.eta - photon.eta)), np.single
+        ),
+        "delta_phi_upsilon_photon": ak.values_astype(
+            ak.flatten(np.absolute(upsilon.delta_phi(photon))), np.single
+        ),
+        "delta_r_upsilon_photon": ak.values_astype(
+            ak.flatten(upsilon.delta_r(photon)), np.single
+        ),
+        "weight": ak.values_astype(evts.weights.weight()[selection_filter], np.single),
     }
     for w in evts.weights.names:
-        buffer[f"weight_{w}"] = evts.weights.individual_weight(w)[selection_filter]
+        buffer[f"weight_{w}"] = ak.values_astype(
+            evts.weights.individual_weight(w)[selection_filter], np.single
+        )
 
     with uproot.recreate(output_filename) as f:
         f["Events"] = buffer

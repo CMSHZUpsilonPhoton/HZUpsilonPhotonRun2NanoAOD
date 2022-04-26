@@ -53,13 +53,20 @@ def sync_outputs(
         execute_command(create_temp_dir)
         sync_command = f"ssh {username}@{hostname} 'rsync -ah --info=progress2 --no-inc-recursive uerj-usr:{working_dir}/outputs/ /tmp/{username}/analysis_temp_dir/outputs'"
         execute_command(sync_command)
-        re_sync_command = f"rsync -ah --info=progress2 --no-inc-recursive {username}@lxplus.cern.ch:/tmp/{username}/analysis_temp_dir/outputs/ ./outputs "
+        tar_files = f"tar -zcvf /eos/user/f/{username}/www/analysis_buffer/hzupsilonphoton_outputs_buffer.tar.gz /tmp/{username}/analysis_temp_dir/outputs/*.root"
+        re_sync_command = f"ssh {username}@{hostname} '{tar_files}'"
         execute_command(re_sync_command)
     else:
         create_outputs_dir = "mkdir -p outputs"
         execute_command(create_outputs_dir)
-        sync_command = f"rsync -ah --info=progress2 --no-inc-recursive {username}@{hostname}:{working_dir}/outputs/ ./outputs "
-        execute_command(sync_command)
+        tar_files = f"tar -zcvf /eos/user/f/{username}/www/analysis_buffer/hzupsilonphoton_outputs_buffer.tar.gz {working_dir}/outputs/*.root"
+        copy_to_www = f"ssh {username}@{hostname} '{tar_files}'"
+        execute_command(copy_to_www)
+        # sync_command = f"rsync -ah --info=progress2 --exclude='buffer' --no-inc-recursive {username}@{hostname}:{working_dir}/outputs/ ./outputs "
+        # execute_command(sync_command)
+
+    download = "mkdir -p outputs ; wget -c https://ftorresd.web.cern.ch/ftorresd/analysis_buffer/hzupsilonphoton_outputs_buffer.tar.gz -O outputs/hzupsilonphoton_outputs_buffer.tar.gz ; cd ; outputs ; tar -xzvf hzupsilonphoton_outputs_buffer.tar.gz"
+    execute_command(download)
 
 
 def main(

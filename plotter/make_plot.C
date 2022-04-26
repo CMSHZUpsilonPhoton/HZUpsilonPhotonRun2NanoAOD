@@ -56,15 +56,15 @@ void make_plot()
 		for (int j = 0; j < n_histos; j++)
 		{
 
-			TFile *_file1 = TFile::Open("../" + selection[jj] + "_ggH_HToUps1SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
-			TFile *_file2 = TFile::Open("../" + selection[jj] + "_ggH_HToUps2SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
-			TFile *_file3 = TFile::Open("../" + selection[jj] + "_ggH_HToUps3SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
-			TFile *_file4 = TFile::Open("../" + selection[jj] + "_ZToUpsilon1SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
-			TFile *_file5 = TFile::Open("../" + selection[jj] + "_ZToUpsilon2SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
-			TFile *_file6 = TFile::Open("../" + selection[jj] + "_ZToUpsilon3SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
-			TFile *_file7 = TFile::Open("../" + selection[jj] + "_ZGTo2MuG_MMuMu-2To15_TuneCP5_13TeV-madgraph-pythia8_2018.root");
-			TFile *_file8 = TFile::Open("../" + selection[jj] + "_GluGluHToMuMuG_M125_MLL-0To60_Dalitz_012j_13TeV_amcatnloFXFX_pythia8_PSWeight_2018.root");
-			TFile *_file0 = TFile::Open("../" + selection[jj] + "_Run2018.root");
+			TFile *_file1 = TFile::Open("outputs/" + selection[jj] + "_ggH_HToUps1SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
+			TFile *_file2 = TFile::Open("outputs/" + selection[jj] + "_ggH_HToUps2SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
+			TFile *_file3 = TFile::Open("outputs/" + selection[jj] + "_ggH_HToUps3SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
+			TFile *_file4 = TFile::Open("outputs/" + selection[jj] + "_ZToUpsilon1SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
+			TFile *_file5 = TFile::Open("outputs/" + selection[jj] + "_ZToUpsilon2SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
+			TFile *_file6 = TFile::Open("outputs/" + selection[jj] + "_ZToUpsilon3SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
+			TFile *_file7 = TFile::Open("outputs/" + selection[jj] + "_ZGTo2MuG_MMuMu-2To15_TuneCP5_13TeV-madgraph-pythia8_2018.root");
+			TFile *_file8 = TFile::Open("outputs/" + selection[jj] + "_GluGluHToMuMuG_M125_MLL-0To60_Dalitz_012j_13TeV_amcatnloFXFX_pythia8_PSWeight_2018.root");
+			TFile *_file0 = TFile::Open("outputs/" + selection[jj] + "_Run2018.root");
 
 			TTree *tree8 = (TTree *)_file8->Get("Events");
 			TTree *tree7 = (TTree *)_file7->Get("Events");
@@ -76,7 +76,7 @@ void make_plot()
 			TTree *tree1 = (TTree *)_file1->Get("Events");
 			TTree *tree = (TTree *)_file0->Get("Events");
 
-			TH1F *h1_data = new TH1F("h", "h", n_bins[j], l_bin[j], up_bin[j]);
+			TH1F *h1_data = new TH1F("h1_data", "h", n_bins[j], l_bin[j], up_bin[j]);
 			h1_data->SetMarkerStyle(20);
 
 			if (jj == 0)
@@ -87,11 +87,11 @@ void make_plot()
 			h1_data->GetYaxis()->SetTitle("Events");
 			h1_data->GetYaxis()->SetTitleOffset(1);
 			h1_data->GetXaxis()->SetTitle(x_legend[j]);
-			Float_t var; // Double_t var;
+			Float_t var; // Float_t var;
 			tree->SetBranchAddress(branch[j], &var);
-			Double_t var_w;
+			Float_t var_w;
 			tree->SetBranchAddress("weight", &var_w);
-			Double_t var_d;
+			Float_t var_d;
 			tree->SetBranchAddress(branch[j], &var_d);
 			for (int i = 0; i < tree->GetEntries(); i++)
 			{
@@ -104,14 +104,14 @@ void make_plot()
 					h1_data->Fill(var_d, var_w);
 			}
 
-			TH1F *h1_MC1 = new TH1F("h", "h", n_bins[j], l_bin[j], up_bin[j]);
+			TH1F *h1_MC1 = new TH1F("h1_MC1", "h", n_bins[j], l_bin[j], up_bin[j]);
 			h1_MC1->SetLineWidth(4);
 			h1_MC1->SetLineColor(kGreen + 3);
-			Float_t var1; // Double_t var1;
+			Float_t var1; // Float_t var1;
 			tree1->SetBranchAddress(branch[j], &var1);
-			Double_t var1_w;
+			Float_t var1_w;
 			tree1->SetBranchAddress("weight", &var1_w);
-			Double_t var1_d;
+			Float_t var1_d;
 			tree1->SetBranchAddress(branch[j], &var1_d);
 			for (int i = 0; i < tree1->GetEntries(); i++)
 			{
@@ -122,13 +122,13 @@ void make_plot()
 					h1_MC1->Fill(var1_d, var1_w);
 			}
 
-			TH1F *h1_MC2 = new TH1F("h", "h", n_bins[j], l_bin[j], up_bin[j]);
+			TH1F *h1_MC2 = new TH1F("h1_MC2", "h", n_bins[j], l_bin[j], up_bin[j]);
 			h1_MC2->SetLineWidth(4);
 			h1_MC2->SetLineColor(kGreen - 3);
-			Float_t var2; // Double_t var2;
+			Float_t var2; // Float_t var2;
 			tree2->SetBranchAddress(branch[j], &var2);
-			Double_t var2_w;
-			Double_t var2_d;
+			Float_t var2_w;
+			Float_t var2_d;
 			tree2->SetBranchAddress(branch[j], &var2_d);
 			tree2->SetBranchAddress("weight", &var2_w);
 			for (int i = 0; i < tree2->GetEntries(); i++)
@@ -140,14 +140,14 @@ void make_plot()
 					h1_MC2->Fill(var2_d, var2_w);
 			}
 
-			TH1F *h1_MC3 = new TH1F("h", "h", n_bins[j], l_bin[j], up_bin[j]);
+			TH1F *h1_MC3 = new TH1F("h1_MC3", "h", n_bins[j], l_bin[j], up_bin[j]);
 			h1_MC3->SetLineWidth(4);
 			h1_MC3->SetLineColor(kGreen - 8);
-			Float_t var3; // Double_t var3;
+			Float_t var3; // Float_t var3;
 			tree3->SetBranchAddress(branch[j], &var3);
-			Double_t var3_w;
+			Float_t var3_w;
 			tree3->SetBranchAddress("weight", &var3_w);
-			Double_t var3_d;
+			Float_t var3_d;
 			tree3->SetBranchAddress(branch[j], &var3_d);
 			for (int i = 0; i < tree3->GetEntries(); i++)
 			{
@@ -158,14 +158,14 @@ void make_plot()
 					h1_MC3->Fill(var3_d, var3_w);
 			}
 
-			TH1F *h1_MC4 = new TH1F("h", "h", n_bins[j], l_bin[j], up_bin[j]);
+			TH1F *h1_MC4 = new TH1F("h1_MC4", "h", n_bins[j], l_bin[j], up_bin[j]);
 			h1_MC4->SetLineWidth(4);
 			h1_MC4->SetLineColor(kBlue + 2);
-			Float_t var4; // Double_t var4;
+			Float_t var4; // Float_t var4;
 			tree4->SetBranchAddress(branch[j], &var4);
-			Double_t var4_w;
+			Float_t var4_w;
 			tree4->SetBranchAddress("weight", &var4_w);
-			Double_t var4_d;
+			Float_t var4_d;
 			tree4->SetBranchAddress(branch[j], &var4_d);
 			for (int i = 0; i < tree4->GetEntries(); i++)
 			{
@@ -176,14 +176,14 @@ void make_plot()
 					h1_MC4->Fill(var4_d, var4_w);
 			}
 
-			TH1F *h1_MC5 = new TH1F("h", "h", n_bins[j], l_bin[j], up_bin[j]);
+			TH1F *h1_MC5 = new TH1F("h1_MC5", "h", n_bins[j], l_bin[j], up_bin[j]);
 			h1_MC5->SetLineWidth(4);
 			h1_MC5->SetLineColor(kBlue - 7);
-			Float_t var5; // Double_t var5;
+			Float_t var5; // Float_t var5;
 			tree5->SetBranchAddress(branch[j], &var5);
-			Double_t var5_d;
+			Float_t var5_d;
 			tree5->SetBranchAddress(branch[j], &var5_d);
-			Double_t var5_w;
+			Float_t var5_w;
 			tree5->SetBranchAddress("weight", &var5_w);
 			for (int i = 0; i < tree5->GetEntries(); i++)
 			{
@@ -194,14 +194,14 @@ void make_plot()
 					h1_MC5->Fill(var5_d, var5_w);
 			}
 
-			TH1F *h1_MC6 = new TH1F("h", "h", n_bins[j], l_bin[j], up_bin[j]);
+			TH1F *h1_MC6 = new TH1F("h1_MC6", "h", n_bins[j], l_bin[j], up_bin[j]);
 			h1_MC6->SetLineWidth(4);
 			h1_MC6->SetLineColor(kBlue - 9);
-			Float_t var6; // Double_t var6;
+			Float_t var6; // Float_t var6;
 			tree6->SetBranchAddress(branch[j], &var6);
-			Double_t var6_d;
+			Float_t var6_d;
 			tree6->SetBranchAddress(branch[j], &var6_d);
-			Double_t var6_w;
+			Float_t var6_w;
 			tree6->SetBranchAddress("weight", &var6_w);
 			for (int i = 0; i < tree6->GetEntries(); i++)
 			{
@@ -212,14 +212,14 @@ void make_plot()
 					h1_MC6->Fill(var6_d, var6_w);
 			}
 
-			TH1F *h1_MC7 = new TH1F("h1", "h1", n_bins[j], l_bin[j], up_bin[j]);
+			TH1F *h1_MC7 = new TH1F("h1_MC7", "h1", n_bins[j], l_bin[j], up_bin[j]);
 			h1_MC7->SetLineWidth(4);
 			h1_MC7->SetLineColor(kYellow - 7);
-			Float_t var7; // Double_t var7;
+			Float_t var7; // Float_t var7;
 			tree7->SetBranchAddress(branch[j], &var7);
-			Double_t var7_d;
+			Float_t var7_d;
 			tree7->SetBranchAddress(branch[j], &var7_d);
-			Double_t var7_w;
+			Float_t var7_w;
 			tree7->SetBranchAddress("weight", &var7_w);
 			for (int i = 0; i < tree7->GetEntries(); i++)
 			{
@@ -230,14 +230,14 @@ void make_plot()
 					h1_MC7->Fill(var7_d, var7_w);
 			}
 
-			TH1F *h1_MC8 = new TH1F("h", "h", n_bins[j], l_bin[j], up_bin[j]);
+			TH1F *h1_MC8 = new TH1F("h1_MC8", "h", n_bins[j], l_bin[j], up_bin[j]);
 			h1_MC8->SetLineWidth(4);
 			h1_MC8->SetLineColor(kRed - 3);
-			Float_t var8; // Double_t var8;
+			Float_t var8; // Float_t var8;
 			tree8->SetBranchAddress(branch[j], &var8);
-			Double_t var8_d;
+			Float_t var8_d;
 			tree8->SetBranchAddress(branch[j], &var8_d);
-			Double_t var8_w;
+			Float_t var8_w;
 			tree8->SetBranchAddress("weight", &var8_w);
 			for (int i = 0; i < tree8->GetEntries(); i++)
 			{
