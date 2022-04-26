@@ -158,10 +158,10 @@ def plot() -> None:
     os.system("mkdir plots")
 
     # make 1D plots
-    os.system("root -l -b plotter/make_plot.C")
+    os.system("root -l -b -q plotter/make_plot.C")
 
     # make 2D plots for selection optimization
-    os.system("root -l -b plotter/make_plot_2d.C")
+    os.system("root -l -b -q plotter/make_plot_2d.C")
 
 
 @app.command()

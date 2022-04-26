@@ -44,6 +44,10 @@ Usual workflow:
 
 `./run_analysis.py merge`
 
+- Produce plots
+
+`./run_analysis.py plot`
+
 ***To run the whole chain in a single shot:***
 
 `./run_analysis.py all`
