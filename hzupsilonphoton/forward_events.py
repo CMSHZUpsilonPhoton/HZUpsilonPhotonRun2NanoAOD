@@ -1,6 +1,6 @@
 import awkward as ak
 
-from HZUpsilonPhotonRun2NanoAOD.builders import (
+from hzupsilonphoton.builders import (
     build_boson,
     build_bosons_combination,
     build_dimuons,
@@ -11,19 +11,19 @@ from HZUpsilonPhotonRun2NanoAOD.builders import (
     build_photon,
     build_upsilon,
 )
-from HZUpsilonPhotonRun2NanoAOD.feed_forward import (
+from hzupsilonphoton.feed_forward import (
     FeedForwardSequence,
     FilterSequence,
     ObjectSequence,
     WeightSequence,
 )
-from HZUpsilonPhotonRun2NanoAOD.filters import (
+from hzupsilonphoton.filters import (
     lumisection_filter,
     mass_selection_filter,
     signal_selection_filter,
     trigger_filter,
 )
-from HZUpsilonPhotonRun2NanoAOD.weighters import (
+from hzupsilonphoton.weighters import (
     generator_weight,
     l1prefr_weights,
     muon_id_weight,

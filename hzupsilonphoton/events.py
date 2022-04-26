@@ -2,7 +2,7 @@ import awkward as ak
 import numpy as np
 from coffea import analysis_tools
 
-from HZUpsilonPhotonRun2NanoAOD import array_like
+from hzupsilonphoton import array_like
 from samples.samples_details import samples
 
 
@@ -45,6 +45,8 @@ class EventWeights(analysis_tools.Weights):  # type: ignore
 
 class Events:
     def __init__(self, events: ak.Array) -> None:
+        if not isinstance(events, ak.Array):
+            raise TypeError("Events should be an 'awkward.Array'.")
         self.events: ak.Array = events
         self.length: int = len(self.events)
         self.dataset: str = events.metadata["dataset"]
@@ -68,7 +70,7 @@ class Events:
         return self.__str__()
 
     def __str__(self) -> str:
-        return f"Dataset: {self.dataset} - Is: {self.data_or_mc} - Year: {self.year} - Number of events: {self.length}"
+        return f"Dataset: {self.dataset} - Data or MC: {self.data_or_mc} - Year: {self.year} - Number of events: {self.length}"
 
     def filter_events(self, filter: array_like) -> None:
         if self._stop_filtering:

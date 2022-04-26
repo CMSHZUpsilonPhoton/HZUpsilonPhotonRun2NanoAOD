@@ -2,13 +2,9 @@ import awkward as ak
 from coffea import processor
 from coffea.processor import Accumulatable, defaultdict_accumulator, dict_accumulator
 
-from HZUpsilonPhotonRun2NanoAOD.events import Events
-from HZUpsilonPhotonRun2NanoAOD.forward_events import forward_events
-from HZUpsilonPhotonRun2NanoAOD.utils import (
-    fill_cutflow,
-    save_dimuon_masses,
-    save_events,
-)
+from hzupsilonphoton.events import Events
+from hzupsilonphoton.forward_events import forward_events
+from hzupsilonphoton.utils import fill_cutflow, save_dimuon_masses, save_events
 
 
 class Analyzer(processor.ProcessorABC):  # type: ignore

@@ -11,10 +11,10 @@ from coffea import processor
 from coffea.nanoevents import NanoAODSchema
 from tqdm import tqdm
 
-from HZUpsilonPhotonRun2NanoAOD.analyzer import Analyzer
-from HZUpsilonPhotonRun2NanoAOD.gen_analyzer import GenAnalyzer
-from HZUpsilonPhotonRun2NanoAOD.output_merger import output_merger
-from HZUpsilonPhotonRun2NanoAOD.utils import file_tester
+from hzupsilonphoton.analyzer import Analyzer
+from hzupsilonphoton.gen_analyzer import GenAnalyzer
+from hzupsilonphoton.output_merger import output_merger
+from hzupsilonphoton.utils import file_tester
 from samples.samples_details import mc_samples_files, samples, samples_files
 
 # create typer app

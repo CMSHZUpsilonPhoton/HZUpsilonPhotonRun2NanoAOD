@@ -9,7 +9,7 @@ from coffea.processor import Accumulatable
 from numpy.typing import ArrayLike
 from particle import PDGID, Particle
 
-from HZUpsilonPhotonRun2NanoAOD.events import Events
+from hzupsilonphoton.events import Events
 
 
 def file_tester(file_path: str) -> None:

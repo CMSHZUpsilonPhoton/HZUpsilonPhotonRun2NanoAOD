@@ -5,7 +5,7 @@ from typing import Callable, Union
 import awkward as ak
 from numpy.typing import ArrayLike
 
-from HZUpsilonPhotonRun2NanoAOD.events import Events
+from hzupsilonphoton.events import Events
 
 
 class FeedForwardSequence:

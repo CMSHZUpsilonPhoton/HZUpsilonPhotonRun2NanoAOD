@@ -1,7 +1,7 @@
 import awkward as ak
 import numpy as np
 
-from HZUpsilonPhotonRun2NanoAOD.events import Events
+from hzupsilonphoton.events import Events
 
 
 def build_good_muons(evts: Events) -> ak.Array:

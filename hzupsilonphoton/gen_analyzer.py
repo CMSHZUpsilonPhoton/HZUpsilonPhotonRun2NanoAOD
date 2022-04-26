@@ -3,7 +3,7 @@ import numpy as np
 from coffea import analysis_tools, processor
 from coffea.processor import Accumulatable
 
-from HZUpsilonPhotonRun2NanoAOD.utils import mc_sample_filter
+from hzupsilonphoton.utils import mc_sample_filter
 
 
 class GenAnalyzer(processor.ProcessorABC):  # type: ignore

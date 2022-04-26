@@ -5,8 +5,8 @@ import numpy as np
 from coffea import lumi_tools
 from numpy.typing import ArrayLike
 
-from HZUpsilonPhotonRun2NanoAOD.events import Events
-from HZUpsilonPhotonRun2NanoAOD.utils import safe_mass
+from hzupsilonphoton.events import Events
+from hzupsilonphoton.utils import safe_mass
 
 
 def lumisection_filter(evts: Events) -> ArrayLike:

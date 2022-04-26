@@ -3,17 +3,14 @@ from typing import Union
 
 from numpy.typing import ArrayLike
 
-from HZUpsilonPhotonRun2NanoAOD.events import Events
-from HZUpsilonPhotonRun2NanoAOD.scale_factors.l1prefiring_sf import l1prefiring_weights
-from HZUpsilonPhotonRun2NanoAOD.scale_factors.muon_sf import (
-    muon_id_weights,
-    muon_iso_weights,
-)
-from HZUpsilonPhotonRun2NanoAOD.scale_factors.photon_sf import (
+from hzupsilonphoton.events import Events
+from hzupsilonphoton.scale_factors.l1prefiring_sf import l1prefiring_weights
+from hzupsilonphoton.scale_factors.muon_sf import muon_id_weights, muon_iso_weights
+from hzupsilonphoton.scale_factors.photon_sf import (
     photon_electron_veto_weights,
     photon_id_weights,
 )
-from HZUpsilonPhotonRun2NanoAOD.scale_factors.pu_weight import pu_weights
+from hzupsilonphoton.scale_factors.pu_weight import pu_weights
 from samples.lumis import lumis
 from samples.xsecs import x_section
 
