@@ -328,8 +328,8 @@ void make_plot()
 			canv->GetFrame()->Draw();
 
 			TString canvName = branch[j];
-			canv->Print(selection[jj] + "_" + canvName + "_.pdf", ".pdf");
-			canv->Print(selection[jj] + "_" + canvName + "_.png", ".png");
+			canv->Print("plots/" + selection[jj] + "_" + canvName + "_.pdf", ".pdf");
+			canv->Print("plots/" + selection[jj] + "_" + canvName + "_.png", ".png");
 		}
 	}
 }

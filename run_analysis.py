@@ -150,6 +150,21 @@ def merge() -> None:
 
 
 @app.command()
+def plot() -> None:
+    """Run plotter function."""
+
+    # clear
+    os.system("rm -rf plots")
+    os.system("mkdir plots")
+
+    # make 1D plots
+    os.system("root -l -b plotter/make_plot.C")
+
+    # make 2D plots for selection optimization
+    os.system("root -l -b plotter/make_plot_2d.C")
+
+
+@app.command()
 def all(debug: bool = False) -> None:
     """Run default workflow (CLEAR \n\n\n--> GEN \n\n\n--> MAIN \n\n\n--> MERGE)."""
 
@@ -158,6 +173,7 @@ def all(debug: bool = False) -> None:
     main()
     if not debug:
         merge()
+        plot()
 
 
 if __name__ == "__main__":

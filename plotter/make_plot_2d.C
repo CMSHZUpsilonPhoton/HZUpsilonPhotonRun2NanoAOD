@@ -179,11 +179,11 @@ void make_plot_2d()
 
 	TCanvas *cH = new TCanvas("cH", "", 0, 0, 4500, 9000);
 	h2_H->Draw("COLZ text");
-	cH->SaveAs("H_upsilon_boson_window_large.png");
-	cH->SaveAs("H_upsilon_boson_window_large.pdf");
+	cH->SaveAs("plots/" + "H_upsilon_boson_window_large.png");
+	cH->SaveAs("plots/" + "H_upsilon_boson_window_large.pdf");
 
 	TCanvas *cZ = new TCanvas("cZ", "", 0, 0, 4500, 9000);
 	h2_Z->Draw("COLZ text");
-	cZ->SaveAs("Z_upsilon_boson_window_large.png");
-	cZ->SaveAs("Z_upsilon_boson_window_large.pdf");
+	cZ->SaveAs("plots/" + "Z_upsilon_boson_window_large.png");
+	cZ->SaveAs("plots/" + "Z_upsilon_boson_window_large.pdf");
 }
