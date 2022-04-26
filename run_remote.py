@@ -21,9 +21,11 @@ def run_analysis(
     if debug:
         inner_commands += " --debug"
     inner_commands += " ; rm -rf outputs/buffer"
-    full_command = f"ssh {username}@{hostname} '{inner_commands}'"
+    full_command = f"stdbuf -oL ssh {username}@{hostname} '{inner_commands}'"
     if uerj_usr:
-        full_command = f"ssh {username}@{hostname} 'ssh uerj-usr \"{inner_commands}\"'"
+        full_command = (
+            f"stdbuf -oL ssh {username}@{hostname} 'ssh uerj-usr \"{inner_commands}\"'"
+        )
 
     execute_command(full_command)
 
@@ -48,24 +50,26 @@ def sync_working_directories(
 def sync_outputs(
     hostname: str, username: str, working_dir: str, uerj_usr: bool = False
 ) -> None:
+    remove_old_buffered_stuff = "rm -rf outputs"
+    execute_command(remove_old_buffered_stuff)
     if uerj_usr:
         create_temp_dir = f"ssh {username}@{hostname} 'mkdir -p /tmp/{username}/analysis_temp_dir/outputs'"
         execute_command(create_temp_dir)
         sync_command = f"ssh {username}@{hostname} 'rsync -ah --info=progress2 --no-inc-recursive uerj-usr:{working_dir}/outputs/ /tmp/{username}/analysis_temp_dir/outputs'"
         execute_command(sync_command)
-        tar_files = f"tar -zcvf /eos/user/f/{username}/www/analysis_buffer/hzupsilonphoton_outputs_buffer.tar.gz /tmp/{username}/analysis_temp_dir/outputs/*.root"
+        tar_files = f"rm -rf /eos/user/f/{username}/www/analysis_buffer/hzupsilonphoton_outputs_buffer.tar.gz ; tar -zcvf /eos/user/f/{username}/www/analysis_buffer/hzupsilonphoton_outputs_buffer.tar.gz /tmp/{username}/analysis_temp_dir/outputs/*.root"
         re_sync_command = f"ssh {username}@{hostname} '{tar_files}'"
         execute_command(re_sync_command)
     else:
         create_outputs_dir = "mkdir -p outputs"
         execute_command(create_outputs_dir)
-        tar_files = f"tar -zcvf /eos/user/f/{username}/www/analysis_buffer/hzupsilonphoton_outputs_buffer.tar.gz {working_dir}/outputs/*.root"
+        tar_files = f"rm -rf /eos/user/f/{username}/www/analysis_buffer/hzupsilonphoton_outputs_buffer.tar.gz ; tar -zcvf /eos/user/f/{username}/www/analysis_buffer/hzupsilonphoton_outputs_buffer.tar.gz {working_dir}/outputs/*.root"
         copy_to_www = f"ssh {username}@{hostname} '{tar_files}'"
         execute_command(copy_to_www)
         # sync_command = f"rsync -ah --info=progress2 --exclude='buffer' --no-inc-recursive {username}@{hostname}:{working_dir}/outputs/ ./outputs "
         # execute_command(sync_command)
 
-    download = "mkdir -p outputs ; wget -c https://ftorresd.web.cern.ch/ftorresd/analysis_buffer/hzupsilonphoton_outputs_buffer.tar.gz -O outputs/hzupsilonphoton_outputs_buffer.tar.gz ; cd ; outputs ; tar -xzvf hzupsilonphoton_outputs_buffer.tar.gz"
+    download = "mkdir -p outputs ; wget -c https://ftorresd.web.cern.ch/ftorresd/analysis_buffer/hzupsilonphoton_outputs_buffer.tar.gz -O outputs/hzupsilonphoton_outputs_buffer.tar.gz ; cd outputs ; tar -xzvf hzupsilonphoton_outputs_buffer.tar.gz"
     execute_command(download)
 
 

@@ -5,7 +5,10 @@
         "nbytes",
         "nmuons",
         "nphotons"
-    ]
+    ],
     "editor.formatOnSave": true,
-    "python.formatting.provider": "black"
+    "python.formatting.provider": "black",
+    "files.associations": {
+        "make_plot.C": "cpp"
+    }
 }
