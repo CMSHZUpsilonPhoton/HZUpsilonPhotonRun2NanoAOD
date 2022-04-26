@@ -77,6 +77,11 @@ void make_plot(){
 
 		TH1F *h1_data = new TH1F("h","h",n_bins[j],l_bin[j],up_bin[j]);
 		h1_data->SetMarkerStyle(20);
+
+		if(jj==0){
+			h1_data->GetYaxis()->SetTitle("a.u.");
+		}
+
 		h1_data->GetYaxis()->SetTitle("Events");
 		h1_data->GetYaxis()->SetTitleOffset(1);
 		h1_data->GetXaxis()->SetTitle(x_legend[j]);
@@ -246,8 +251,8 @@ void make_plot(){
 		if(h1_data->GetMaximum()>max) max = h1_data->GetMaximum();
 		if(h1_MC1->GetMaximum()>max) max = h1_MC1->GetMaximum();
 		if(h1_MC4->GetMaximum()>max) max = h1_MC4->GetMaximum();
-                if(h1_MC7->GetMaximum()>max) max = h1_MC7->GetMaximum();
-                if(h1_MC8->GetMaximum()>max) max = h1_MC8->GetMaximum();
+        if(h1_MC7->GetMaximum()>max) max = h1_MC7->GetMaximum();
+        if(h1_MC8->GetMaximum()>max) max = h1_MC8->GetMaximum();
 
 		h1_data->SetMaximum(max*factor_max);
 
@@ -256,19 +261,28 @@ void make_plot(){
 		gPad->SetTickx();
 		gPad->SetTicky();
 
-                h1_data->Draw("E0P");
+        h1_data->Draw("E0P");
 		h1_MC1->Draw("HIST SAME PLC");
 		h1_MC4->Draw("HIST SAME PLC");
-                h1_MC7->Draw("HIST SAME PLC");
-                h1_MC8->Draw("HIST SAME PLC");
+        h1_MC7->Draw("HIST SAME PLC");
+        h1_MC8->Draw("HIST SAME PLC");
+		h1_data->Draw("E0P SAME");
 
 
 		auto legend = new TLegend(0.7,0.65,1.,0.90);
 		legend->AddEntry(h1_data,"Data","lep");
+
+		if(jj==0){
+			legend->AddEntry(h1_MC1,"H #rightarrow #Upsilon(nS)#gamma","f");
+			legend->AddEntry(h1_MC4,"Z #rightarrow #Upsilon(nS)#gamma","f");
+			legend->AddEntry(h1_MC8,"H Dalitz","f");
+			legend->AddEntry(h1_MC7,"Z #rightarrow #mu#mu#gamma_{FSR}","f");
+		}
+
 		legend->AddEntry(h1_MC1,"H #rightarrow #Upsilon(nS)#gamma x10^{6}","f");
 		legend->AddEntry(h1_MC4,"Z #rightarrow #Upsilon(nS)#gamma x150","f");
-                legend->AddEntry(h1_MC8,"H Dalitz x100","f");
-                legend->AddEntry(h1_MC7,"Z #rightarrow #mu#mu#gamma_{FSR}","f");
+        legend->AddEntry(h1_MC8,"H Dalitz x100","f");
+        legend->AddEntry(h1_MC7,"Z #rightarrow #mu#mu#gamma_{FSR}","f");
 
 		legend->SetBorderSize(0);
 		legend->SetFillColor(0);
