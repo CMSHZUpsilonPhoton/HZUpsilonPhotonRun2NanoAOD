@@ -11,7 +11,7 @@ https://docs.conda.io/en/latest/miniconda.html
 ```bash
 conda create -y -c conda-forge -p ../HZUpsilonPhotonRun2NanoAOD_env python=3.9.12 mamba
 conda activate ../HZUpsilonPhotonRun2NanoAOD_env
-mamba install -y -c conda-forge --file requirements.txt
+mamba install -y -c conda-forge --file environment.txt
 pre-commit install
 ```
 
@@ -70,4 +70,8 @@ Example:
 
 ## Notes and tips
 
-...
+### Produce a new `environment.yml`
+
+```bash
+conda env export --no-builds  | grep -v "prefix" > environment.yml
+```

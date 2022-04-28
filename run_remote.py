@@ -21,11 +21,9 @@ def run_analysis(
     if debug:
         inner_commands += " --debug"
     inner_commands += " ; rm -rf outputs/buffer"
-    full_command = f"stdbuf -oL ssh {username}@{hostname} '{inner_commands}'"
+    full_command = f"ssh {username}@{hostname} '{inner_commands}'"
     if uerj_usr:
-        full_command = (
-            f"stdbuf -oL ssh {username}@{hostname} 'ssh uerj-usr \"{inner_commands}\"'"
-        )
+        full_command = f"ssh {username}@{hostname} 'ssh uerj-usr \"{inner_commands}\"'"
 
     execute_command(full_command)
 
@@ -74,10 +72,10 @@ def sync_outputs(
 
 
 def main(
-    hostname: str,
-    username: str,
-    working_dir: str,
-    uerj_usr: bool = False,
+    hostname: str = "lxplus",
+    username: str = "ftorresd",
+    working_dir: str = "/data/ftorresd/HZUpsilonPhotonRun2NanoAOD_working_area/HZUpsilonPhotonRun2NanoAOD",
+    uerj_usr: bool = True,
     outputs: bool = False,
     debug: bool = True,
 ) -> None:

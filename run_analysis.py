@@ -164,8 +164,8 @@ def plot() -> None:
     # os.system("root -l -b -q plotter/make_plot_2d.C")
 
 
-@app.command()
-def all(debug: bool = False) -> None:
+@app.callback(invoke_without_command=True)
+def _all(debug: bool = False) -> None:
     """Run default workflow (CLEAR \n\n\n--> GEN \n\n\n--> MAIN \n\n\n--> MERGE)."""
 
     clear()
@@ -174,6 +174,13 @@ def all(debug: bool = False) -> None:
     if not debug:
         merge()
         plot()
+
+
+@app.command()
+def all(debug: bool = False) -> None:
+    """Run default workflow (CLEAR \n\n\n--> GEN \n\n\n--> MAIN \n\n\n--> MERGE)."""
+
+    _all(debug)
 
 
 if __name__ == "__main__":

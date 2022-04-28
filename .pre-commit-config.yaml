@@ -51,6 +51,6 @@ repos:
     rev: v0.942
     hooks:
     -   id: mypy
-        args: [--strict, --ignore-missing-imports, --show-error-codes]
-        # args: [--strict, --ignore-missing-imports, --allow-untyped-decorators, --show-error-codes]
+        # args: [--strict, --ignore-missing-imports, --show-error-codes, --implicit-reexport]
+        args: [--strict, --ignore-missing-imports, --allow-untyped-decorators, --show-error-codes]
         # args: [--strict, --ignore-missing-imports, --allow-untyped-decorators, --allow-subclassing-any, --show-error-codes]
