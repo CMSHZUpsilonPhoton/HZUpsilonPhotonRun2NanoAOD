@@ -22,7 +22,7 @@ jobs:
       run:
         shell: bash -l {0}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: conda-incubator/setup-miniconda@v2
         with:
           activate-environment: anaconda-client-env
@@ -39,8 +39,8 @@ jobs:
     needs: miniconda
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      # - uses: actions/checkout@v3
+      # - uses: actions/setup-python@v3
 
       # ADJUST THIS: install all dependencies (including pdoc)
       # - run: pip install -e .
