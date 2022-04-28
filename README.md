@@ -1,5 +1,9 @@
 # H/Z --> Upsilon + Photon - Run 2 - NanoAOD
 
+## Technical documentation
+
+https://ftorresd.github.io/HZUpsilonPhotonRun2NanoAOD/
+
 
 ## Setup
 Assuming a CC7/Ubuntu 20.04 machine with Miniconda installed.
