@@ -34,7 +34,7 @@ jobs:
       - run: |
           conda info
           conda list
-          conda install -y mamba
+          conda install -y -c conda-forge mamba
           mamba install -y -c conda-forge --file environment.yml
   # Build the documentation and upload the static HTML files as an artifact.
   build:
