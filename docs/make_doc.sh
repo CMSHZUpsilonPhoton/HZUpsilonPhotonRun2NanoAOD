@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env bash
 
 conda create -y -c conda-forge -p ./HZUpsilonPhotonRun2NanoAOD_env python=3.9.12 mamba
 conda activate ./HZUpsilonPhotonRun2NanoAOD_env
