@@ -1,4 +1,4 @@
-name: website
+name: documentation
 
 # build the documentation whenever there are new commits on main
 on:
@@ -16,7 +16,9 @@ permissions:
 
 
 jobs:
-  miniconda:
+  # Install Mambaforge
+  # Build the documentation and upload the static HTML files as an artifact.
+  build-docs:
     runs-on: "ubuntu-latest"
     defaults:
       run:
@@ -30,7 +32,6 @@ jobs:
           python-version: 3.9.12
           channels: conda-forge
           use-mamba: true
-          # condarc-file: environment.yml
           auto-activate-base: false
       - run: |
           conda info
@@ -41,31 +42,10 @@ jobs:
         with:
           name: github-pages
           path: ./artifact.tar
-
-  # # Build the documentation and upload the static HTML files as an artifact.
-  # build:
-  #   needs: miniconda
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     # - uses: actions/checkout@v3
-  #     # - uses: actions/setup-python@v3
-
-  #     # ADJUST THIS: install all dependencies (including pdoc)
-  #     # - run: pip install -e .
-  #     # ADJUST THIS: build your documentation into docs/.
-  #     - run: docs/make_doc.sh
-  #     # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
-
-  #     - run: tar --directory docs/ -hcf artifact.tar .
-  #     - uses: actions/upload-artifact@v3
-  #       with:
-  #         name: github-pages
-  #         path: ./artifact.tar
-
   # Deploy the artifact to GitHub pages.
   # This is a separate job so that only actions/deploy-pages has the necessary permissions.
-  deploy:
-    needs: miniconda
+  deploy-docs:
+    needs: build-docs
     runs-on: ubuntu-latest
     permissions:
       pages: write
