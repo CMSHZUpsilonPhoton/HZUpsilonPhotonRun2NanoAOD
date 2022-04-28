@@ -1,4 +1,4 @@
-name: base
+name: /home/ftorresd/projects/HZUpsilonPhotonRun2NanoAOD_env
 channels:
   - conda-forge
   - defaults
