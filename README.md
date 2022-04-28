@@ -70,7 +70,7 @@ Example:
 
 ## Notes and tips
 
-### Produce a new `environment.yml`
+### How to produce a new `environment.yml`
 
 ```bash
 conda env export --no-builds  | grep -v "prefix" > environment.yml
