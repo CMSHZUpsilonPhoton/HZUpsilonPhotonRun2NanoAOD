@@ -12,6 +12,7 @@ dependencies:
   - argon2-cffi-bindings=21.2.0
   - arrow-cpp=6.0.1
   - asttokens=2.0.5
+  - astunparse=1.6.3
   - atk-1.0=2.36.0
   - attrs=21.4.0
   - awkward=1.8.0
@@ -226,6 +227,7 @@ dependencies:
   - particle=0.20.1
   - pathspec=0.9.0
   - pcre=8.45
+  - pdoc=11.1.0
   - pexpect=4.8.0
   - pickleshare=0.7.5
   - pillow=9.0.1
@@ -245,7 +247,7 @@ dependencies:
   - pycosat=0.6.3
   - pycparser=2.21
   - pydantic=1.9.0
-  - pygments=2.11.2
+  - pygments=2.12.0
   - pyopenssl=22.0.0
   - pyparsing=3.0.4
   - pyrsistent=0.18.0
