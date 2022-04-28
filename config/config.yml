@@ -1,0 +1,6 @@
+# signal selection thresholds
+signal_selection:
+  delta_eta_upsilon_boson: 2.8
+  delta_r_upsilon_boson: 0
+  delta_phi_upsilon_boson: 0.5
+  upsilon_min_pt: 20

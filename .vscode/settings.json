@@ -9,6 +9,7 @@
     "editor.formatOnSave": true,
     "python.formatting.provider": "black",
     "files.associations": {
-        "make_plot.C": "cpp"
+        "make_plot.C": "cpp",
+        "make_plot_2d_ver2.C": "cpp"
     }
 }

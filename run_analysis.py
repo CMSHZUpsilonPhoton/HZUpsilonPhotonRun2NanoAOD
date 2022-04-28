@@ -161,7 +161,7 @@ def plot() -> None:
     os.system("root -l -b -q plotter/make_plot.C")
 
     # make 2D plots for selection optimization
-    # os.system("root -l -b -q plotter/make_plot_2d.C")
+    # os.system("root -l -b -q plotter/make_plot_2d_ver2.C")
 
 
 @app.callback(invoke_without_command=True)

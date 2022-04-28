@@ -1,6 +1,6 @@
 [tool.isort]
 profile = "black"
-known_third_party = ["awkward", "coffea", "numpy", "particle", "tqdm", "typer", "uproot"]
+known_third_party = ["awkward", "coffea", "numpy", "particle", "tqdm", "typer", "uproot", "yaml"]
 
 [tool.flakeheaven]
 # optionally inherit from remote config (or local if you want)

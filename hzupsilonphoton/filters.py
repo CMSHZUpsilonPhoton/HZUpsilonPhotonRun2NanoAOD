@@ -5,6 +5,7 @@ import numpy as np
 from coffea import lumi_tools
 from numpy.typing import ArrayLike
 
+from hzupsilonphoton.config import config
 from hzupsilonphoton.events import Events
 from hzupsilonphoton.utils import safe_mass
 
@@ -69,10 +70,19 @@ def signal_selection_filter(evts: Events) -> ak.Array:
     )
     photons_vectors = evts.events.bosons_combinations["1"]
 
-    delta_eta_filter = np.absolute(upsilon_vectors.eta - photons_vectors.eta) < 2.8
-    delta_phi_filter = np.absolute(upsilon_vectors.delta_phi(photons_vectors)) > 0.5
-    delta_r_filter = upsilon_vectors.delta_r(photons_vectors) >= 0
-    pt_filter = upsilon_vectors.pt > 20
+    delta_eta_filter = (
+        np.absolute(upsilon_vectors.eta - photons_vectors.eta)
+        < config.signal_selection.delta_eta_upsilon_boson
+    )
+    delta_phi_filter = (
+        np.absolute(upsilon_vectors.delta_phi(photons_vectors))
+        > config.signal_selection.delta_phi_upsilon_boson
+    )
+    delta_r_filter = (
+        upsilon_vectors.delta_r(photons_vectors)
+        >= config.signal_selection.delta_r_upsilon_boson
+    )
+    pt_filter = upsilon_vectors.pt > config.signal_selection.upsilon_min_pt
 
     signal_selection = (
         # ak.num(delta_eta_filter & delta_phi_filter & delta_r_filter & pt_filter) >= 1
