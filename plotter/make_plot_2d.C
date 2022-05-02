@@ -16,15 +16,15 @@ void make_plot_2d(){
 	gStyle->SetOptStat(0);
 	gStyle->SetPaintTextFormat("5.2f");
 
-	TFile *_file0 = TFile::Open("../preselected_Run2018.root");
+	TFile *_file0 = TFile::Open("../selected_Run2018.root");
 	TTree * tree = (TTree*)_file0->Get("Events");
 
-	TFile *_file1 = TFile::Open("outputs/preselected_ggH_HToUps1SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
-	TFile *_file2 = TFile::Open("outputs/preselected_ggH_HToUps2SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
-	TFile *_file3 = TFile::Open("outputs/preselected_ggH_HToUps3SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
-	TFile *_file4 = TFile::Open("outputs/preselected_ZToUpsilon1SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
-	TFile *_file5 = TFile::Open("outputs/preselected_ZToUpsilon2SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
-	TFile *_file6 = TFile::Open("outputs/preselected_ZToUpsilon3SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
+	TFile *_file1 = TFile::Open("outputs/selected_ggH_HToUps1SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
+	TFile *_file2 = TFile::Open("outputs/selected_ggH_HToUps2SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
+	TFile *_file3 = TFile::Open("outputs/selected_ggH_HToUps3SG_M125_NNPDF31_TuneCP5_13TeV-powheg-pythia8_2018.root");
+	TFile *_file4 = TFile::Open("outputs/selected_ZToUpsilon1SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
+	TFile *_file5 = TFile::Open("outputs/selected_ZToUpsilon2SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
+	TFile *_file6 = TFile::Open("outputs/selected_ZToUpsilon3SGamma_TuneCP5_13TeV-amcatnloFXFX-pythia8_2018.root");
 
 	TTree * treeZ3 = (TTree*)_file6->Get("Events");
 	TTree * treeZ2 = (TTree*)_file5->Get("Events");
